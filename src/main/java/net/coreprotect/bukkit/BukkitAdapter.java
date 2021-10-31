@@ -30,20 +30,20 @@ public class BukkitAdapter implements BukkitInterface {
 
     public static void loadAdapter() {
         switch (ConfigHandler.SERVER_VERSION) {
-            case BUKKIT_V1_13:
-            case BUKKIT_V1_14:
-                BukkitAdapter.ADAPTER = new BukkitAdapter();
-                break;
-            case BUKKIT_V1_15:
-                BukkitAdapter.ADAPTER = new Bukkit_v1_15();
-                break;
-            case BUKKIT_V1_16:
-                BukkitAdapter.ADAPTER = new Bukkit_v1_16();
-                break;
-            case BUKKIT_V1_17:
-            default:
-                BukkitAdapter.ADAPTER = new Bukkit_v1_17();
-                break;
+        case BUKKIT_V1_13:
+        case BUKKIT_V1_14:
+            BukkitAdapter.ADAPTER = new BukkitAdapter();
+            break;
+        case BUKKIT_V1_15:
+            BukkitAdapter.ADAPTER = new Bukkit_v1_15();
+            break;
+        case BUKKIT_V1_16:
+            BukkitAdapter.ADAPTER = new Bukkit_v1_16();
+            break;
+        case BUKKIT_V1_17:
+        default:
+            BukkitAdapter.ADAPTER = new Bukkit_v1_17();
+            break;
         }
     }
 
@@ -68,7 +68,8 @@ public class BukkitAdapter implements BukkitInterface {
     }
 
     @Override
-    public boolean getItemMeta(ItemMeta itemMeta, List<Map<String, Object>> list, List<List<Map<String, Object>>> metadata, int slot) {
+    public boolean getItemMeta(ItemMeta itemMeta, List<Map<String, Object>> list,
+            List<List<Map<String, Object>>> metadata, int slot) {
         return false;
     }
 
@@ -80,7 +81,8 @@ public class BukkitAdapter implements BukkitInterface {
     @Override
     public boolean isAttached(Block block, Block scanBlock, BlockData blockData, int scanMin) {
         if (blockData instanceof Directional) {
-            return (scanMin < 5 && scanBlock.getRelative(((Directional) blockData).getFacing().getOppositeFace()).getLocation().equals(block.getLocation()));
+            return (scanMin < 5 && scanBlock.getRelative(((Directional) blockData).getFacing().getOppositeFace())
+                    .getLocation().equals(block.getLocation()));
         }
 
         return true; // unvalidated attachments default to true

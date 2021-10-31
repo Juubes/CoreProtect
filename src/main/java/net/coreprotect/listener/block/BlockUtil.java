@@ -17,21 +17,25 @@ public class BlockUtil {
     public static final int TOP = 5;
     public static final int BOTTOM = 6;
 
-    public static boolean verticalBreakScan(Player player, String user, Block block, Block scanBlock, Material scanType, int scanMin) {
+    public static boolean verticalBreakScan(Player player, String user, Block block, Block scanBlock, Material scanType,
+            int scanMin) {
         if (!BlockGroup.VERTICAL.contains(scanType)) {
             return false;
         }
 
         if (scanType != block.getType()) {
-            boolean trackTop = BlockGroup.TRACK_TOP_BOTTOM.contains(scanType) || BlockGroup.TRACK_TOP.contains(scanType);
-            boolean trackBottom = BlockGroup.TRACK_TOP_BOTTOM.contains(scanType) || BlockGroup.TRACK_BOTTOM.contains(scanType);
+            boolean trackTop = BlockGroup.TRACK_TOP_BOTTOM.contains(scanType)
+                    || BlockGroup.TRACK_TOP.contains(scanType);
+            boolean trackBottom = BlockGroup.TRACK_TOP_BOTTOM.contains(scanType)
+                    || BlockGroup.TRACK_BOTTOM.contains(scanType);
             if ((!trackTop && scanMin == TOP) || (!trackBottom && scanMin == BOTTOM)) {
                 return false;
             }
         }
 
         boolean top = BlockGroup.VERTICAL_TOP_BOTTOM.contains(scanType) || BlockGroup.VERTICAL_TOP.contains(scanType);
-        boolean bottom = BlockGroup.VERTICAL_TOP_BOTTOM.contains(scanType) || BlockGroup.VERTICAL_BOTTOM.contains(scanType);
+        boolean bottom = BlockGroup.VERTICAL_TOP_BOTTOM.contains(scanType)
+                || BlockGroup.VERTICAL_BOTTOM.contains(scanType);
         if ((top && scanMin == TOP) || (bottom && scanMin == BOTTOM)) {
             BlockBreakListener.processBlockBreak(player, user, scanBlock, true, (scanMin == BOTTOM ? TOP : BOTTOM));
             return true;
@@ -56,19 +60,17 @@ public class BlockUtil {
                 if (yc < BukkitAdapter.ADAPTER.getMinHeight(world)) {
                     block = world.getBlockAt(x, yc + 1, z);
                     bottomfound = 1;
-                }
-                else {
+                } else {
                     Block block_down = world.getBlockAt(x, yc, z);
                     Material down = block_down.getType();
-                    if (!BukkitAdapter.ADAPTER.isInvisible(down) && !down.equals(Material.WATER) && !down.equals(Material.LAVA) && !down.equals(Material.SNOW)) {
+                    if (!BukkitAdapter.ADAPTER.isInvisible(down) && !down.equals(Material.WATER)
+                            && !down.equals(Material.LAVA) && !down.equals(Material.SNOW)) {
                         block = world.getBlockAt(x, yc + 1, z);
                         bottomfound = 1;
-                    }
-                    else if (down == Material.WATER && type.name().endsWith("_CONCRETE_POWDER")) {
+                    } else if (down == Material.WATER && type.name().endsWith("_CONCRETE_POWDER")) {
                         block = world.getBlockAt(x, yc, z);
                         bottomfound = 1;
-                    }
-                    else {
+                    } else {
                         String cords = "" + x + "." + yc + "." + z + "." + wid + "";
                         Object[] data = CacheHandler.lookupCache.get(cords);
                         if (data != null) {
@@ -82,7 +84,8 @@ public class BlockUtil {
                     yc--;
                 }
             }
-            CacheHandler.lookupCache.put("" + x + "." + block.getY() + "." + z + "." + wid + "", new Object[] { timestamp, player, type });
+            CacheHandler.lookupCache.put("" + x + "." + block.getY() + "." + z + "." + wid + "",
+                    new Object[] { timestamp, player, type });
         }
 
         return block;

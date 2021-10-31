@@ -36,13 +36,11 @@ public class CoreProtectEditSessionEvent {
                     initialized = true;
                     ConfigHandler.worldeditEnabled = true;
                     Chat.console(Phrase.build(Phrase.INTEGRATION_SUCCESS, "WorldEdit", Selector.FIRST));
-                }
-                catch (Exception e) {
+                } catch (Exception e) {
                     Chat.console(Phrase.build(Phrase.INTEGRATION_ERROR, "WorldEdit", Selector.FIRST));
                 }
             }, 0);
-        }
-        catch (Exception e) {
+        } catch (Exception e) {
             e.printStackTrace();
         }
     }
@@ -59,13 +57,11 @@ public class CoreProtectEditSessionEvent {
                     initialized = false;
                     ConfigHandler.worldeditEnabled = false;
                     Chat.console(Phrase.build(Phrase.INTEGRATION_SUCCESS, "WorldEdit", Selector.SECOND));
-                }
-                catch (Exception e) {
+                } catch (Exception e) {
                     Chat.console(Phrase.build(Phrase.INTEGRATION_ERROR, "WorldEdit", Selector.SECOND));
                 }
             }, 0);
-        }
-        catch (Exception e) {
+        } catch (Exception e) {
             e.printStackTrace();
         }
     }

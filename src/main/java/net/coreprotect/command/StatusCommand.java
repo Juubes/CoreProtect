@@ -23,7 +23,8 @@ public class StatusCommand {
 
     protected static void runCommand(CommandSender player, boolean permission, String[] args) {
         if (!permission) {
-            Chat.sendMessage(player, Color.DARK_AQUA + "CoreProtect " + Color.WHITE + "- " + Phrase.build(Phrase.NO_PERMISSION));
+            Chat.sendMessage(player,
+                    Color.DARK_AQUA + "CoreProtect " + Color.WHITE + "- " + Phrase.build(Phrase.NO_PERMISSION));
             return;
         }
 
@@ -42,21 +43,29 @@ public class StatusCommand {
                         }
                     }
 
-                    Chat.sendMessage(player, Color.WHITE + "----- " + Color.DARK_AQUA + "CoreProtect " + Color.WHITE + "-----");
-                    Chat.sendMessage(player, Color.DARK_AQUA + Phrase.build(Phrase.STATUS_VERSION, Color.WHITE, ConfigHandler.EDITION_NAME + " v" + pdfFile.getVersion() + ".") + versionCheck);
+                    Chat.sendMessage(player,
+                            Color.WHITE + "----- " + Color.DARK_AQUA + "CoreProtect " + Color.WHITE + "-----");
+                    Chat.sendMessage(player,
+                            Color.DARK_AQUA
+                                    + Phrase.build(Phrase.STATUS_VERSION, Color.WHITE,
+                                            ConfigHandler.EDITION_NAME + " v" + pdfFile.getVersion() + ".")
+                                    + versionCheck);
 
                     String donationKey = NetworkHandler.donationKey();
                     if (donationKey != null) {
-                        Chat.sendMessage(player, Color.DARK_AQUA + Phrase.build(Phrase.STATUS_LICENSE, Color.WHITE, Phrase.build(Phrase.VALID_DONATION_KEY)) + " (" + donationKey + ")");
-                    }
-                    else {
-                        Chat.sendMessage(player, Color.DARK_AQUA + Phrase.build(Phrase.STATUS_LICENSE, Color.WHITE, Phrase.build(Phrase.INVALID_DONATION_KEY)) + Color.GREY + Color.ITALIC + " (" + Phrase.build(Phrase.CHECK_CONFIG) + ")");
+                        Chat.sendMessage(player, Color.DARK_AQUA + Phrase.build(Phrase.STATUS_LICENSE, Color.WHITE,
+                                Phrase.build(Phrase.VALID_DONATION_KEY)) + " (" + donationKey + ")");
+                    } else {
+                        Chat.sendMessage(player,
+                                Color.DARK_AQUA
+                                        + Phrase.build(Phrase.STATUS_LICENSE, Color.WHITE,
+                                                Phrase.build(Phrase.INVALID_DONATION_KEY))
+                                        + Color.GREY + Color.ITALIC + " (" + Phrase.build(Phrase.CHECK_CONFIG) + ")");
                     }
 
                     /*
-                        CoreProtect show RAM usage
-                        Items processed (since server start)
-                        Items processed (last 60 minutes)
+                     * CoreProtect show RAM usage Items processed (since server start) Items
+                     * processed (last 60 minutes)
                      */
 
                     // Using MySQL/SQLite (Database Size: 587MB)
@@ -66,17 +75,19 @@ public class StatusCommand {
                         firstVersion = " (" + Phrase.build(Phrase.FIRST_VERSION, firstVersion) + ")";
                     }
                     if (Config.getGlobal().MYSQL) {
-                        Chat.sendMessage(player, Color.DARK_AQUA + Phrase.build(Phrase.STATUS_DATABASE, Color.WHITE, "MySQL") + firstVersion);
-                    }
-                    else {
-                        Chat.sendMessage(player, Color.DARK_AQUA + Phrase.build(Phrase.STATUS_DATABASE, Color.WHITE, "SQLite") + firstVersion);
+                        Chat.sendMessage(player, Color.DARK_AQUA
+                                + Phrase.build(Phrase.STATUS_DATABASE, Color.WHITE, "MySQL") + firstVersion);
+                    } else {
+                        Chat.sendMessage(player, Color.DARK_AQUA
+                                + Phrase.build(Phrase.STATUS_DATABASE, Color.WHITE, "SQLite") + firstVersion);
                     }
 
                     if (ConfigHandler.worldeditEnabled) {
-                        Chat.sendMessage(player, Color.DARK_AQUA + Phrase.build(Phrase.STATUS_INTEGRATION, Color.WHITE, "WorldEdit", Selector.FIRST));
-                    }
-                    else if (instance.getServer().getPluginManager().getPlugin("WorldEdit") != null) {
-                        Chat.sendMessage(player, Color.DARK_AQUA + Phrase.build(Phrase.STATUS_INTEGRATION, Color.WHITE, "WorldEdit", Selector.SECOND));
+                        Chat.sendMessage(player, Color.DARK_AQUA
+                                + Phrase.build(Phrase.STATUS_INTEGRATION, Color.WHITE, "WorldEdit", Selector.FIRST));
+                    } else if (instance.getServer().getPluginManager().getPlugin("WorldEdit") != null) {
+                        Chat.sendMessage(player, Color.DARK_AQUA
+                                + Phrase.build(Phrase.STATUS_INTEGRATION, Color.WHITE, "WorldEdit", Selector.SECOND));
                     }
 
                     try {
@@ -84,8 +95,7 @@ public class StatusCommand {
                         int currentConsumerSize = Process.getCurrentConsumerSize();
                         if (currentConsumerSize == 0) {
                             consumerCount = Consumer.getConsumerSize(0) + Consumer.getConsumerSize(1);
-                        }
-                        else {
+                        } else {
                             int consumerId = (Consumer.currentConsumer == 1) ? 1 : 0;
                             consumerCount = Consumer.getConsumerSize(consumerId) + currentConsumerSize;
                         }
@@ -96,17 +106,24 @@ public class StatusCommand {
                             }
                         }
 
-                        Chat.sendMessage(player, Color.DARK_AQUA + Phrase.build(Phrase.STATUS_CONSUMER, Color.WHITE, String.format("%,d", consumerCount), (consumerCount == 1 ? Selector.FIRST : Selector.SECOND)));
-                    }
-                    catch (Exception e) {
+                        Chat.sendMessage(player,
+                                Color.DARK_AQUA + Phrase.build(Phrase.STATUS_CONSUMER, Color.WHITE,
+                                        String.format("%,d", consumerCount),
+                                        (consumerCount == 1 ? Selector.FIRST : Selector.SECOND)));
+                    } catch (Exception e) {
                         e.printStackTrace();
                     }
 
-                    // Functions.sendMessage(player, Color.DARK_AQUA + "Website: " + Color.WHITE + "www.coreprotect.net/updates/");
+                    // Functions.sendMessage(player, Color.DARK_AQUA + "Website: " + Color.WHITE +
+                    // "www.coreprotect.net/updates/");
 
-                    // Functions.sendMessage(player, Color.DARK_AQUA + Phrase.build(Phrase.LINK_DISCORD, Color.WHITE + "www.coreprotect.net/discord/").replaceFirst(":", ":" + Color.WHITE));
-                    Chat.sendMessage(player, Color.DARK_AQUA + Phrase.build(Phrase.LINK_DISCORD, Color.WHITE, "www.coreprotect.net/discord/"));
-                    Chat.sendMessage(player, Color.DARK_AQUA + Phrase.build(Phrase.LINK_PATREON, Color.WHITE, "www.patreon.com/coreprotect/"));
+                    // Functions.sendMessage(player, Color.DARK_AQUA +
+                    // Phrase.build(Phrase.LINK_DISCORD, Color.WHITE +
+                    // "www.coreprotect.net/discord/").replaceFirst(":", ":" + Color.WHITE));
+                    Chat.sendMessage(player, Color.DARK_AQUA
+                            + Phrase.build(Phrase.LINK_DISCORD, Color.WHITE, "www.coreprotect.net/discord/"));
+                    Chat.sendMessage(player, Color.DARK_AQUA
+                            + Phrase.build(Phrase.LINK_PATREON, Color.WHITE, "www.patreon.com/coreprotect/"));
 
                     if (player.isOp() && alert.get(player.getName()) == null) {
                         alert.put(player.getName(), true);
@@ -114,14 +131,15 @@ public class StatusCommand {
                         if (instance.getServer().getPluginManager().getPlugin("CoreEdit") == null) {
                             Thread.sleep(500);
                             /*
-                            Functions.sendMessage(player, Color.WHITE + "----- " + Color.DARK_AQUA + "Recommended Plugin " + Color.WHITE + "-----");
-                            Functions.sendMessage(player, Color.DARK_AQUA + "Notice: " + Color.WHITE + "Enjoy CoreProtect? Check out CoreEdit!");
-                            Functions.sendMessage(player, Color.DARK_AQUA + "Download: " + Color.WHITE + "www.coreedit.net/download/");
-                            */
+                             * Functions.sendMessage(player, Color.WHITE + "----- " + Color.DARK_AQUA +
+                             * "Recommended Plugin " + Color.WHITE + "-----"); Functions.sendMessage(player,
+                             * Color.DARK_AQUA + "Notice: " + Color.WHITE +
+                             * "Enjoy CoreProtect? Check out CoreEdit!"); Functions.sendMessage(player,
+                             * Color.DARK_AQUA + "Download: " + Color.WHITE + "www.coreedit.net/download/");
+                             */
                         }
                     }
-                }
-                catch (Exception e) {
+                } catch (Exception e) {
                     e.printStackTrace();
                 }
             }

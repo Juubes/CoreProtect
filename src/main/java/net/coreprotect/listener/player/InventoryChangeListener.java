@@ -47,8 +47,7 @@ public final class InventoryChangeListener extends Queue implements Listener {
                 Thread.sleep(1);
             }
             tasksCompleted.set(taskStarted);
-        }
-        catch (Exception e) {
+        } catch (Exception e) {
             e.printStackTrace();
         }
     }
@@ -61,14 +60,16 @@ public final class InventoryChangeListener extends Queue implements Listener {
 
                 if (BlockGroup.CONTAINERS.contains(type)) {
                     InventoryHolder inventoryHolder = (InventoryHolder) blockState;
-                    return onInventoryInteract(user, inventoryHolder.getInventory(), inventoryData, null, location, false);
+                    return onInventoryInteract(user, inventoryHolder.getInventory(), inventoryData, null, location,
+                            false);
                 }
             }
         }
         return false;
     }
 
-    static boolean onInventoryInteract(String user, final Inventory inventory, ItemStack[] inventoryData, Material containerType, Location location, boolean aSync) {
+    static boolean onInventoryInteract(String user, final Inventory inventory, ItemStack[] inventoryData,
+            Material containerType, Location location, boolean aSync) {
         if (inventory != null && location != null) {
             World world = location.getWorld();
 
@@ -81,8 +82,7 @@ public final class InventoryChangeListener extends Queue implements Listener {
                     if (containerType != null) {
                         type = containerType;
                     }
-                }
-                else {
+                } else {
                     InventoryHolder inventoryHolder = inventory.getHolder();
                     if (inventoryHolder == null) {
                         return false;
@@ -94,8 +94,7 @@ public final class InventoryChangeListener extends Queue implements Listener {
                         if (BlockGroup.CONTAINERS.contains(type)) {
                             playerLocation = state.getLocation();
                         }
-                    }
-                    else if (inventoryHolder instanceof DoubleChest) {
+                    } else if (inventoryHolder instanceof DoubleChest) {
                         DoubleChest state = (DoubleChest) inventoryHolder;
                         playerLocation = state.getLocation();
                     }
@@ -110,14 +109,17 @@ public final class InventoryChangeListener extends Queue implements Listener {
                     int y = playerLocation.getBlockY();
                     int z = playerLocation.getBlockZ();
 
-                    String transactingChestId = playerLocation.getWorld().getUID().toString() + "." + x + "." + y + "." + z;
+                    String transactingChestId = playerLocation.getWorld().getUID().toString() + "." + x + "." + y + "."
+                            + z;
                     String loggingChestId = user.toLowerCase(Locale.ROOT) + "." + x + "." + y + "." + z;
                     for (String loggingChestIdViewer : ConfigHandler.oldContainer.keySet()) {
-                        if (loggingChestIdViewer.equals(loggingChestId) || !loggingChestIdViewer.endsWith("." + x + "." + y + "." + z)) {
+                        if (loggingChestIdViewer.equals(loggingChestId)
+                                || !loggingChestIdViewer.endsWith("." + x + "." + y + "." + z)) {
                             continue;
                         }
 
-                        if (ConfigHandler.oldContainer.get(loggingChestIdViewer) != null) { // player has pending consumer item
+                        if (ConfigHandler.oldContainer.get(loggingChestIdViewer) != null) { // player has pending
+                                                                                            // consumer item
                             int sizeOld = ConfigHandler.oldContainer.get(loggingChestIdViewer).size();
                             ConfigHandler.forceContainer.computeIfAbsent(loggingChestIdViewer, k -> new ArrayList<>());
                             List<ItemStack[]> list = ConfigHandler.forceContainer.get(loggingChestIdViewer);
@@ -128,9 +130,11 @@ public final class InventoryChangeListener extends Queue implements Listener {
                                 // If items have been removed by a hopper, merge into containerState
                                 List<Object> transactingChest = ConfigHandler.transactingChest.get(transactingChestId);
                                 if (transactingChest != null) {
-                                    List<Object> transactingChestList = Collections.synchronizedList(new ArrayList<>(transactingChest));
+                                    List<Object> transactingChestList = Collections
+                                            .synchronizedList(new ArrayList<>(transactingChest));
                                     if (!transactingChestList.isEmpty()) {
-                                        ItemStack[] newState = new ItemStack[containerState.length + transactingChestList.size()];
+                                        ItemStack[] newState = new ItemStack[containerState.length
+                                                + transactingChestList.size()];
                                         int count = 0;
 
                                         for (int j = 0; j < containerState.length; j++) {
@@ -143,8 +147,7 @@ public final class InventoryChangeListener extends Queue implements Listener {
                                             ItemStack removeItem = null;
                                             if (item instanceof ItemStack) {
                                                 addItem = (ItemStack) item;
-                                            }
-                                            else {
+                                            } else {
                                                 addItem = ((ItemStack[]) item)[0];
                                                 removeItem = ((ItemStack[]) item)[1];
                                             }
@@ -186,14 +189,14 @@ public final class InventoryChangeListener extends Queue implements Listener {
                                 ConfigHandler.oldContainer.put(loggingChestId, list);
                             }
                         }
-                    }
-                    else {
+                    } else {
                         List<ItemStack[]> list = new ArrayList<>();
                         list.add(Util.getContainerState(inventoryData));
                         ConfigHandler.oldContainer.put(loggingChestId, list);
                     }
 
-                    ConfigHandler.transactingChest.computeIfAbsent(transactingChestId, k -> Collections.synchronizedList(new ArrayList<>()));
+                    ConfigHandler.transactingChest.computeIfAbsent(transactingChestId,
+                            k -> Collections.synchronizedList(new ArrayList<>()));
                     Queue.queueContainerTransaction(user, playerLocation, type, inventory, chestId);
                     return true;
                 }
@@ -211,8 +214,7 @@ public final class InventoryChangeListener extends Queue implements Listener {
         Location location = null;
         try {
             location = inventory.getLocation();
-        }
-        catch (Exception e) {
+        } catch (Exception e) {
             return;
         }
         if (location == null) {
@@ -231,9 +233,9 @@ public final class InventoryChangeListener extends Queue implements Listener {
             try {
                 Material containerType = (enderChest != true ? null : Material.ENDER_CHEST);
                 InventoryChangeListener.checkTasks(taskStarted);
-                onInventoryInteract(player.getName(), inventory, containerState, containerType, inventoryLocation, true);
-            }
-            catch (Exception e) {
+                onInventoryInteract(player.getName(), inventory, containerState, containerType, inventoryLocation,
+                        true);
+            } catch (Exception e) {
                 e.printStackTrace();
             }
         });
@@ -247,8 +249,10 @@ public final class InventoryChangeListener extends Queue implements Listener {
         }
 
         boolean enderChest = false;
-        if (inventoryAction != InventoryAction.MOVE_TO_OTHER_INVENTORY && inventoryAction != InventoryAction.COLLECT_TO_CURSOR && inventoryAction != InventoryAction.UNKNOWN) {
-            // Perform this check to prevent triggering onInventoryInteractAsync when a user is just clicking items in their own inventory
+        if (inventoryAction != InventoryAction.MOVE_TO_OTHER_INVENTORY
+                && inventoryAction != InventoryAction.COLLECT_TO_CURSOR && inventoryAction != InventoryAction.UNKNOWN) {
+            // Perform this check to prevent triggering onInventoryInteractAsync when a user
+            // is just clicking items in their own inventory
             Inventory inventory = event.getView().getInventory(event.getRawSlot());
             if (inventory == null) {
                 return;
@@ -256,11 +260,12 @@ public final class InventoryChangeListener extends Queue implements Listener {
 
             InventoryHolder inventoryHolder = inventory.getHolder();
             enderChest = inventory.equals(event.getWhoClicked().getEnderChest());
-            if ((inventoryHolder == null || !(inventoryHolder instanceof BlockInventoryHolder || inventoryHolder instanceof DoubleChest)) && !enderChest) {
+            if ((inventoryHolder == null
+                    || !(inventoryHolder instanceof BlockInventoryHolder || inventoryHolder instanceof DoubleChest))
+                    && !enderChest) {
                 return;
             }
-        }
-        else {
+        } else {
             // Perform standard inventory holder check on primary inventory
             Inventory inventory = event.getInventory();
             if (inventory == null) {
@@ -269,7 +274,9 @@ public final class InventoryChangeListener extends Queue implements Listener {
 
             InventoryHolder inventoryHolder = inventory.getHolder();
             enderChest = inventory.equals(event.getWhoClicked().getEnderChest());
-            if ((inventoryHolder == null || !(inventoryHolder instanceof BlockInventoryHolder || inventoryHolder instanceof DoubleChest)) && !enderChest) {
+            if ((inventoryHolder == null
+                    || !(inventoryHolder instanceof BlockInventoryHolder || inventoryHolder instanceof DoubleChest))
+                    && !enderChest) {
                 return;
             }
         }
@@ -291,7 +298,9 @@ public final class InventoryChangeListener extends Queue implements Listener {
 
             InventoryHolder inventoryHolder = inventory.getHolder();
             enderChest = inventory.equals(event.getWhoClicked().getEnderChest());
-            if ((inventoryHolder != null && (inventoryHolder instanceof BlockInventoryHolder || inventoryHolder instanceof DoubleChest)) || enderChest) {
+            if ((inventoryHolder != null
+                    && (inventoryHolder instanceof BlockInventoryHolder || inventoryHolder instanceof DoubleChest))
+                    || enderChest) {
                 movedItem = true;
                 break;
             }
@@ -332,21 +341,24 @@ public final class InventoryChangeListener extends Queue implements Listener {
         }
 
         if (hopperTransactions) {
-            if (Validate.isHopper(destinationHolder) && (Validate.isContainer(sourceHolder) && !Validate.isHopper(sourceHolder))) {
+            if (Validate.isHopper(destinationHolder)
+                    && (Validate.isContainer(sourceHolder) && !Validate.isHopper(sourceHolder))) {
                 HopperPullListener.processHopperPull(location, sourceHolder, destinationHolder, event.getItem());
-            }
-            else if (Validate.isHopper(sourceHolder) && (Validate.isContainer(destinationHolder) && !Validate.isHopper(destinationHolder))) {
+            } else if (Validate.isHopper(sourceHolder)
+                    && (Validate.isContainer(destinationHolder) && !Validate.isHopper(destinationHolder))) {
                 HopperPushListener.processHopperPush(location, sourceHolder, destinationHolder, event.getItem());
             }
 
             return;
         }
 
-        if (destinationHolder instanceof Player || (!(sourceHolder instanceof BlockInventoryHolder) && !(sourceHolder instanceof DoubleChest))) {
+        if (destinationHolder instanceof Player
+                || (!(sourceHolder instanceof BlockInventoryHolder) && !(sourceHolder instanceof DoubleChest))) {
             return;
         }
 
-        List<Object> list = ConfigHandler.transactingChest.get(location.getWorld().getUID().toString() + "." + location.getBlockX() + "." + location.getBlockY() + "." + location.getBlockZ());
+        List<Object> list = ConfigHandler.transactingChest.get(location.getWorld().getUID().toString() + "."
+                + location.getBlockX() + "." + location.getBlockY() + "." + location.getBlockZ());
         if (list == null) {
             return;
         }

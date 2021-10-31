@@ -24,7 +24,8 @@ public final class PlayerDropItemListener extends Queue implements Listener {
             return;
         }
 
-        String loggingItemId = player.getName().toLowerCase(Locale.ROOT) + "." + location.getBlockX() + "." + location.getBlockY() + "." + location.getBlockZ();
+        String loggingItemId = player.getName().toLowerCase(Locale.ROOT) + "." + location.getBlockX() + "."
+                + location.getBlockY() + "." + location.getBlockZ();
         int itemId = getItemId(loggingItemId);
 
         List<ItemStack> list = ConfigHandler.itemsDrop.getOrDefault(loggingItemId, new ArrayList<>());

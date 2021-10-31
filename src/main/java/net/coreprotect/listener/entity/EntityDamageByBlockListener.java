@@ -53,14 +53,14 @@ public final class EntityDamageByBlockListener extends Queue implements Listener
 
             Queue.queueBlockBreak(user, block.getState(), frameType, null, data);
             Queue.queueBlockPlace(user, block.getState(), frameType, null, frameType, -1, 0, null);
-        }
-        else if (entity instanceof ArmorStand) {
+        } else if (entity instanceof ArmorStand) {
             Database.containerBreakCheck(user, Material.ARMOR_STAND, entity, null, block.getLocation());
-            Queue.queueBlockBreak(user, block.getState(), Material.ARMOR_STAND, null, (int) entity.getLocation().getYaw());
-        }
-        else if (entity instanceof EnderCrystal) {
+            Queue.queueBlockBreak(user, block.getState(), Material.ARMOR_STAND, null,
+                    (int) entity.getLocation().getYaw());
+        } else if (entity instanceof EnderCrystal) {
             EnderCrystal crystal = (EnderCrystal) event.getEntity();
-            Queue.queueBlockBreak(user, block.getState(), Material.END_CRYSTAL, null, crystal.isShowingBottom() ? 1 : 0);
+            Queue.queueBlockBreak(user, block.getState(), Material.END_CRYSTAL, null,
+                    crystal.isShowingBottom() ? 1 : 0);
         }
     }
 

@@ -37,23 +37,28 @@ public class PurgeCommand extends Consumer {
         final List<Integer> supportedActions = Arrays.asList();
 
         if (ConfigHandler.converterRunning) {
-            Chat.sendMessage(player, Color.DARK_AQUA + "CoreProtect " + Color.WHITE + "- " + Phrase.build(Phrase.UPGRADE_IN_PROGRESS));
+            Chat.sendMessage(player,
+                    Color.DARK_AQUA + "CoreProtect " + Color.WHITE + "- " + Phrase.build(Phrase.UPGRADE_IN_PROGRESS));
             return;
         }
         if (ConfigHandler.purgeRunning) {
-            Chat.sendMessage(player, Color.DARK_AQUA + "CoreProtect " + Color.WHITE + "- " + Phrase.build(Phrase.PURGE_IN_PROGRESS));
+            Chat.sendMessage(player,
+                    Color.DARK_AQUA + "CoreProtect " + Color.WHITE + "- " + Phrase.build(Phrase.PURGE_IN_PROGRESS));
             return;
         }
         if (!permission) {
-            Chat.sendMessage(player, Color.DARK_AQUA + "CoreProtect " + Color.WHITE + "- " + Phrase.build(Phrase.NO_PERMISSION));
+            Chat.sendMessage(player,
+                    Color.DARK_AQUA + "CoreProtect " + Color.WHITE + "- " + Phrase.build(Phrase.NO_PERMISSION));
             return;
         }
         if (resultc <= 1) {
-            Chat.sendMessage(player, Color.DARK_AQUA + "CoreProtect " + Color.WHITE + "- " + Phrase.build(Phrase.MISSING_PARAMETERS, "/co purge t:<time>"));
+            Chat.sendMessage(player, Color.DARK_AQUA + "CoreProtect " + Color.WHITE + "- "
+                    + Phrase.build(Phrase.MISSING_PARAMETERS, "/co purge t:<time>"));
             return;
         }
         if (seconds <= 0) {
-            Chat.sendMessage(player, Color.DARK_AQUA + "CoreProtect " + Color.WHITE + "- " + Phrase.build(Phrase.MISSING_PARAMETERS, "/co purge t:<time>"));
+            Chat.sendMessage(player, Color.DARK_AQUA + "CoreProtect " + Color.WHITE + "- "
+                    + Phrase.build(Phrase.MISSING_PARAMETERS, "/co purge t:<time>"));
             return;
         }
         if (argRadius != null) {
@@ -67,17 +72,20 @@ public class PurgeCommand extends Consumer {
         }
         for (int action : argAction) {
             if (!supportedActions.contains(action)) {
-                Chat.sendMessage(player, Color.DARK_AQUA + "CoreProtect " + Color.WHITE + "- " + Phrase.build(Phrase.ACTION_NOT_SUPPORTED));
-                // Functions.sendMessage(player, new ChatMessage("Please specify a valid purge action.").build());
+                Chat.sendMessage(player, Color.DARK_AQUA + "CoreProtect " + Color.WHITE + "- "
+                        + Phrase.build(Phrase.ACTION_NOT_SUPPORTED));
+                // Functions.sendMessage(player, new ChatMessage("Please specify a valid purge
+                // action.").build());
                 return;
             }
         }
         if (player instanceof Player && seconds < 2592000) {
-            Chat.sendMessage(player, Color.DARK_AQUA + "CoreProtect " + Color.WHITE + "- " + Phrase.build(Phrase.PURGE_MINIMUM_TIME, "30", Selector.FIRST)); // 30 days
+            Chat.sendMessage(player, Color.DARK_AQUA + "CoreProtect " + Color.WHITE + "- "
+                    + Phrase.build(Phrase.PURGE_MINIMUM_TIME, "30", Selector.FIRST)); // 30 days
             return;
-        }
-        else if (seconds < 86400) {
-            Chat.sendMessage(player, Color.DARK_AQUA + "CoreProtect " + Color.WHITE + "- " + Phrase.build(Phrase.PURGE_MINIMUM_TIME, "24", Selector.SECOND)); // 24 hours
+        } else if (seconds < 86400) {
+            Chat.sendMessage(player, Color.DARK_AQUA + "CoreProtect " + Color.WHITE + "- "
+                    + Phrase.build(Phrase.PURGE_MINIMUM_TIME, "24", Selector.SECOND)); // 24 hours
             return;
         }
 
@@ -116,8 +124,7 @@ public class PurgeCommand extends Consumer {
                     if (argWid > 0) {
                         String worldName = CommandHandler.parseWorldName(args, false);
                         Chat.sendGlobalMessage(player, Phrase.build(Phrase.PURGE_STARTED, worldName));
-                    }
-                    else {
+                    } else {
                         Chat.sendGlobalMessage(player, Phrase.build(Phrase.PURGE_STARTED, "#global"));
                     }
                     Chat.sendGlobalMessage(player, Phrase.build(Phrase.PURGE_NOTICE_1));
@@ -158,8 +165,7 @@ public class PurgeCommand extends Consumer {
                                 preparedStmt = connection.prepareStatement(query);
                                 preparedStmt.execute();
                                 preparedStmt.close();
-                            }
-                            catch (Exception e) {
+                            } catch (Exception e) {
                                 e.printStackTrace();
                             }
                         }
@@ -167,8 +173,10 @@ public class PurgeCommand extends Consumer {
                         Database.createDatabaseTables(purgePrefix, true);
                     }
 
-                    List<String> purgeTables = Arrays.asList("sign", "container", "item", "skull", "session", "chat", "command", "entity", "block");
-                    List<String> worldTables = Arrays.asList("sign", "container", "item", "session", "chat", "command", "block");
+                    List<String> purgeTables = Arrays.asList("sign", "container", "item", "skull", "session", "chat",
+                            "command", "entity", "block");
+                    List<String> worldTables = Arrays.asList("sign", "container", "item", "session", "chat", "command",
+                            "block");
                     List<String> excludeTables = Arrays.asList("database_lock"); // don't insert data into these tables
                     for (String table : ConfigHandler.databaseTables) {
                         String tableName = table.replaceAll("_", " ");
@@ -176,15 +184,15 @@ public class PurgeCommand extends Consumer {
 
                         if (!Config.getGlobal().MYSQL) {
                             String columns = "";
-                            ResultSet rs = connection.createStatement().executeQuery("SELECT * FROM " + purgePrefix + table);
+                            ResultSet rs = connection.createStatement()
+                                    .executeQuery("SELECT * FROM " + purgePrefix + table);
                             ResultSetMetaData resultSetMetaData = rs.getMetaData();
                             int columnCount = resultSetMetaData.getColumnCount();
                             for (int i = 1; i <= columnCount; i++) {
                                 String name = resultSetMetaData.getColumnName(i);
                                 if (columns.length() == 0) {
                                     columns = name;
-                                }
-                                else {
+                                } else {
                                     columns = columns + "," + name;
                                 }
                             }
@@ -196,18 +204,18 @@ public class PurgeCommand extends Consumer {
                                     String timeLimit = "";
                                     if (purgeTables.contains(table)) {
                                         if (argWid > 0 && worldTables.contains(table)) {
-                                            timeLimit = " WHERE (wid = '" + argWid + "' AND time >= '" + ptime + "') OR wid != '" + argWid + "'";
-                                        }
-                                        else if (argWid == 0) {
+                                            timeLimit = " WHERE (wid = '" + argWid + "' AND time >= '" + ptime
+                                                    + "') OR wid != '" + argWid + "'";
+                                        } else if (argWid == 0) {
                                             timeLimit = " WHERE time >= '" + ptime + "'";
                                         }
                                     }
-                                    query = "INSERT INTO " + purgePrefix + table + " SELECT " + columns + " FROM " + ConfigHandler.prefix + table + timeLimit;
+                                    query = "INSERT INTO " + purgePrefix + table + " SELECT " + columns + " FROM "
+                                            + ConfigHandler.prefix + table + timeLimit;
                                     preparedStmt = connection.prepareStatement(query);
                                     preparedStmt.execute();
                                     preparedStmt.close();
-                                }
-                                catch (Exception e) {
+                                } catch (Exception e) {
                                     error = true;
                                     e.printStackTrace();
                                 }
@@ -222,8 +230,7 @@ public class PurgeCommand extends Consumer {
                                     preparedStmt = connection.prepareStatement(query);
                                     preparedStmt.execute();
                                     preparedStmt.close();
-                                }
-                                catch (Exception e) {
+                                } catch (Exception e) {
                                     e.printStackTrace();
                                 }
 
@@ -232,19 +239,18 @@ public class PurgeCommand extends Consumer {
                                     preparedStmt = connection.prepareStatement(query);
                                     preparedStmt.execute();
                                     preparedStmt.close();
-                                }
-                                catch (Exception e) {
+                                } catch (Exception e) {
                                     e.printStackTrace();
                                 }
 
                                 try {
                                     String index = " NOT INDEXED";
-                                    query = "INSERT INTO " + purgePrefix + table + " SELECT " + columns + " FROM " + ConfigHandler.prefix + table + index;
+                                    query = "INSERT INTO " + purgePrefix + table + " SELECT " + columns + " FROM "
+                                            + ConfigHandler.prefix + table + index;
                                     preparedStmt = connection.prepareStatement(query);
                                     preparedStmt.execute();
                                     preparedStmt.close();
-                                }
-                                catch (Exception e) {
+                                } catch (Exception e) {
                                     e.printStackTrace();
                                     abort = true;
                                     break;
@@ -256,19 +262,18 @@ public class PurgeCommand extends Consumer {
                                     String worldRestriction = "";
                                     if (argWid > 0 && worldTables.contains(table)) {
                                         worldRestriction = " AND wid = '" + argWid + "'";
-                                    }
-                                    else if (argWid > 0) {
+                                    } else if (argWid > 0) {
                                         purge = false;
                                     }
 
                                     if (purge) {
-                                        query = "DELETE FROM " + purgePrefix + table + " WHERE time < '" + ptime + "'" + worldRestriction;
+                                        query = "DELETE FROM " + purgePrefix + table + " WHERE time < '" + ptime + "'"
+                                                + worldRestriction;
                                         preparedStmt = connection.prepareStatement(query);
                                         preparedStmt.execute();
                                         preparedStmt.close();
                                     }
-                                }
-                                catch (Exception e) {
+                                } catch (Exception e) {
                                     e.printStackTrace();
                                 }
                             }
@@ -276,7 +281,8 @@ public class PurgeCommand extends Consumer {
                             if (purgeTables.contains(table)) {
                                 int oldCount = 0;
                                 try {
-                                    query = "SELECT COUNT(*) as count FROM " + ConfigHandler.prefix + table + " LIMIT 0, 1";
+                                    query = "SELECT COUNT(*) as count FROM " + ConfigHandler.prefix + table
+                                            + " LIMIT 0, 1";
                                     preparedStmt = connection.prepareStatement(query);
                                     ResultSet resultSet = preparedStmt.executeQuery();
                                     while (resultSet.next()) {
@@ -284,8 +290,7 @@ public class PurgeCommand extends Consumer {
                                     }
                                     resultSet.close();
                                     preparedStmt.close();
-                                }
-                                catch (Exception e) {
+                                } catch (Exception e) {
                                     e.printStackTrace();
                                 }
 
@@ -299,8 +304,7 @@ public class PurgeCommand extends Consumer {
                                     }
                                     resultSet.close();
                                     preparedStmt.close();
-                                }
-                                catch (Exception e) {
+                                } catch (Exception e) {
                                     e.printStackTrace();
                                 }
 
@@ -315,20 +319,19 @@ public class PurgeCommand extends Consumer {
                                 String worldRestriction = "";
                                 if (argWid > 0 && worldTables.contains(table)) {
                                     worldRestriction = " AND wid = '" + argWid + "'";
-                                }
-                                else if (argWid > 0) {
+                                } else if (argWid > 0) {
                                     purge = false;
                                 }
 
                                 if (purge) {
-                                    query = "DELETE FROM " + ConfigHandler.prefix + table + " WHERE time < '" + ptime + "'" + worldRestriction;
+                                    query = "DELETE FROM " + ConfigHandler.prefix + table + " WHERE time < '" + ptime
+                                            + "'" + worldRestriction;
                                     preparedStmt = connection.prepareStatement(query);
                                     preparedStmt.execute();
                                     removed = removed + preparedStmt.getUpdateCount();
                                     preparedStmt.close();
                                 }
-                            }
-                            catch (Exception e) {
+                            } catch (Exception e) {
                                 e.printStackTrace();
                             }
                         }
@@ -359,15 +362,17 @@ public class PurgeCommand extends Consumer {
 
                     if (!Config.getGlobal().MYSQL) {
                         (new File(ConfigHandler.path + ConfigHandler.sqlite)).delete();
-                        (new File(ConfigHandler.path + ConfigHandler.sqlite + ".tmp")).renameTo(new File(ConfigHandler.path + ConfigHandler.sqlite));
+                        (new File(ConfigHandler.path + ConfigHandler.sqlite + ".tmp"))
+                                .renameTo(new File(ConfigHandler.path + ConfigHandler.sqlite));
                     }
 
                     ConfigHandler.loadDatabase();
 
                     Chat.sendGlobalMessage(player, Phrase.build(Phrase.PURGE_SUCCESS));
-                    Chat.sendGlobalMessage(player, Phrase.build(Phrase.PURGE_ROWS, NumberFormat.getInstance().format(removed), (removed == 1 ? Selector.FIRST : Selector.SECOND)));
-                }
-                catch (Exception e) {
+                    Chat.sendGlobalMessage(player,
+                            Phrase.build(Phrase.PURGE_ROWS, NumberFormat.getInstance().format(removed),
+                                    (removed == 1 ? Selector.FIRST : Selector.SECOND)));
+                } catch (Exception e) {
                     Chat.sendGlobalMessage(player, Phrase.build(Phrase.PURGE_FAILED));
                     e.printStackTrace();
                 }

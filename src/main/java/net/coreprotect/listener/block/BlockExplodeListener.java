@@ -59,7 +59,10 @@ public class BlockExplodeListener extends Queue implements Listener {
                     if (blockMap.get(location) == null) {
                         Block scanBlock = world.getBlockAt(location);
                         Material scanType = scanBlock.getType();
-                        if (BlockGroup.TRACK_ANY.contains(scanType) || BlockGroup.TRACK_TOP.contains(scanType) || BlockGroup.TRACK_TOP_BOTTOM.contains(scanType) || BlockGroup.TRACK_BOTTOM.contains(scanType) || BlockGroup.TRACK_SIDE.contains(scanType)) {
+                        if (BlockGroup.TRACK_ANY.contains(scanType) || BlockGroup.TRACK_TOP.contains(scanType)
+                                || BlockGroup.TRACK_TOP_BOTTOM.contains(scanType)
+                                || BlockGroup.TRACK_BOTTOM.contains(scanType)
+                                || BlockGroup.TRACK_SIDE.contains(scanType)) {
                             blockMap.put(location, scanBlock);
 
                             // Properly log double blocks, such as doors
@@ -69,19 +72,19 @@ public class BlockExplodeListener extends Queue implements Listener {
                                 Location bisectLocation = location.clone();
                                 if (bisected.getHalf() == Half.TOP) {
                                     bisectLocation.setY(bisectLocation.getY() - 1);
-                                }
-                                else {
+                                } else {
                                     bisectLocation.setY(bisectLocation.getY() + 1);
                                 }
 
                                 int worldMaxHeight = world.getMaxHeight();
                                 int worldMinHeight = BukkitAdapter.ADAPTER.getMinHeight(world);
-                                if (bisectLocation.getBlockY() >= worldMinHeight && bisectLocation.getBlockY() < worldMaxHeight && blockMap.get(bisectLocation) == null) {
+                                if (bisectLocation.getBlockY() >= worldMinHeight
+                                        && bisectLocation.getBlockY() < worldMaxHeight
+                                        && blockMap.get(bisectLocation) == null) {
                                     blockMap.put(bisectLocation, world.getBlockAt(bisectLocation));
                                 }
                             }
-                        }
-                        else if (scanType.hasGravity() && Config.getConfig(world).BLOCK_MOVEMENT) {
+                        } else if (scanType.hasGravity() && Config.getConfig(world).BLOCK_MOVEMENT) {
                             // log the top-most sand/gravel block as being removed
                             int scanY = location.getBlockY() + 1;
                             boolean topFound = false;
@@ -89,11 +92,14 @@ public class BlockExplodeListener extends Queue implements Listener {
                                 Block topBlock = world.getBlockAt(location.getBlockX(), scanY, location.getBlockZ());
                                 Material topMaterial = topBlock.getType();
                                 if (!topMaterial.hasGravity()) {
-                                    location = new Location(world, location.getBlockX(), (scanY - 1), location.getBlockZ());
+                                    location = new Location(world, location.getBlockX(), (scanY - 1),
+                                            location.getBlockZ());
                                     topFound = true;
 
                                     // log block attached to top as being removed
-                                    if (BlockGroup.TRACK_ANY.contains(topMaterial) || BlockGroup.TRACK_TOP.contains(topMaterial) || BlockGroup.TRACK_TOP_BOTTOM.contains(topMaterial)) {
+                                    if (BlockGroup.TRACK_ANY.contains(topMaterial)
+                                            || BlockGroup.TRACK_TOP.contains(topMaterial)
+                                            || BlockGroup.TRACK_TOP_BOTTOM.contains(topMaterial)) {
                                         blockMap.put(topBlock.getLocation(), topBlock);
                                     }
                                 }
@@ -125,8 +131,7 @@ public class BlockExplodeListener extends Queue implements Listener {
                     int color = sign.getColor().getColor().asRGB();
                     boolean isGlowing = BukkitAdapter.ADAPTER.isGlowing(sign);
                     Queue.queueSignText(user, location, 0, color, isGlowing, line1, line2, line3, line4, 5);
-                }
-                catch (Exception e) {
+                } catch (Exception e) {
                     e.printStackTrace();
                 }
             }
@@ -146,8 +151,7 @@ public class BlockExplodeListener extends Queue implements Listener {
         }
         if (user.contains("tnt")) {
             user = "#tnt";
-        }
-        else if (user.contains("end_crystal")) {
+        } else if (user.contains("end_crystal")) {
             user = "#endercrystal";
         }
         if (!user.startsWith("#")) {

@@ -46,7 +46,8 @@ public final class BlockDispenseListener extends Queue implements Listener {
                 BlockData newBlockData = newBlock.getBlockData();
                 Location velocityLocation = event.getVelocity().toLocation(world);
                 boolean dispenseSuccess = !event.getVelocity().equals(new Vector()); // true if velocity is set
-                boolean dispenseRelative = newBlock.getLocation().equals(velocityLocation); // true if velocity location matches relative location
+                boolean dispenseRelative = newBlock.getLocation().equals(velocityLocation); // true if velocity location
+                                                                                            // matches relative location
 
                 if (dispenseRelative || material.equals(Material.FLINT_AND_STEEL) || material.equals(Material.SHEARS)) {
                     forceItem = false;
@@ -66,27 +67,27 @@ public final class BlockDispenseListener extends Queue implements Listener {
                 if (material.equals(Material.WATER_BUCKET)) {
                     type = Material.WATER;
                     user = "#water";
-                }
-                else if (material.equals(Material.LAVA_BUCKET)) {
+                } else if (material.equals(Material.LAVA_BUCKET)) {
                     type = Material.LAVA;
                     user = "#lava";
-                }
-                else if (material.equals(Material.FLINT_AND_STEEL)) {
+                } else if (material.equals(Material.FLINT_AND_STEEL)) {
                     type = Material.FIRE;
                     user = "#fire";
-                }
-                else {
+                } else {
                     type = BukkitAdapter.ADAPTER.getBucketContents(material);
                 }
 
                 if (!dispenseSuccess && material == Material.BONE_MEAL) {
-                    CacheHandler.redstoneCache.put(newBlock.getLocation(), new Object[] { System.currentTimeMillis(), user });
+                    CacheHandler.redstoneCache.put(newBlock.getLocation(),
+                            new Object[] { System.currentTimeMillis(), user });
                 }
 
-                if (type == Material.FIRE && (!Config.getConfig(world).BLOCK_IGNITE || !(newBlockData instanceof Lightable))) {
+                if (type == Material.FIRE
+                        && (!Config.getConfig(world).BLOCK_IGNITE || !(newBlockData instanceof Lightable))) {
                     return;
-                }
-                else if (type != Material.FIRE && (!Config.getConfig(world).BUCKETS || (!Config.getConfig(world).WATER_FLOW && type.equals(Material.WATER)) || (!Config.getConfig(world).LAVA_FLOW && type.equals(Material.LAVA)))) {
+                } else if (type != Material.FIRE && (!Config.getConfig(world).BUCKETS
+                        || (!Config.getConfig(world).WATER_FLOW && type.equals(Material.WATER))
+                        || (!Config.getConfig(world).LAVA_FLOW && type.equals(Material.LAVA)))) {
                     return;
                 }
 
@@ -97,10 +98,10 @@ public final class BlockDispenseListener extends Queue implements Listener {
                             Lightable lightable = (Lightable) newBlockData;
                             lightable.setLit(true);
 
-                            queueBlockPlace(user, newBlock.getState(), newBlock.getType(), newBlock.getState(), type, -1, 0, newBlockData.getAsString());
+                            queueBlockPlace(user, newBlock.getState(), newBlock.getType(), newBlock.getState(), type,
+                                    -1, 0, newBlockData.getAsString());
                         }
-                    }
-                    else if (dispenseRelative) {
+                    } else if (dispenseRelative) {
                         BlockState blockState = newBlock.getState();
                         if (type.equals(Material.WATER)) {
                             if (newBlockData instanceof Waterlogged) {

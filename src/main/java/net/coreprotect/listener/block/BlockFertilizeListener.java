@@ -30,7 +30,8 @@ public final class BlockFertilizeListener extends Queue implements Listener {
 
         Location location = block.getLocation();
         List<BlockState> blocks = event.getBlocks();
-        if (blocks.size() == 1 && blocks.get(0).getLocation().equals(location) && Tag.SAPLINGS.isTagged(block.getType())) {
+        if (blocks.size() == 1 && blocks.get(0).getLocation().equals(location)
+                && Tag.SAPLINGS.isTagged(block.getType())) {
             return;
         }
 
@@ -38,8 +39,7 @@ public final class BlockFertilizeListener extends Queue implements Listener {
         Player player = event.getPlayer();
         if (player != null) {
             user = player.getName();
-        }
-        else {
+        } else {
             Object[] data = CacheHandler.redstoneCache.get(location);
             if (data != null) {
                 long newTime = System.currentTimeMillis();
@@ -53,7 +53,8 @@ public final class BlockFertilizeListener extends Queue implements Listener {
         }
 
         for (BlockState newBlock : blocks) {
-            Queue.queueBlockPlace(user, newBlock, newBlock.getType(), newBlock.getBlock().getState(), newBlock.getType(), -1, 0, newBlock.getBlockData().getAsString());
+            Queue.queueBlockPlace(user, newBlock, newBlock.getType(), newBlock.getBlock().getState(),
+                    newBlock.getType(), -1, 0, newBlock.getBlockData().getAsString());
         }
     }
 

@@ -22,7 +22,8 @@ public final class StructureGrowListener extends Queue implements Listener {
 
     @EventHandler(priority = EventPriority.MONITOR)
     protected void onStructureGrow(StructureGrowEvent event) {
-        // Event that is called when an organic structure attempts to grow (Sapling -> Tree), (Mushroom -> Huge Mushroom), naturally or using bonemeal.
+        // Event that is called when an organic structure attempts to grow (Sapling ->
+        // Tree), (Mushroom -> Huge Mushroom), naturally or using bonemeal.
         TreeType treeType = event.getSpecies();
         String user = "#tree";
         int tree = 1;
@@ -35,7 +36,13 @@ public final class StructureGrowListener extends Queue implements Listener {
         List<BlockState> blocks = event.getBlocks();
         if (blocks.size() <= 4) {
             for (BlockState block : blocks) {
-                if (block.getType().equals(Material.OAK_SAPLING) || block.getType().equals(Material.SPRUCE_SAPLING) || block.getType().equals(Material.BIRCH_SAPLING) || block.getType().equals(Material.JUNGLE_SAPLING) || block.getType().equals(Material.ACACIA_SAPLING) || block.getType().equals(Material.DARK_OAK_SAPLING) || block.getType().equals(Material.BROWN_MUSHROOM) || block.getType().equals(Material.RED_MUSHROOM)) {
+                if (block.getType().equals(Material.OAK_SAPLING) || block.getType().equals(Material.SPRUCE_SAPLING)
+                        || block.getType().equals(Material.BIRCH_SAPLING)
+                        || block.getType().equals(Material.JUNGLE_SAPLING)
+                        || block.getType().equals(Material.ACACIA_SAPLING)
+                        || block.getType().equals(Material.DARK_OAK_SAPLING)
+                        || block.getType().equals(Material.BROWN_MUSHROOM)
+                        || block.getType().equals(Material.RED_MUSHROOM)) {
                     return;
                 }
             }
@@ -48,7 +55,8 @@ public final class StructureGrowListener extends Queue implements Listener {
 
         if (!event.isCancelled()) {
             World world = event.getWorld();
-            if ((tree == 1 && Config.getConfig(world).TREE_GROWTH) || (tree == 0 && Config.getConfig(world).MUSHROOM_GROWTH)) {
+            if ((tree == 1 && Config.getConfig(world).TREE_GROWTH)
+                    || (tree == 0 && Config.getConfig(world).MUSHROOM_GROWTH)) {
                 Player player = event.getPlayer();
                 Location location = event.getLocation();
                 if (player != null) {
@@ -65,7 +73,8 @@ public final class StructureGrowListener extends Queue implements Listener {
                 int replacedListSize = structureBlocks.size();
                 structureBlocks.addAll(blocks);
 
-                Queue.queueStructureGrow(user, world.getBlockAt(location).getState(), structureBlocks, replacedListSize);
+                Queue.queueStructureGrow(user, world.getBlockAt(location).getState(), structureBlocks,
+                        replacedListSize);
             }
         }
     }

@@ -10,7 +10,8 @@ public class ItemStatement {
         throw new IllegalStateException("Database class");
     }
 
-    public static void insert(PreparedStatement preparedStmt, int batchCount, int time, int id, int wid, int x, int y, int z, int type, Object data, int amount, int action) {
+    public static void insert(PreparedStatement preparedStmt, int batchCount, int time, int id, int wid, int x, int y,
+            int z, int type, Object data, int amount, int action) {
         try {
             byte[] byteData = Util.convertByteData(data);
             preparedStmt.setInt(1, time);
@@ -28,8 +29,7 @@ public class ItemStatement {
             if (batchCount > 0 && batchCount % 1000 == 0) {
                 preparedStmt.executeBatch();
             }
-        }
-        catch (Exception e) {
+        } catch (Exception e) {
             e.printStackTrace();
         }
     }

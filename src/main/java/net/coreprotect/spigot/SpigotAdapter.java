@@ -26,19 +26,19 @@ public class SpigotAdapter implements SpigotInterface {
         }
 
         switch (spigotVersion) {
-            case SPIGOT_UNAVAILABLE:
-                SpigotAdapter.ADAPTER = new SpigotAdapter();
-                break;
-            case SPIGOT_V1_13:
-            case SPIGOT_V1_14:
-            case SPIGOT_V1_15:
-                SpigotAdapter.ADAPTER = new SpigotHandler();
-                break;
-            case SPIGOT_V1_16:
-            case SPIGOT_V1_17:
-            default:
-                SpigotAdapter.ADAPTER = new Spigot_v1_16();
-                break;
+        case SPIGOT_UNAVAILABLE:
+            SpigotAdapter.ADAPTER = new SpigotAdapter();
+            break;
+        case SPIGOT_V1_13:
+        case SPIGOT_V1_14:
+        case SPIGOT_V1_15:
+            SpigotAdapter.ADAPTER = new SpigotHandler();
+            break;
+        case SPIGOT_V1_16:
+        case SPIGOT_V1_17:
+        default:
+            SpigotAdapter.ADAPTER = new Spigot_v1_16();
+            break;
         }
     }
 
@@ -59,8 +59,7 @@ public class SpigotAdapter implements SpigotInterface {
                 if (data[0].equals(Chat.COMPONENT_COMMAND) || data[0].equals(Chat.COMPONENT_POPUP)) {
                     message.append(data[2]);
                 }
-            }
-            else {
+            } else {
                 message.append(matcher.group(2));
             }
         }

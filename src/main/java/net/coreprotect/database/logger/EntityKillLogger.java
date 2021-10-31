@@ -21,7 +21,8 @@ public class EntityKillLogger {
         throw new IllegalStateException("Database class");
     }
 
-    public static void log(PreparedStatement preparedStmt, PreparedStatement preparedStmt2, int batchCount, String user, BlockState block, List<Object> data, int type) {
+    public static void log(PreparedStatement preparedStmt, PreparedStatement preparedStmt2, int batchCount, String user,
+            BlockState block, List<Object> data, int type) {
         try {
             if (ConfigHandler.blacklist.get(user.toLowerCase(Locale.ROOT)) != null) {
                 return;
@@ -41,9 +42,9 @@ public class EntityKillLogger {
             keys.next();
             int entity_key = keys.getInt(1);
             keys.close();
-            BlockStatement.insert(preparedStmt, batchCount, time, userId, wid, x, y, z, type, entity_key, null, null, 3, 0);
-        }
-        catch (Exception e) {
+            BlockStatement.insert(preparedStmt, batchCount, time, userId, wid, x, y, z, type, entity_key, null, null, 3,
+                    0);
+        } catch (Exception e) {
             e.printStackTrace();
         }
     }

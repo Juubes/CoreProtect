@@ -139,8 +139,7 @@ public class ConfigHandler extends Queue {
                 }
                 blfile.close();
             }
-        }
-        catch (Exception e) {
+        } catch (Exception e) {
             e.printStackTrace();
         }
     }
@@ -164,8 +163,7 @@ public class ConfigHandler extends Queue {
             ConfigHandler.prefix = Config.getGlobal().PREFIX;
 
             ConfigHandler.loadBlacklist(); // Load the blacklist file if it exists.
-        }
-        catch (Exception e) {
+        } catch (Exception e) {
             e.printStackTrace();
         }
     }
@@ -179,8 +177,7 @@ public class ConfigHandler extends Queue {
                 boolean canExecute = false;
                 try {
                     canExecute = tempFile.canExecute();
-                }
-                catch (Exception exception) {
+                } catch (Exception exception) {
                     // execute access denied by security manager
                 }
 
@@ -194,8 +191,7 @@ public class ConfigHandler extends Queue {
                 }
 
                 tempFile.delete();
-            }
-            catch (Exception e) {
+            } catch (Exception e) {
                 e.printStackTrace();
             }
         }
@@ -275,8 +271,7 @@ public class ConfigHandler extends Queue {
                 }
             }
             rs.close();
-        }
-        catch (Exception e) {
+        } catch (Exception e) {
             e.printStackTrace();
         }
     }
@@ -311,8 +306,7 @@ public class ConfigHandler extends Queue {
                     Queue.queueWorldInsert(id, worldname);
                 }
             }
-        }
-        catch (Exception e) {
+        } catch (Exception e) {
             e.printStackTrace();
         }
     }
@@ -328,7 +322,8 @@ public class ConfigHandler extends Queue {
                     locked = false;
                     unixtimestamp = (int) (System.currentTimeMillis() / 1000L);
                     int checkTime = unixtimestamp - 15;
-                    String query = "SELECT * FROM " + ConfigHandler.prefix + "database_lock WHERE rowid='1' AND status='1' AND time >= '" + checkTime + "' LIMIT 1";
+                    String query = "SELECT * FROM " + ConfigHandler.prefix
+                            + "database_lock WHERE rowid='1' AND status='1' AND time >= '" + checkTime + "' LIMIT 1";
                     ResultSet rs = statement.executeQuery(query);
                     while (rs.next()) {
                         if (unixtimestamp < waitTime) {
@@ -337,11 +332,13 @@ public class ConfigHandler extends Queue {
                                 lockMessage = true;
                             }
                             Thread.sleep(1000);
-                        }
-                        else {
-                            Chat.sendConsoleMessage(Color.RED + "[CoreProtect] " + Phrase.build(Phrase.DATABASE_LOCKED_2));
-                            Chat.sendConsoleMessage(Color.GREY + "[CoreProtect] " + Phrase.build(Phrase.DATABASE_LOCKED_3));
-                            Chat.sendConsoleMessage(Color.GREY + "[CoreProtect] " + Phrase.build(Phrase.DATABASE_LOCKED_4));
+                        } else {
+                            Chat.sendConsoleMessage(
+                                    Color.RED + "[CoreProtect] " + Phrase.build(Phrase.DATABASE_LOCKED_2));
+                            Chat.sendConsoleMessage(
+                                    Color.GREY + "[CoreProtect] " + Phrase.build(Phrase.DATABASE_LOCKED_3));
+                            Chat.sendConsoleMessage(
+                                    Color.GREY + "[CoreProtect] " + Phrase.build(Phrase.DATABASE_LOCKED_4));
                             return false;
                         }
 
@@ -350,8 +347,7 @@ public class ConfigHandler extends Queue {
                     rs.close();
                 }
             }
-        }
-        catch (Exception e) {
+        } catch (Exception e) {
             e.printStackTrace();
         }
 
@@ -382,8 +378,7 @@ public class ConfigHandler extends Queue {
                 if (worldEditPlugin != null && worldEditPlugin.isEnabled()) {
                     Util.loadWorldEdit();
                 }
-            }
-            else if (ConfigHandler.worldeditEnabled) {
+            } else if (ConfigHandler.worldeditEnabled) {
                 Util.unloadWorldEdit();
             }
 
@@ -399,8 +394,7 @@ public class ConfigHandler extends Queue {
             connection.close();
 
             return validVersion && databaseLock;
-        }
-        catch (Exception e) {
+        } catch (Exception e) {
             e.printStackTrace();
         }
 

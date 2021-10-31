@@ -52,7 +52,8 @@ public class ChatMessage {
 
     public ChatMessage(String string) {
         this.message = parseQuotes(string, this.textColor);
-        // this.message = Chat.COREPROTECT + this.textStyle + this.textColor + " - " + string;
+        // this.message = Chat.COREPROTECT + this.textStyle + this.textColor + " - " +
+        // string;
     }
 
     public String build(boolean tag) {
@@ -129,7 +130,8 @@ public class ChatMessage {
     }
 
     public String build() {
-        return (this.useTag ? pluginName : createSpaces(pluginName, true, this.useSpaces)) + this.textColor + " " + this.separator + " " + this.textStyle + this.message;
+        return (this.useTag ? pluginName : createSpaces(pluginName, true, this.useSpaces)) + this.textColor + " "
+                + this.separator + " " + this.textStyle + this.message;
     }
 
     @Override

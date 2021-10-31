@@ -26,8 +26,7 @@ public final class BlockPistonListener extends Queue implements Listener {
         List<Block> event_blocks = null;
         if (event instanceof BlockPistonExtendEvent) {
             event_blocks = ((BlockPistonExtendEvent) event).getBlocks();
-        }
-        else if (event instanceof BlockPistonRetractEvent) {
+        } else if (event instanceof BlockPistonRetractEvent) {
             event_blocks = ((BlockPistonRetractEvent) event).getBlocks();
         }
 
@@ -55,8 +54,7 @@ public final class BlockPistonListener extends Queue implements Listener {
                 Block n = null;
                 if (ll == -1) {
                     n = bm;
-                }
-                else {
+                } else {
                     n = nblocks.get(ll);
                 }
                 if (n != null) {
@@ -82,7 +80,8 @@ public final class BlockPistonListener extends Queue implements Listener {
                 int c = 0;
                 for (Block nblock : nblocks) {
                     BlockState block = blocks.get(c).getState();
-                    queueBlockPlaceValidate(e, nblock.getState(), nblock, null, block.getType(), -1, 0, block.getBlockData().getAsString(), 3);
+                    queueBlockPlaceValidate(e, nblock.getState(), nblock, null, block.getType(), -1, 0,
+                            block.getBlockData().getAsString(), 3);
                     c++;
                 }
             }

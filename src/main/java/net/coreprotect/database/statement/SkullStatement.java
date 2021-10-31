@@ -20,8 +20,7 @@ public class SkullStatement {
             preparedStmt.setInt(1, time);
             preparedStmt.setString(2, owner);
             preparedStmt.executeUpdate();
-        }
-        catch (Exception e) {
+        } catch (Exception e) {
             e.printStackTrace();
         }
     }
@@ -43,8 +42,7 @@ public class SkullStatement {
             }
 
             resultSet.close();
-        }
-        catch (Exception e) {
+        } catch (Exception e) {
             e.printStackTrace();
         }
     }

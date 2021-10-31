@@ -16,18 +16,20 @@ public class ContainerBreakLogger {
         throw new IllegalStateException("Database class");
     }
 
-    public static void log(PreparedStatement preparedStmt, int batchCount, String player, Location l, Material type, ItemStack[] oldInventory) {
+    public static void log(PreparedStatement preparedStmt, int batchCount, String player, Location l, Material type,
+            ItemStack[] oldInventory) {
         try {
             Util.mergeItems(type, oldInventory);
             ContainerLogger.logTransaction(preparedStmt, batchCount, player, type, oldInventory, 0, l);
-            String loggingContainerId = player.toLowerCase(Locale.ROOT) + "." + l.getBlockX() + "." + l.getBlockY() + "." + l.getBlockZ();
+            String loggingContainerId = player.toLowerCase(Locale.ROOT) + "." + l.getBlockX() + "." + l.getBlockY()
+                    + "." + l.getBlockZ();
 
-            // If there was a pending chest transaction, it would have already been processed.
+            // If there was a pending chest transaction, it would have already been
+            // processed.
             if (ConfigHandler.forceContainer.get(loggingContainerId) != null) {
                 ConfigHandler.forceContainer.remove(loggingContainerId);
             }
-        }
-        catch (Exception e) {
+        } catch (Exception e) {
             e.printStackTrace();
         }
     }

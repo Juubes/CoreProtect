@@ -28,7 +28,8 @@ public interface BukkitInterface {
 
     public boolean setEntityMeta(Entity entity, Object value, int count);
 
-    public boolean getItemMeta(ItemMeta itemMeta, List<Map<String, Object>> list, List<List<Map<String, Object>>> metadata, int slot);
+    public boolean getItemMeta(ItemMeta itemMeta, List<Map<String, Object>> list,
+            List<List<Map<String, Object>>> metadata, int slot);
 
     public boolean setItemMeta(Material rowType, ItemStack itemstack, List<Map<String, Object>> map);
 

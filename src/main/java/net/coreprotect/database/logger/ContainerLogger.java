@@ -28,7 +28,8 @@ public class ContainerLogger extends Queue {
         throw new IllegalStateException("Database class");
     }
 
-    public static void log(PreparedStatement preparedStmtContainer, PreparedStatement preparedStmtItems, int batchCount, String player, Material type, Object container, Location location) {
+    public static void log(PreparedStatement preparedStmtContainer, PreparedStatement preparedStmtItems, int batchCount,
+            String player, Material type, Object container, Location location) {
         try {
             ItemStack[] contents = null;
             if (type.equals(Material.ARMOR_STAND)) {
@@ -36,8 +37,7 @@ public class ContainerLogger extends Queue {
                 if (equipment != null) {
                     contents = Util.getArmorStandContents(equipment);
                 }
-            }
-            else {
+            } else {
                 Inventory inventory = (Inventory) container;
                 if (inventory != null) {
                     contents = inventory.getContents();
@@ -48,7 +48,8 @@ public class ContainerLogger extends Queue {
                 return;
             }
 
-            String loggingContainerId = player.toLowerCase(Locale.ROOT) + "." + location.getBlockX() + "." + location.getBlockY() + "." + location.getBlockZ();
+            String loggingContainerId = player.toLowerCase(Locale.ROOT) + "." + location.getBlockX() + "."
+                    + location.getBlockY() + "." + location.getBlockZ();
             List<ItemStack[]> oldList = ConfigHandler.oldContainer.get(loggingContainerId);
             ItemStack[] oi1 = oldList.get(0);
             ItemStack[] oldInventory = Util.getContainerState(oi1);
@@ -64,11 +65,12 @@ public class ContainerLogger extends Queue {
                 if (forceSize == 0) {
                     ConfigHandler.forceContainer.remove(loggingContainerId);
                 }
-            }
-            else {
-                String transactingChestId = location.getWorld().getUID().toString() + "." + location.getBlockX() + "." + location.getBlockY() + "." + location.getBlockZ();
+            } else {
+                String transactingChestId = location.getWorld().getUID().toString() + "." + location.getBlockX() + "."
+                        + location.getBlockY() + "." + location.getBlockZ();
                 if (ConfigHandler.transactingChest.get(transactingChestId) != null) {
-                    List<Object> list = Collections.synchronizedList(new ArrayList<>(ConfigHandler.transactingChest.get(transactingChestId)));
+                    List<Object> list = Collections
+                            .synchronizedList(new ArrayList<>(ConfigHandler.transactingChest.get(transactingChestId)));
                     if (list.size() > 0) {
                         ItemStack[] newMerge = new ItemStack[newInventory.length + list.size()];
                         int count = 0;
@@ -81,8 +83,7 @@ public class ContainerLogger extends Queue {
                             ItemStack removeItem = null;
                             if (item instanceof ItemStack) {
                                 addItem = (ItemStack) item;
-                            }
-                            else if (item != null) {
+                            } else if (item != null) {
                                 addItem = ((ItemStack[]) item)[0];
                                 removeItem = ((ItemStack[]) item)[1];
                             }
@@ -118,8 +119,7 @@ public class ContainerLogger extends Queue {
                                 newAmount = newAmount - oldAmount;
                                 oldi.setAmount(0);
                                 newi.setAmount(newAmount);
-                            }
-                            else {
+                            } else {
                                 oldAmount = oldAmount - newAmount;
                                 oldi.setAmount(oldAmount);
                                 newi.setAmount(0);
@@ -135,21 +135,22 @@ public class ContainerLogger extends Queue {
             if (type != Material.ENDER_CHEST) {
                 logTransaction(preparedStmtContainer, batchCount, player, type, oldInventory, 0, location);
                 logTransaction(preparedStmtContainer, batchCount, player, type, newInventory, 1, location);
-            }
-            else { // pass ender chest transactions to item logger
-                ItemLogger.logTransaction(preparedStmtItems, batchCount, player, location, oldInventory, ItemLogger.ITEM_REMOVE_ENDER);
-                ItemLogger.logTransaction(preparedStmtItems, batchCount, player, location, newInventory, ItemLogger.ITEM_ADD_ENDER);
+            } else { // pass ender chest transactions to item logger
+                ItemLogger.logTransaction(preparedStmtItems, batchCount, player, location, oldInventory,
+                        ItemLogger.ITEM_REMOVE_ENDER);
+                ItemLogger.logTransaction(preparedStmtItems, batchCount, player, location, newInventory,
+                        ItemLogger.ITEM_ADD_ENDER);
             }
 
             oldList.remove(0);
             ConfigHandler.oldContainer.put(loggingContainerId, oldList);
-        }
-        catch (Exception e) {
+        } catch (Exception e) {
             e.printStackTrace();
         }
     }
 
-    protected static void logTransaction(PreparedStatement preparedStmt, int batchCount, String user, Material type, ItemStack[] items, int action, Location location) {
+    protected static void logTransaction(PreparedStatement preparedStmt, int batchCount, String user, Material type,
+            ItemStack[] items, int action, Location location) {
         try {
             if (ConfigHandler.blacklist.get(user.toLowerCase(Locale.ROOT)) != null) {
                 return;
@@ -176,13 +177,13 @@ public class ContainerLogger extends Queue {
                         int typeId = Util.getBlockId(item.getType().name(), true);
                         int data = item.getDurability();
                         int amount = item.getAmount();
-                        ContainerStatement.insert(preparedStmt, batchCount, time, userId, wid, x, y, z, typeId, data, amount, metadata, action, 0);
+                        ContainerStatement.insert(preparedStmt, batchCount, time, userId, wid, x, y, z, typeId, data,
+                                amount, metadata, action, 0);
                     }
                 }
                 slot++;
             }
-        }
-        catch (Exception e) {
+        } catch (Exception e) {
             e.printStackTrace();
         }
     }

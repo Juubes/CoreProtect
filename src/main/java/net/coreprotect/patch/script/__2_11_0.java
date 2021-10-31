@@ -16,15 +16,15 @@ public class __2_11_0 {
         try {
             if (Config.getGlobal().MYSQL) {
                 statement.executeUpdate("START TRANSACTION");
-            }
-            else {
+            } else {
                 statement.executeUpdate("BEGIN TRANSACTION");
             }
 
             for (Art artType : Art.values()) {
                 Integer type = artType.getId();
                 String name = artType.toString().toLowerCase(Locale.ROOT);
-                statement.executeUpdate("INSERT INTO " + ConfigHandler.prefix + "art_map (id, art) VALUES ('" + type + "', '" + name + "')");
+                statement.executeUpdate("INSERT INTO " + ConfigHandler.prefix + "art_map (id, art) VALUES ('" + type
+                        + "', '" + name + "')");
                 ConfigHandler.art.put(name, type);
                 ConfigHandler.artReversed.put(type, name);
                 if (type > ConfigHandler.artId) {
@@ -35,7 +35,8 @@ public class __2_11_0 {
             for (EntityType entityType : EntityType.values()) {
                 Integer type = (int) entityType.getTypeId();
                 String name = entityType.toString().toLowerCase(Locale.ROOT);
-                statement.executeUpdate("INSERT INTO " + ConfigHandler.prefix + "entity_map (id, entity) VALUES ('" + type + "', '" + name + "')");
+                statement.executeUpdate("INSERT INTO " + ConfigHandler.prefix + "entity_map (id, entity) VALUES ('"
+                        + type + "', '" + name + "')");
                 ConfigHandler.entities.put(name, type);
                 ConfigHandler.entitiesReversed.put(type, name);
                 if (type > ConfigHandler.entityId) {
@@ -46,7 +47,8 @@ public class __2_11_0 {
             for (Material material : Material.values()) {
                 Integer type = material.getId();
                 String name = material.toString().toLowerCase(Locale.ROOT);
-                statement.executeUpdate("INSERT INTO " + ConfigHandler.prefix + "material_map (id, material) VALUES ('" + type + "', '" + name + "')");
+                statement.executeUpdate("INSERT INTO " + ConfigHandler.prefix + "material_map (id, material) VALUES ('"
+                        + type + "', '" + name + "')");
                 ConfigHandler.materials.put(name, type);
                 ConfigHandler.materialsReversed.put(type, name);
                 if (type > ConfigHandler.materialId) {
@@ -56,12 +58,10 @@ public class __2_11_0 {
 
             if (Config.getGlobal().MYSQL) {
                 statement.executeUpdate("COMMIT");
-            }
-            else {
+            } else {
                 statement.executeUpdate("COMMIT TRANSACTION");
             }
-        }
-        catch (Exception e) {
+        } catch (Exception e) {
             e.printStackTrace();
         }
 

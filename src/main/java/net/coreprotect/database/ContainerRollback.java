@@ -24,11 +24,16 @@ import net.coreprotect.utility.Util;
 
 public class ContainerRollback extends Queue {
 
-    public static void performContainerRollbackRestore(Statement statement, CommandSender user, List<String> checkUuids, List<String> checkUsers, String timeString, List<Object> restrictList, List<Object> excludeList, List<String> excludeUserList, List<Integer> actionList, final Location location, Integer[] radius, int checkTime, boolean restrictWorld, boolean lookup, boolean verbose, final int rollbackType) {
+    public static void performContainerRollbackRestore(Statement statement, CommandSender user, List<String> checkUuids,
+            List<String> checkUsers, String timeString, List<Object> restrictList, List<Object> excludeList,
+            List<String> excludeUserList, List<Integer> actionList, final Location location, Integer[] radius,
+            int checkTime, boolean restrictWorld, boolean lookup, boolean verbose, final int rollbackType) {
         try {
             long startTime = System.currentTimeMillis();
 
-            final List<Object[]> lookupList = Lookup.performLookupRaw(statement, user, checkUuids, checkUsers, restrictList, excludeList, excludeUserList, actionList, location, radius, checkTime, -1, -1, restrictWorld, lookup);
+            final List<Object[]> lookupList = Lookup.performLookupRaw(statement, user, checkUuids, checkUsers,
+                    restrictList, excludeList, excludeUserList, actionList, location, radius, checkTime, -1, -1,
+                    restrictWorld, lookup);
             if (rollbackType == 1) {
                 Collections.reverse(lookupList);
             }
@@ -38,7 +43,9 @@ public class ContainerRollback extends Queue {
                 userString = user.getName();
             }
 
-            Queue.queueContainerRollbackUpdate(userString, location, lookupList, rollbackType); // Perform update transaction in consumer
+            Queue.queueContainerRollbackUpdate(userString, location, lookupList, rollbackType); // Perform update
+                                                                                                // transaction in
+                                                                                                // consumer
 
             final String finalUserString = userString;
             ConfigHandler.rollbackHash.put(userString, new int[] { 0, 0, 0, 0 });
@@ -61,11 +68,12 @@ public class ContainerRollback extends Queue {
 
                         if (BlockGroup.CONTAINERS.contains(type)) {
                             container = Util.getContainerInventory(block.getState(), false);
-                        }
-                        else {
+                        } else {
                             for (Entity entity : block.getChunk().getEntities()) {
                                 if (entity instanceof ArmorStand) {
-                                    if (entity.getLocation().getBlockX() == location.getBlockX() && entity.getLocation().getBlockY() == location.getBlockY() && entity.getLocation().getBlockZ() == location.getBlockZ()) {
+                                    if (entity.getLocation().getBlockX() == location.getBlockX()
+                                            && entity.getLocation().getBlockY() == location.getBlockY()
+                                            && entity.getLocation().getBlockZ() == location.getBlockZ()) {
                                         type = Material.ARMOR_STAND;
                                         container = Util.getEntityEquipment((LivingEntity) entity);
                                     }
@@ -92,7 +100,8 @@ public class ContainerRollback extends Queue {
                                 byte[] rowMetadata = (byte[]) lookupRow[12];
                                 Material rowType = Util.getType(rowTypeRaw);
 
-                                if ((rollbackType == 0 && rowRolledBack == 0) || (rollbackType == 1 && rowRolledBack == 1)) {
+                                if ((rollbackType == 0 && rowRolledBack == 0)
+                                        || (rollbackType == 1 && rowRolledBack == 1)) {
                                     modifyCount = modifyCount + rowAmount;
                                     int action = 0;
 
@@ -114,9 +123,9 @@ public class ContainerRollback extends Queue {
                             }
                         }
 
-                        ConfigHandler.rollbackHash.put(finalUserString, new int[] { itemCount, modifyCount, entityCount, 1 });
-                    }
-                    catch (Exception e) {
+                        ConfigHandler.rollbackHash.put(finalUserString,
+                                new int[] { itemCount, modifyCount, entityCount, 1 });
+                    } catch (Exception e) {
                         e.printStackTrace();
                     }
                 }
@@ -150,10 +159,11 @@ public class ContainerRollback extends Queue {
                 int itemCount = 0;
                 int entityCount = 0;
 
-                Rollback.finishRollbackRestore(user, location, checkUsers, restrictList, excludeList, excludeUserList, actionList, timeString, file, totalSeconds, itemCount, blockCount, entityCount, rollbackType, radius, verbose, restrictWorld, 0);
+                Rollback.finishRollbackRestore(user, location, checkUsers, restrictList, excludeList, excludeUserList,
+                        actionList, timeString, file, totalSeconds, itemCount, blockCount, entityCount, rollbackType,
+                        radius, verbose, restrictWorld, 0);
             }
-        }
-        catch (Exception e) {
+        } catch (Exception e) {
             e.printStackTrace();
         }
     }

@@ -19,14 +19,13 @@ public class Spigot_v1_16 extends SpigotHandler implements SpigotInterface {
         try {
             if (Config.getGlobal().HOVER_EVENTS) {
                 TextComponent component = new TextComponent(TextComponent.fromLegacyText(data[2]));
-                component.setHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_TEXT, new Text(TextComponent.fromLegacyText(data[1]))));
+                component.setHoverEvent(
+                        new HoverEvent(HoverEvent.Action.SHOW_TEXT, new Text(TextComponent.fromLegacyText(data[1]))));
                 ((TextComponent) message).addExtra(component);
-            }
-            else {
+            } else {
                 super.setHoverComponent(message, data);
             }
-        }
-        catch (Exception e) {
+        } catch (Exception e) {
             e.printStackTrace();
         }
     }

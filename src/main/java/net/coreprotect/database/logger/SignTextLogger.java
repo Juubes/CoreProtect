@@ -18,7 +18,8 @@ public class SignTextLogger {
         throw new IllegalStateException("Database class");
     }
 
-    public static void log(PreparedStatement preparedStmt, int batchCount, String user, Location location, int action, int color, int data, String line1, String line2, String line3, String line4, int timeOffset) {
+    public static void log(PreparedStatement preparedStmt, int batchCount, String user, Location location, int action,
+            int color, int data, String line1, String line2, String line3, String line4, int timeOffset) {
         try {
             if (ConfigHandler.blacklist.get(user.toLowerCase(Locale.ROOT)) != null) {
                 return;
@@ -33,9 +34,9 @@ public class SignTextLogger {
             int x = location.getBlockX();
             int y = location.getBlockY();
             int z = location.getBlockZ();
-            SignStatement.insert(preparedStmt, batchCount, time, userId, wid, x, y, z, action, color, data, line1, line2, line3, line4);
-        }
-        catch (Exception e) {
+            SignStatement.insert(preparedStmt, batchCount, time, userId, wid, x, y, z, action, color, data, line1,
+                    line2, line3, line4);
+        } catch (Exception e) {
             e.printStackTrace();
         }
     }

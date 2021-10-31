@@ -28,23 +28,18 @@ public final class EntityExplodeListener extends BlockExplodeListener implements
 
         if (entity instanceof TNTPrimed) {
             user = "#tnt";
-        }
-        else if (entity instanceof Minecart) {
+        } else if (entity instanceof Minecart) {
             String name = entity.getType().name();
             if (name.contains("TNT")) {
                 user = "#tnt";
             }
-        }
-        else if (entity instanceof Creeper) {
+        } else if (entity instanceof Creeper) {
             user = "#creeper";
-        }
-        else if (entity instanceof EnderDragon || entity instanceof EnderDragonPart) {
+        } else if (entity instanceof EnderDragon || entity instanceof EnderDragonPart) {
             user = "#enderdragon";
-        }
-        else if (entity instanceof Wither || entity instanceof WitherSkull) {
+        } else if (entity instanceof Wither || entity instanceof WitherSkull) {
             user = "#wither";
-        }
-        else if (entity instanceof EnderCrystal) {
+        } else if (entity instanceof EnderCrystal) {
             user = "#endercrystal";
         }
 

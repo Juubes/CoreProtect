@@ -42,12 +42,10 @@ public class SpigotHandler extends SpigotAdapter implements SpigotInterface {
                     TextComponent component = new TextComponent(TextComponent.fromLegacyText(data[2]));
                     component.setClickEvent(new ClickEvent(ClickEvent.Action.RUN_COMMAND, data[1]));
                     message.addExtra(component);
-                }
-                else if (data[0].equals(Chat.COMPONENT_POPUP)) {
+                } else if (data[0].equals(Chat.COMPONENT_POPUP)) {
                     SpigotAdapter.ADAPTER.setHoverComponent(message, data);
                 }
-            }
-            else {
+            } else {
                 builder.append(matcher.group(2));
             }
         }
@@ -70,8 +68,7 @@ public class SpigotHandler extends SpigotAdapter implements SpigotInterface {
                 TextComponent textComponent = new TextComponent(splitBuilder[i]);
                 textComponent.setColor(SpigotHandler.DARK_AQUA);
                 message.addExtra(textComponent);
-            }
-            else {
+            } else {
                 message.addExtra(splitBuilder[i]);
             }
         }

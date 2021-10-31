@@ -43,19 +43,17 @@ public final class HangingBreakByEntityListener extends Queue implements Listene
                             for (String b : blockData.split("\n")) {
                                 Chat.sendComponent(player, b);
                             }
-                        }
-                        else if (blockData.length() > 0) {
+                        } else if (blockData.length() > 0) {
                             Chat.sendComponent(player, blockData);
                         }
 
                         statement.close();
                         connection.close();
+                    } else {
+                        Chat.sendMessage(player, Color.DARK_AQUA + "CoreProtect " + Color.WHITE + "- "
+                                + Phrase.build(Phrase.DATABASE_BUSY));
                     }
-                    else {
-                        Chat.sendMessage(player, Color.DARK_AQUA + "CoreProtect " + Color.WHITE + "- " + Phrase.build(Phrase.DATABASE_BUSY));
-                    }
-                }
-                catch (Exception e) {
+                } catch (Exception e) {
                     e.printStackTrace();
                 }
             }
@@ -91,8 +89,7 @@ public final class HangingBreakByEntityListener extends Queue implements Listene
                 if (remover instanceof Player) {
                     Player player = (Player) remover;
                     culprit = player.getName();
-                }
-                else if (remover.getType() != null) {
+                } else if (remover.getType() != null) {
                     culprit = "#" + remover.getType().name().toLowerCase(Locale.ROOT);
                 }
             }
@@ -106,8 +103,7 @@ public final class HangingBreakByEntityListener extends Queue implements Listene
                 if (itemframe.getItem() != null) {
                     itemData = Util.getBlockId(itemframe.getItem().getType());
                 }
-            }
-            else {
+            } else {
                 material = Material.PAINTING;
                 Painting painting = (Painting) entity;
                 itemData = Util.getArtId(painting.getArt().toString(), true);

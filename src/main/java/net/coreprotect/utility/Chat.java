@@ -45,8 +45,7 @@ public final class Chat {
     public static void console(String string) {
         if (string.startsWith("-") || string.startsWith("[")) {
             Bukkit.getLogger().log(Level.INFO, string);
-        }
-        else {
+        } else {
             Bukkit.getLogger().log(Level.INFO, "[CoreProtect] " + string);
         }
     }

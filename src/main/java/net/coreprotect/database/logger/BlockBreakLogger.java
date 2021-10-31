@@ -21,7 +21,8 @@ public class BlockBreakLogger {
         throw new IllegalStateException("Database class");
     }
 
-    public static void log(PreparedStatement preparedStmt, int batchCount, String user, Location location, int type, int data, List<Object> meta, String blockData) {
+    public static void log(PreparedStatement preparedStmt, int batchCount, String user, Location location, int type,
+            int data, List<Object> meta, String blockData) {
         try {
             if (ConfigHandler.blacklist.get(user.toLowerCase(Locale.ROOT)) != null || location == null) {
                 return;
@@ -30,8 +31,7 @@ public class BlockBreakLogger {
             Material checkType = Util.getType(type);
             if (checkType == null) {
                 return;
-            }
-            else if (checkType.equals(Material.AIR) || checkType.equals(Material.CAVE_AIR)) {
+            } else if (checkType.equals(Material.AIR) || checkType.equals(Material.CAVE_AIR)) {
                 return;
             }
 
@@ -52,10 +52,11 @@ public class BlockBreakLogger {
             int x = location.getBlockX();
             int y = location.getBlockY();
             int z = location.getBlockZ();
-            CacheHandler.breakCache.put("" + x + "." + y + "." + z + "." + wid + "", new Object[] { time, event.getUser(), type });
-            BlockStatement.insert(preparedStmt, batchCount, time, userId, wid, x, y, z, type, data, meta, blockData, 0, 0);
-        }
-        catch (Exception e) {
+            CacheHandler.breakCache.put("" + x + "." + y + "." + z + "." + wid + "",
+                    new Object[] { time, event.getUser(), type });
+            BlockStatement.insert(preparedStmt, batchCount, time, userId, wid, x, y, z, type, data, meta, blockData, 0,
+                    0);
+        } catch (Exception e) {
             e.printStackTrace();
         }
     }

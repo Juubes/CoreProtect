@@ -15,7 +15,8 @@ import net.coreprotect.utility.Util;
 
 class StructureGrowthProcess {
 
-    static void process(Statement statement, PreparedStatement preparedStmt, int batchCount, int processId, int id, String user, Object object, int replaceBlockCount) {
+    static void process(Statement statement, PreparedStatement preparedStmt, int batchCount, int processId, int id,
+            String user, Object object, int replaceBlockCount) {
         if (object instanceof BlockState) {
             BlockState block = (BlockState) object;
             Map<Integer, List<BlockState>> blockLists = Consumer.consumerBlockList.get(processId);
@@ -28,10 +29,12 @@ class StructureGrowthProcess {
                 int count = 0;
                 for (BlockState blockState : blockStates) {
                     if (count < replaceBlockCount) {
-                        BlockBreakLogger.log(preparedStmt, batchCount, user, blockState.getLocation(), Util.getBlockId(blockState.getType()), 0, null, blockState.getBlockData().getAsString());
-                    }
-                    else {
-                        BlockPlaceLogger.log(preparedStmt, batchCount, user, blockState, 0, 0, null, -1, false, null, null, null);
+                        BlockBreakLogger.log(preparedStmt, batchCount, user, blockState.getLocation(),
+                                Util.getBlockId(blockState.getType()), 0, null,
+                                blockState.getBlockData().getAsString());
+                    } else {
+                        BlockPlaceLogger.log(preparedStmt, batchCount, user, blockState, 0, 0, null, -1, false, null,
+                                null, null);
                     }
                     count++;
                 }

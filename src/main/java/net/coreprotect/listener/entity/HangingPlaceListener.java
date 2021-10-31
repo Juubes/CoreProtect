@@ -32,8 +32,7 @@ public final class HangingPlaceListener extends Queue implements Listener {
             if (entity instanceof ItemFrame) {
                 material = BukkitAdapter.ADAPTER.getFrameType(entity);
                 artId = 0;
-            }
-            else {
+            } else {
                 material = Material.PAINTING;
                 Painting painting = (Painting) entity;
                 artId = Util.getArtId(painting.getArt().toString(), true);
@@ -48,7 +47,8 @@ public final class HangingPlaceListener extends Queue implements Listener {
             }
 
             if (!event.isCancelled() && Config.getConfig(blockEvent.getWorld()).BLOCK_PLACE && inspect == 0) {
-                Queue.queueBlockPlace(player.getName(), blockEvent.getState(), blockEvent.getType(), null, material, artId, 1, null);
+                Queue.queueBlockPlace(player.getName(), blockEvent.getState(), blockEvent.getType(), null, material,
+                        artId, 1, null);
             }
         }
     }

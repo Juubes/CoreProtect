@@ -79,7 +79,8 @@ public final class EntityDeathListener extends Queue implements Listener {
                 String e = "";
                 boolean skip = true;
 
-                if (!Config.getConfig(entity.getWorld()).SKIP_GENERIC_DATA || (!(entity instanceof Zombie) && !(entity instanceof Skeleton))) {
+                if (!Config.getConfig(entity.getWorld()).SKIP_GENERIC_DATA
+                        || (!(entity instanceof Zombie) && !(entity instanceof Skeleton))) {
                     skip = false;
                 }
 
@@ -90,60 +91,50 @@ public final class EntityDeathListener extends Queue implements Listener {
                     if (attacker instanceof Player) {
                         Player player = (Player) attacker;
                         e = player.getName();
-                    }
-                    else if (attacker instanceof AbstractArrow) {
+                    } else if (attacker instanceof AbstractArrow) {
                         AbstractArrow arrow = (AbstractArrow) attacker;
                         ProjectileSource shooter = arrow.getShooter();
 
                         if (shooter instanceof Player) {
                             Player player = (Player) shooter;
                             e = player.getName();
-                        }
-                        else if (shooter instanceof LivingEntity) {
+                        } else if (shooter instanceof LivingEntity) {
                             EntityType entityType = ((LivingEntity) shooter).getType();
                             if (entityType != null) { // Check for MyPet plugin
                                 String name = entityType.name().toLowerCase(Locale.ROOT);
                                 e = "#" + name;
                             }
                         }
-                    }
-                    else if (attacker instanceof ThrownPotion) {
+                    } else if (attacker instanceof ThrownPotion) {
                         ThrownPotion potion = (ThrownPotion) attacker;
                         ProjectileSource shooter = potion.getShooter();
 
                         if (shooter instanceof Player) {
                             Player player = (Player) shooter;
                             e = player.getName();
-                        }
-                        else if (shooter instanceof LivingEntity) {
+                        } else if (shooter instanceof LivingEntity) {
                             EntityType entityType = ((LivingEntity) shooter).getType();
                             if (entityType != null) { // Check for MyPet plugin
                                 String name = entityType.name().toLowerCase(Locale.ROOT);
                                 e = "#" + name;
                             }
                         }
-                    }
-                    else if (attacker.getType().name() != null) {
+                    } else if (attacker.getType().name() != null) {
                         e = "#" + attacker.getType().name().toLowerCase(Locale.ROOT);
                     }
-                }
-                else {
+                } else {
                     EntityDamageEvent.DamageCause cause = damage.getCause();
                     if (cause.equals(EntityDamageEvent.DamageCause.FIRE)) {
                         e = "#fire";
-                    }
-                    else if (cause.equals(EntityDamageEvent.DamageCause.FIRE_TICK)) {
+                    } else if (cause.equals(EntityDamageEvent.DamageCause.FIRE_TICK)) {
                         if (!skip) {
                             e = "#fire";
                         }
-                    }
-                    else if (cause.equals(EntityDamageEvent.DamageCause.LAVA)) {
+                    } else if (cause.equals(EntityDamageEvent.DamageCause.LAVA)) {
                         e = "#lava";
-                    }
-                    else if (cause.equals(EntityDamageEvent.DamageCause.BLOCK_EXPLOSION)) {
+                    } else if (cause.equals(EntityDamageEvent.DamageCause.BLOCK_EXPLOSION)) {
                         e = "#explosion";
-                    }
-                    else if (cause.equals(EntityDamageEvent.DamageCause.MAGIC)) {
+                    } else if (cause.equals(EntityDamageEvent.DamageCause.MAGIC)) {
                         e = "#magic";
                     }
                 }
@@ -153,7 +144,8 @@ public final class EntityDeathListener extends Queue implements Listener {
                     if (!Config.getConfig(entityLocation.getWorld()).ITEM_TRANSACTIONS) {
                         entityLocation.setY(entityLocation.getY() + 0.99);
                         Block block = entityLocation.getBlock();
-                        Queue.queueBlockBreak(e, block.getState(), Material.ARMOR_STAND, null, (int) entityLocation.getYaw());
+                        Queue.queueBlockBreak(e, block.getState(), Material.ARMOR_STAND, null,
+                                (int) entityLocation.getYaw());
                     }
                     return;
                 }
@@ -166,8 +158,7 @@ public final class EntityDeathListener extends Queue implements Listener {
                             // Player player = (Player)entity;
                             // e = player.getName();
                             e = "#" + entity_type.name().toLowerCase(Locale.ROOT);
-                        }
-                        else if (entity instanceof Player) {
+                        } else if (entity instanceof Player) {
                             e = entity.getName();
                         }
                     }
@@ -245,71 +236,56 @@ public final class EntityDeathListener extends Queue implements Listener {
                     if (entity instanceof Creeper) {
                         Creeper creeper = (Creeper) entity;
                         info.add(creeper.isPowered());
-                    }
-                    else if (entity instanceof Enderman) {
+                    } else if (entity instanceof Enderman) {
                         Enderman enderman = (Enderman) entity;
                         info.add(null);
 
                         try {
                             info.add(enderman.getCarriedBlock().getAsString());
+                        } catch (Exception endermanException) {
                         }
-                        catch (Exception endermanException) {
-                        }
-                    }
-                    else if (entity instanceof IronGolem) {
+                    } else if (entity instanceof IronGolem) {
                         IronGolem irongolem = (IronGolem) entity;
                         info.add(irongolem.isPlayerCreated());
-                    }
-                    else if (entity instanceof Cat) {
+                    } else if (entity instanceof Cat) {
                         Cat cat = (Cat) entity;
                         info.add(cat.getCatType());
                         info.add(cat.getCollarColor());
-                    }
-                    else if (entity instanceof Fox) {
+                    } else if (entity instanceof Fox) {
                         Fox fox = (Fox) entity;
                         info.add(fox.getFoxType());
                         info.add(fox.isSitting());
-                    }
-                    else if (entity instanceof Panda) {
+                    } else if (entity instanceof Panda) {
                         Panda panda = (Panda) entity;
                         info.add(panda.getMainGene());
                         info.add(panda.getHiddenGene());
-                    }
-                    else if (entity instanceof Pig) {
+                    } else if (entity instanceof Pig) {
                         Pig pig = (Pig) entity;
                         info.add(pig.hasSaddle());
-                    }
-                    else if (entity instanceof Sheep) {
+                    } else if (entity instanceof Sheep) {
                         Sheep sheep = (Sheep) entity;
                         info.add(sheep.isSheared());
                         info.add(sheep.getColor());
-                    }
-                    else if (entity instanceof MushroomCow) {
+                    } else if (entity instanceof MushroomCow) {
                         MushroomCow mushroomCow = (MushroomCow) entity;
                         info.add(mushroomCow.getVariant());
-                    }
-                    else if (entity instanceof Skeleton) {
+                    } else if (entity instanceof Skeleton) {
                         info.add(null);
-                    }
-                    else if (entity instanceof Slime) {
+                    } else if (entity instanceof Slime) {
                         Slime slime = (Slime) entity;
                         info.add(slime.getSize());
-                    }
-                    else if (entity instanceof Parrot) {
+                    } else if (entity instanceof Parrot) {
                         Parrot parrot = (Parrot) entity;
                         info.add(parrot.getVariant());
-                    }
-                    else if (entity instanceof TropicalFish) {
+                    } else if (entity instanceof TropicalFish) {
                         TropicalFish tropicalFish = (TropicalFish) entity;
                         info.add(tropicalFish.getBodyColor());
                         info.add(tropicalFish.getPattern());
                         info.add(tropicalFish.getPatternColor());
-                    }
-                    else if (entity instanceof Phantom) {
+                    } else if (entity instanceof Phantom) {
                         Phantom phantom = (Phantom) entity;
                         info.add(phantom.getSize());
-                    }
-                    else if (entity instanceof AbstractVillager) {
+                    } else if (entity instanceof AbstractVillager) {
                         AbstractVillager abstractVillager = (AbstractVillager) entity;
                         List<Object> recipes = new ArrayList<>();
                         for (MerchantRecipe merchantRecipe : abstractVillager.getRecipes()) {
@@ -317,7 +293,8 @@ public final class EntityDeathListener extends Queue implements Listener {
                             List<Object> ingredients = new ArrayList<>();
                             List<Object> itemMap = new ArrayList<>();
                             ItemStack item = merchantRecipe.getResult().clone();
-                            List<List<Map<String, Object>>> metadata = ItemMetaHandler.seralize(item, item.getType(), 0);
+                            List<List<Map<String, Object>>> metadata = ItemMetaHandler.seralize(item, item.getType(),
+                                    0);
                             item.setItemMeta(null);
                             itemMap.add(item.serialize());
                             itemMap.add(metadata);
@@ -349,14 +326,12 @@ public final class EntityDeathListener extends Queue implements Listener {
                             info.add(recipes);
                             info.add(villager.getVillagerLevel());
                             info.add(villager.getVillagerExperience());
-                        }
-                        else {
+                        } else {
                             info.add(null);
                             info.add(null);
                             info.add(recipes);
                         }
-                    }
-                    else if (entity instanceof Raider) {
+                    } else if (entity instanceof Raider) {
                         Raider raider = (Raider) entity;
                         info.add(raider.isPatrolLeader());
 
@@ -364,24 +339,20 @@ public final class EntityDeathListener extends Queue implements Listener {
                             Spellcaster spellcaster = (Spellcaster) entity;
                             info.add(spellcaster.getSpell());
                         }
-                    }
-                    else if (entity instanceof Wolf) {
+                    } else if (entity instanceof Wolf) {
                         Wolf wolf = (Wolf) entity;
                         info.add(wolf.isSitting());
                         info.add(wolf.getCollarColor());
-                    }
-                    else if (entity instanceof ZombieVillager) {
+                    } else if (entity instanceof ZombieVillager) {
                         ZombieVillager zombieVillager = (ZombieVillager) entity;
                         info.add(zombieVillager.isBaby());
                         info.add(zombieVillager.getVillagerProfession());
-                    }
-                    else if (entity instanceof Zombie) {
+                    } else if (entity instanceof Zombie) {
                         Zombie zombie = (Zombie) entity;
                         info.add(zombie.isBaby());
                         info.add(null);
                         info.add(null);
-                    }
-                    else if (entity instanceof AbstractHorse) {
+                    } else if (entity instanceof AbstractHorse) {
                         AbstractHorse abstractHorse = (AbstractHorse) entity;
                         info.add(null);
                         info.add(null);
@@ -398,8 +369,7 @@ public final class EntityDeathListener extends Queue implements Listener {
                             ItemStack saddle = horse.getInventory().getSaddle();
                             if (saddle != null) {
                                 info.add(saddle.serialize());
-                            }
-                            else {
+                            } else {
                                 info.add(null);
                             }
 
@@ -420,17 +390,14 @@ public final class EntityDeathListener extends Queue implements Listener {
                                 info.add(armor.serialize());
                                 if (color != null) {
                                     info.add(color.serialize());
-                                }
-                                else {
+                                } else {
                                     info.add(null);
                                 }
-                            }
-                            else {
+                            } else {
                                 info.add(null);
                                 info.add(null);
                             }
-                        }
-                        else if (entity instanceof ChestedHorse) {
+                        } else if (entity instanceof ChestedHorse) {
                             ChestedHorse chestedHorse = (ChestedHorse) entity;
                             info.add(chestedHorse.isCarryingChest());
 
@@ -439,15 +406,13 @@ public final class EntityDeathListener extends Queue implements Listener {
                                 ItemStack decor = llama.getInventory().getDecor();
                                 if (decor != null) {
                                     info.add(decor.serialize());
-                                }
-                                else {
+                                } else {
                                     info.add(null);
                                 }
                                 info.add(llama.getColor());
                             }
                         }
-                    }
-                    else {
+                    } else {
                         BukkitAdapter.ADAPTER.getEntityMeta(entity, info);
                     }
 
@@ -461,8 +426,7 @@ public final class EntityDeathListener extends Queue implements Listener {
 
                     if (!(entity instanceof Player)) {
                         Queue.queueEntityKill(e, entity.getLocation(), data, type);
-                    }
-                    else {
+                    } else {
                         Queue.queuePlayerKill(e, entity.getLocation(), entity.getName());
                     }
                 }

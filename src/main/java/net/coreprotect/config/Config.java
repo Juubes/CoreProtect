@@ -134,47 +134,83 @@ public class Config extends Language {
         DEFAULT_VALUES.put("username-changes", "true");
         DEFAULT_VALUES.put("worldedit", "true");
 
-        HEADERS.put("donation-key", new String[] { "# CoreProtect is donationware. For more information, visit our project page." });
-        HEADERS.put("use-mysql", new String[] { "# MySQL is optional and not required.", "# If you prefer to use MySQL, enable the following and fill out the fields." });
-        HEADERS.put("language", new String[] { "# If modified, will automatically attempt to translate languages phrases.", "# List of language codes: https://coreprotect.net/languages/" });
-        HEADERS.put("check-updates", new String[] { "# If enabled, CoreProtect will check for updates when your server starts up.", "# If an update is available, you'll be notified via your server console.", });
-        HEADERS.put("api-enabled", new String[] { "# If enabled, other plugins will be able to utilize the CoreProtect API.", });
-        HEADERS.put("verbose", new String[] { "# If enabled, extra data is displayed during rollbacks and restores.", "# Can be manually triggered by adding \"#verbose\" to your rollback command." });
-        HEADERS.put("default-radius", new String[] { "# If no radius is specified in a rollback or restore, this value will be", "# used as the radius. Set to \"0\" to disable automatically adding a radius." });
-        HEADERS.put("max-radius", new String[] { "# The maximum radius that can be used in a command. Set to \"0\" to disable.", "# To run a rollback or restore without a radius, you can use \"r:#global\"." });
-        HEADERS.put("rollback-items", new String[] { "# If enabled, items taken from containers (etc) will be included in rollbacks." });
-        HEADERS.put("rollback-entities", new String[] { "# If enabled, entities, such as killed animals, will be included in rollbacks." });
-        HEADERS.put("skip-generic-data", new String[] { "# If enabled, generic data, like zombies burning in daylight, won't be logged." });
+        HEADERS.put("donation-key",
+                new String[] { "# CoreProtect is donationware. For more information, visit our project page." });
+        HEADERS.put("use-mysql", new String[] { "# MySQL is optional and not required.",
+                "# If you prefer to use MySQL, enable the following and fill out the fields." });
+        HEADERS.put("language",
+                new String[] { "# If modified, will automatically attempt to translate languages phrases.",
+                        "# List of language codes: https://coreprotect.net/languages/" });
+        HEADERS.put("check-updates",
+                new String[] { "# If enabled, CoreProtect will check for updates when your server starts up.",
+                        "# If an update is available, you'll be notified via your server console.", });
+        HEADERS.put("api-enabled",
+                new String[] { "# If enabled, other plugins will be able to utilize the CoreProtect API.", });
+        HEADERS.put("verbose", new String[] { "# If enabled, extra data is displayed during rollbacks and restores.",
+                "# Can be manually triggered by adding \"#verbose\" to your rollback command." });
+        HEADERS.put("default-radius",
+                new String[] { "# If no radius is specified in a rollback or restore, this value will be",
+                        "# used as the radius. Set to \"0\" to disable automatically adding a radius." });
+        HEADERS.put("max-radius",
+                new String[] { "# The maximum radius that can be used in a command. Set to \"0\" to disable.",
+                        "# To run a rollback or restore without a radius, you can use \"r:#global\"." });
+        HEADERS.put("rollback-items",
+                new String[] { "# If enabled, items taken from containers (etc) will be included in rollbacks." });
+        HEADERS.put("rollback-entities",
+                new String[] { "# If enabled, entities, such as killed animals, will be included in rollbacks." });
+        HEADERS.put("skip-generic-data",
+                new String[] { "# If enabled, generic data, like zombies burning in daylight, won't be logged." });
         HEADERS.put("block-place", new String[] { "# Logs blocks placed by players." });
         HEADERS.put("block-break", new String[] { "# Logs blocks broken by players." });
-        HEADERS.put("natural-break", new String[] { "# Logs blocks that break off of other blocks; for example, a sign or torch", "# falling off of a dirt block that a player breaks. This is required for", "# beds/doors to properly rollback." });
-        HEADERS.put("block-movement", new String[] { "# Properly track block movement, such as sand or gravel falling." });
+        HEADERS.put("natural-break",
+                new String[] { "# Logs blocks that break off of other blocks; for example, a sign or torch",
+                        "# falling off of a dirt block that a player breaks. This is required for",
+                        "# beds/doors to properly rollback." });
+        HEADERS.put("block-movement",
+                new String[] { "# Properly track block movement, such as sand or gravel falling." });
         HEADERS.put("pistons", new String[] { "# Properly track blocks moved by pistons." });
         HEADERS.put("block-burn", new String[] { "# Logs blocks that burn up in a fire." });
-        HEADERS.put("block-ignite", new String[] { "# Logs when a block naturally ignites, such as from fire spreading." });
+        HEADERS.put("block-ignite",
+                new String[] { "# Logs when a block naturally ignites, such as from fire spreading." });
         HEADERS.put("explosions", new String[] { "# Logs explosions, such as TNT and Creepers." });
-        HEADERS.put("entity-change", new String[] { "# Track when an entity changes a block, such as an Enderman destroying blocks." });
+        HEADERS.put("entity-change",
+                new String[] { "# Track when an entity changes a block, such as an Enderman destroying blocks." });
         HEADERS.put("entity-kills", new String[] { "# Logs killed entities, such as killed cows and enderman." });
-        HEADERS.put("sign-text", new String[] { "# Logs text on signs. If disabled, signs will be blank when rolled back." });
-        HEADERS.put("buckets", new String[] { "# Logs lava and water sources placed/removed by players who are using buckets." });
+        HEADERS.put("sign-text",
+                new String[] { "# Logs text on signs. If disabled, signs will be blank when rolled back." });
+        HEADERS.put("buckets",
+                new String[] { "# Logs lava and water sources placed/removed by players who are using buckets." });
         HEADERS.put("leaf-decay", new String[] { "# Logs natural tree leaf decay." });
-        HEADERS.put("tree-growth", new String[] { "# Logs tree growth. Trees are linked to the player who planted the sappling." });
+        HEADERS.put("tree-growth",
+                new String[] { "# Logs tree growth. Trees are linked to the player who planted the sappling." });
         HEADERS.put("mushroom-growth", new String[] { "# Logs mushroom growth." });
         HEADERS.put("vine-growth", new String[] { "# Logs natural vine growth." });
         HEADERS.put("portals", new String[] { "# Logs when portals such as Nether portals generate naturally." });
-        HEADERS.put("water-flow", new String[] { "# Logs water flow. If water destroys other blocks, such as torches,", "# this allows it to be properly rolled back." });
-        HEADERS.put("lava-flow", new String[] { "# Logs lava flow. If lava destroys other blocks, such as torches,", "# this allows it to be properly rolled back." });
-        HEADERS.put("liquid-tracking", new String[] { "# Allows liquid to be properly tracked and linked to players.", "# For example, if a player places water which flows and destroys torches,", "# it can all be properly restored by rolling back that single player." });
-        HEADERS.put("item-transactions", new String[] { "# Track item transactions, such as when a player takes items from", "# a chest, furnace, or dispenser." });
+        HEADERS.put("water-flow", new String[] { "# Logs water flow. If water destroys other blocks, such as torches,",
+                "# this allows it to be properly rolled back." });
+        HEADERS.put("lava-flow", new String[] { "# Logs lava flow. If lava destroys other blocks, such as torches,",
+                "# this allows it to be properly rolled back." });
+        HEADERS.put("liquid-tracking",
+                new String[] { "# Allows liquid to be properly tracked and linked to players.",
+                        "# For example, if a player places water which flows and destroys torches,",
+                        "# it can all be properly restored by rolling back that single player." });
+        HEADERS.put("item-transactions",
+                new String[] { "# Track item transactions, such as when a player takes items from",
+                        "# a chest, furnace, or dispenser." });
         HEADERS.put("item-drops", new String[] { "# Logs items dropped by players." });
         HEADERS.put("item-pickups", new String[] { "# Logs items picked up by players." });
-        HEADERS.put("hopper-transactions", new String[] { "# Track all hopper transactions, such as when a hopper removes items from a", "# chest, furnace, or dispenser." });
-        HEADERS.put("player-interactions", new String[] { "# Track player interactions, such as when a player opens a door, presses", "# a button, or opens a chest. Player interactions can't be rolled back." });
+        HEADERS.put("hopper-transactions",
+                new String[] { "# Track all hopper transactions, such as when a hopper removes items from a",
+                        "# chest, furnace, or dispenser." });
+        HEADERS.put("player-interactions",
+                new String[] { "# Track player interactions, such as when a player opens a door, presses",
+                        "# a button, or opens a chest. Player interactions can't be rolled back." });
         HEADERS.put("player-messages", new String[] { "# Logs messages that players send in the chat." });
         HEADERS.put("player-commands", new String[] { "# Logs all commands used by players." });
         HEADERS.put("player-sessions", new String[] { "# Logs the logins and logouts of players." });
         HEADERS.put("username-changes", new String[] { "# Logs when a player changes their Minecraft username." });
-        HEADERS.put("worldedit", new String[] { "# Logs changes made via the plugin \"WorldEdit\" if it's in use on your server." });
+        HEADERS.put("worldedit",
+                new String[] { "# Logs changes made via the plugin \"WorldEdit\" if it's in use on your server." });
     }
 
     private void readValues() {
@@ -265,8 +301,7 @@ public class Config extends Language {
             }
             if (this.defaults == null) {
                 configured = DEFAULT_VALUES.get(key);
-            }
-            else {
+            } else {
                 configured = this.defaults.config.getOrDefault(key, DEFAULT_VALUES.get(key));
             }
         }
@@ -343,8 +378,7 @@ public class Config extends Language {
             final Config temp = new Config();
             temp.load(new ByteArrayInputStream(data));
             temp.addMissingOptions(globalFile);
-        }
-        else {
+        } else {
             final Config temp = new Config();
             temp.loadDefaults();
             temp.addMissingOptions(globalFile);
@@ -366,14 +400,14 @@ public class Config extends Language {
     private static void parseConfig(final Map<String, byte[]> data) {
         if (!Bukkit.isPrimaryThread()) {
             // we call reloads asynchronously
-            // for now this solution is good enough to ensure we only modify on the main thread
+            // for now this solution is good enough to ensure we only modify on the main
+            // thread
             final CompletableFuture<Void> complete = new CompletableFuture<>();
 
             Bukkit.getScheduler().runTask(CoreProtect.getInstance(), () -> {
                 try {
                     parseConfig(data);
-                }
-                catch (final Throwable thr) {
+                } catch (final Throwable thr) {
                     if (thr instanceof ThreadDeath) {
                         throw (ThreadDeath) thr;
                     }
@@ -395,12 +429,10 @@ public class Config extends Language {
         if (defaultData != null) {
             try {
                 GLOBAL.load(new ByteArrayInputStream(defaultData));
-            }
-            catch (final IOException ex) {
+            } catch (final IOException ex) {
                 throw new RuntimeException(ex); // shouldn't happen
             }
-        }
-        else {
+        } else {
             GLOBAL.loadDefaults();
         }
 
@@ -416,8 +448,7 @@ public class Config extends Language {
 
             try {
                 config.load(new ByteArrayInputStream(fileData));
-            }
-            catch (final IOException ex) {
+            } catch (final IOException ex) {
                 throw new RuntimeException(ex); // shouldn't happen
             }
 

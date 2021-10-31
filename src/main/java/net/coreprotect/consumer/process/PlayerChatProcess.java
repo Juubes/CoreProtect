@@ -10,7 +10,8 @@ import net.coreprotect.database.logger.ChatLogger;
 
 class PlayerChatProcess {
 
-    static void process(PreparedStatement preparedStmt, int batchCount, int processId, int id, Object[] object, String user) {
+    static void process(PreparedStatement preparedStmt, int batchCount, int processId, int id, Object[] object,
+            String user) {
         if (object[1] instanceof Location) {
             Map<Integer, String> strings = Consumer.consumerStrings.get(processId);
             if (strings.get(id) != null) {

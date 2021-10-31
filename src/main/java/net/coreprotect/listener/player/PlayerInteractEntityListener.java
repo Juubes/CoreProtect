@@ -31,7 +31,8 @@ public final class PlayerInteractEntityListener extends Queue implements Listene
 
         if (entity instanceof ItemFrame && !event.isCancelled() && Config.getConfig(world).BLOCK_PLACE) {
             ItemFrame frame = (ItemFrame) entity;
-            if (frame.getItem().getType().equals(Material.AIR) && !player.getInventory().getItemInMainHand().getType().equals(Material.AIR)) {
+            if (frame.getItem().getType().equals(Material.AIR)
+                    && !player.getInventory().getItemInMainHand().getType().equals(Material.AIR)) {
                 Material material = BukkitAdapter.ADAPTER.getFrameType(entity);
                 int hand = Util.getBlockId(player.getInventory().getItemInMainHand().getType());
                 int data = 0;

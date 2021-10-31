@@ -17,6 +17,7 @@ public final class PlayerJoinListener extends Queue implements Listener {
         int time = (int) (System.currentTimeMillis() / 1000L);
 
         // Pass checkConfig to Process.java, to allow logging of UUIDs
-        Queue.queuePlayerLogin(player, time, Config.getConfig(player.getWorld()).PLAYER_SESSIONS ? 1 : 0, Config.getConfig(player.getWorld()).USERNAME_CHANGES ? 1 : 0);
+        Queue.queuePlayerLogin(player, time, Config.getConfig(player.getWorld()).PLAYER_SESSIONS ? 1 : 0,
+                Config.getConfig(player.getWorld()).USERNAME_CHANGES ? 1 : 0);
     }
 }

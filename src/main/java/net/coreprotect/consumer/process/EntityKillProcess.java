@@ -13,7 +13,8 @@ import net.coreprotect.utility.Util;
 
 class EntityKillProcess {
 
-    static void process(PreparedStatement preparedStmt, PreparedStatement preparedStmtEntities, int batchCount, int processId, int id, Object object, String user) {
+    static void process(PreparedStatement preparedStmt, PreparedStatement preparedStmtEntities, int batchCount,
+            int processId, int id, Object object, String user) {
         if (object instanceof Object[]) {
             BlockState block = (BlockState) ((Object[]) object)[0];
             EntityType type = (EntityType) ((Object[]) object)[1];

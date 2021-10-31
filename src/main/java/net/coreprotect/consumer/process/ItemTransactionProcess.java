@@ -11,14 +11,17 @@ import net.coreprotect.database.logger.ItemLogger;
 
 class ItemTransactionProcess extends Queue {
 
-    static void process(PreparedStatement preparedStmt, int batchCount, int processId, int id, int forceData, int time, String user, Object object) {
+    static void process(PreparedStatement preparedStmt, int batchCount, int processId, int id, int forceData, int time,
+            String user, Object object) {
         if (object instanceof Location) {
             Location location = (Location) object;
-            String loggingItemId = user.toLowerCase(Locale.ROOT) + "." + location.getBlockX() + "." + location.getBlockY() + "." + location.getBlockZ();
+            String loggingItemId = user.toLowerCase(Locale.ROOT) + "." + location.getBlockX() + "."
+                    + location.getBlockY() + "." + location.getBlockZ();
 
             if (ConfigHandler.loggingItem.get(loggingItemId) != null) {
                 int current_chest = ConfigHandler.loggingItem.get(loggingItemId);
-                if (ConfigHandler.itemsDrop.get(loggingItemId) == null && ConfigHandler.itemsPickup.get(loggingItemId) == null) {
+                if (ConfigHandler.itemsDrop.get(loggingItemId) == null
+                        && ConfigHandler.itemsPickup.get(loggingItemId) == null) {
                     return;
                 }
                 if (current_chest == forceData) {
@@ -28,8 +31,7 @@ class ItemTransactionProcess extends Queue {
                         ConfigHandler.itemsDrop.remove(loggingItemId);
                         ConfigHandler.itemsPickup.remove(loggingItemId);
                         ConfigHandler.loggingItem.remove(loggingItemId);
-                    }
-                    else {
+                    } else {
                         Queue.queueItemTransaction(user, location, time, forceData);
                     }
                 }

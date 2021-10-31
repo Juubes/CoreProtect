@@ -63,7 +63,9 @@ public final class PlayerBucketEmptyListener extends Queue implements Listener {
                 }
             }
 
-            CacheHandler.lookupCache.put("" + block.getX() + "." + block.getY() + "." + block.getZ() + "." + worldId + "", new Object[] { unixTimestamp, player, type });
+            CacheHandler.lookupCache.put(
+                    "" + block.getX() + "." + block.getY() + "." + block.getZ() + "." + worldId + "",
+                    new Object[] { unixTimestamp, player, type });
             queueBlockPlace(player, block.getState(), block.getType(), blockState, type, 1, 1, null);
         }
     }

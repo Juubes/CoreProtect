@@ -36,7 +36,8 @@ public class ItemLogger {
                 return;
             }
 
-            String loggingItemId = user.toLowerCase(Locale.ROOT) + "." + location.getBlockX() + "." + location.getBlockY() + "." + location.getBlockZ();
+            String loggingItemId = user.toLowerCase(Locale.ROOT) + "." + location.getBlockX() + "."
+                    + location.getBlockY() + "." + location.getBlockZ();
 
             List<ItemStack> dropList = ConfigHandler.itemsDrop.getOrDefault(loggingItemId, new ArrayList<>());
             ItemStack[] itemDrops = new ItemStack[dropList.size()];
@@ -52,13 +53,13 @@ public class ItemLogger {
             Util.mergeItems(null, itemPickups);
             logTransaction(preparedStmt, batchCount, user, location, itemDrops, ITEM_DROP);
             logTransaction(preparedStmt, batchCount, user, location, itemPickups, ITEM_PICKUP);
-        }
-        catch (Exception e) {
+        } catch (Exception e) {
             e.printStackTrace();
         }
     }
 
-    protected static void logTransaction(PreparedStatement preparedStmt, int batchCount, String user, Location location, ItemStack[] items, int action) {
+    protected static void logTransaction(PreparedStatement preparedStmt, int batchCount, String user, Location location,
+            ItemStack[] items, int action) {
         try {
             for (ItemStack item : items) {
                 if (item != null && item.getAmount() > 0 && !Util.isAir(item.getType())) {
@@ -79,11 +80,11 @@ public class ItemLogger {
                     int z = location.getBlockZ();
                     int typeId = Util.getBlockId(item.getType().name(), true);
                     int amount = item.getAmount();
-                    ItemStatement.insert(preparedStmt, batchCount, time, userId, wid, x, y, z, typeId, data, amount, action);
+                    ItemStatement.insert(preparedStmt, batchCount, time, userId, wid, x, y, z, typeId, data, amount,
+                            action);
                 }
             }
-        }
-        catch (Exception e) {
+        } catch (Exception e) {
             e.printStackTrace();
         }
     }

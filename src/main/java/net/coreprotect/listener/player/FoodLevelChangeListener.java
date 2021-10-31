@@ -56,14 +56,15 @@ public final class FoodLevelChangeListener extends Queue implements Listener {
                             BlockState newBlockState = newBlock.getState();
 
                             if (!oldBlockState.getBlockData().matches(newBlockState.getBlockData())) {
-                                Queue.queueBlockBreak(player.getName(), oldBlockState, oldBlockState.getType(), oldBlockState.getBlockData().getAsString(), 0);
+                                Queue.queueBlockBreak(player.getName(), oldBlockState, oldBlockState.getType(),
+                                        oldBlockState.getBlockData().getAsString(), 0);
 
                                 if (oldBlockType == newBlockState.getType()) {
-                                    Queue.queueBlockPlace(player.getName(), newBlockState, newBlock.getType(), null, newBlockState.getType(), -1, 0, newBlockState.getBlockData().getAsString());
+                                    Queue.queueBlockPlace(player.getName(), newBlockState, newBlock.getType(), null,
+                                            newBlockState.getType(), -1, 0, newBlockState.getBlockData().getAsString());
                                 }
                             }
-                        }
-                        catch (Exception e) {
+                        } catch (Exception e) {
                             e.printStackTrace();
                         }
                     });

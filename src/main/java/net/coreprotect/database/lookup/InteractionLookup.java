@@ -12,13 +12,13 @@ import net.coreprotect.config.ConfigHandler;
 import net.coreprotect.database.statement.UserStatement;
 import net.coreprotect.language.Phrase;
 import net.coreprotect.language.Selector;
-import net.coreprotect.utility.Chat;
 import net.coreprotect.utility.Color;
 import net.coreprotect.utility.Util;
 
 public class InteractionLookup {
 
-    public static String performLookup(String command, Statement statement, Block block, CommandSender commandSender, int offset, int page, int limit) {
+    public static String performLookup(String command, Statement statement, Block block, CommandSender commandSender,
+            int offset, int page, int limit) {
         String result = "";
 
         try {
@@ -29,14 +29,11 @@ public class InteractionLookup {
             if (command == null) {
                 if (commandSender.hasPermission("coreprotect.co")) {
                     command = "co";
-                }
-                else if (commandSender.hasPermission("coreprotect.core")) {
+                } else if (commandSender.hasPermission("coreprotect.core")) {
                     command = "core";
-                }
-                else if (commandSender.hasPermission("coreprotect.coreprotect")) {
+                } else if (commandSender.hasPermission("coreprotect.coreprotect")) {
                     command = "coreprotect";
-                }
-                else {
+                } else {
                     command = "co";
                 }
             }
@@ -55,7 +52,9 @@ public class InteractionLookup {
                 checkTime = time - offset;
             }
 
-            String query = "SELECT COUNT(*) as count from " + ConfigHandler.prefix + "block WHERE wid = '" + worldId + "' AND x = '" + x + "' AND z = '" + z + "' AND y = '" + y + "' AND action='2' AND time >= '" + checkTime + "' LIMIT 0, 1";
+            String query = "SELECT COUNT(*) as count from " + ConfigHandler.prefix + "block WHERE wid = '" + worldId
+                    + "' AND x = '" + x + "' AND z = '" + z + "' AND y = '" + y + "' AND action='2' AND time >= '"
+                    + checkTime + "' LIMIT 0, 1";
             ResultSet results = statement.executeQuery(query);
 
             while (results.next()) {
@@ -64,7 +63,10 @@ public class InteractionLookup {
             results.close();
             int totalPages = (int) Math.ceil(count / (limit + 0.0));
 
-            query = "SELECT time,user,action,type,data,rolled_back FROM " + ConfigHandler.prefix + "block WHERE wid = '" + worldId + "' AND x = '" + x + "' AND z = '" + z + "' AND y = '" + y + "' AND action='2' AND time >= '" + checkTime + "' ORDER BY rowid DESC LIMIT " + pageStart + ", " + limit + "";
+            query = "SELECT time,user,action,type,data,rolled_back FROM " + ConfigHandler.prefix + "block WHERE wid = '"
+                    + worldId + "' AND x = '" + x + "' AND z = '" + z + "' AND y = '" + y
+                    + "' AND action='2' AND time >= '" + checkTime + "' ORDER BY rowid DESC LIMIT " + pageStart + ", "
+                    + limit + "";
             results = statement.executeQuery(query);
 
             StringBuilder resultBuilder = new StringBuilder();
@@ -84,7 +86,9 @@ public class InteractionLookup {
                 String timeAgo = Util.getTimeSince(resultTime, time, true);
 
                 if (!found) {
-                    resultBuilder = new StringBuilder(Color.WHITE + "----- " + Color.DARK_AQUA + Phrase.build(Phrase.INTERACTIONS_HEADER) + Color.WHITE + " ----- " + Util.getCoordinates(command, worldId, x, y, z, false, false) + "\n");
+                    resultBuilder = new StringBuilder(Color.WHITE + "----- " + Color.DARK_AQUA
+                            + Phrase.build(Phrase.INTERACTIONS_HEADER) + Color.WHITE + " ----- "
+                            + Util.getCoordinates(command, worldId, x, y, z, false, false) + "\n");
                 }
                 found = true;
 
@@ -108,7 +112,11 @@ public class InteractionLookup {
                     target = target.split(":")[1];
                 }
 
-                resultBuilder.append(timeAgo + " " + Color.WHITE + "- ").append(Phrase.build(Phrase.LOOKUP_INTERACTION, Color.DARK_AQUA + rbFormat + resultUser + Color.WHITE + rbFormat, Color.DARK_AQUA + rbFormat + target + Color.WHITE, Selector.FIRST)).append("\n");
+                resultBuilder.append(timeAgo + " " + Color.WHITE + "- ")
+                        .append(Phrase.build(Phrase.LOOKUP_INTERACTION,
+                                Color.DARK_AQUA + rbFormat + resultUser + Color.WHITE + rbFormat,
+                                Color.DARK_AQUA + rbFormat + target + Color.WHITE, Selector.FIRST))
+                        .append("\n");
             }
             result = resultBuilder.toString();
             results.close();
@@ -116,24 +124,25 @@ public class InteractionLookup {
             if (found) {
                 if (count > limit) {
                     String pageInfo = Color.WHITE + "-----\n";
-                    pageInfo = pageInfo + Util.getPageNavigation(command, page, totalPages) + "| " + Phrase.build(Phrase.LOOKUP_VIEW_PAGE, Color.WHITE, "/co l <page>") + "\n";
+                    pageInfo = pageInfo + Util.getPageNavigation(command, page, totalPages) + "| "
+                            + Phrase.build(Phrase.LOOKUP_VIEW_PAGE, Color.WHITE, "/co l <page>") + "\n";
                     result = result + pageInfo;
                 }
-            }
-            else {
+            } else {
                 if (rowMax > count && count > 0) {
-                    result = Color.DARK_AQUA + "CoreProtect " + Color.WHITE + "- " + Phrase.build(Phrase.NO_RESULTS_PAGE, Selector.SECOND);
-                }
-                else {
-                    result = Color.DARK_AQUA + "CoreProtect " + Color.WHITE + "- " + Phrase.build(Phrase.NO_DATA_LOCATION, Selector.THIRD);
+                    result = Color.DARK_AQUA + "CoreProtect " + Color.WHITE + "- "
+                            + Phrase.build(Phrase.NO_RESULTS_PAGE, Selector.SECOND);
+                } else {
+                    result = Color.DARK_AQUA + "CoreProtect " + Color.WHITE + "- "
+                            + Phrase.build(Phrase.NO_DATA_LOCATION, Selector.THIRD);
                 }
             }
 
             ConfigHandler.lookupPage.put(commandSender.getName(), page);
             ConfigHandler.lookupType.put(commandSender.getName(), 7);
-            ConfigHandler.lookupCommand.put(commandSender.getName(), x + "." + y + "." + z + "." + worldId + ".2." + limit);
-        }
-        catch (Exception e) {
+            ConfigHandler.lookupCommand.put(commandSender.getName(),
+                    x + "." + y + "." + z + "." + worldId + ".2." + limit);
+        } catch (Exception e) {
             e.printStackTrace();
         }
 

@@ -11,12 +11,10 @@ public class __2_17_0 {
         try {
             if (Config.getGlobal().MYSQL) {
                 statement.executeUpdate("ALTER TABLE " + ConfigHandler.prefix + "sign ADD COLUMN color int(8)");
-            }
-            else {
+            } else {
                 statement.executeUpdate("ALTER TABLE " + ConfigHandler.prefix + "sign ADD COLUMN color INTEGER");
             }
-        }
-        catch (Exception e) {
+        } catch (Exception e) {
             e.printStackTrace();
         }
 

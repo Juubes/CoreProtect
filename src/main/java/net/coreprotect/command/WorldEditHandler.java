@@ -47,8 +47,7 @@ public class WorldEditHandler {
                     }
                 }
             }
-        }
-        catch (Exception e) {
+        } catch (Exception e) {
             e.printStackTrace();
         }
         return result;

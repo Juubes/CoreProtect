@@ -13,7 +13,8 @@ public class Selector {
     final public static String THIRD = "{3}";
     final public static String FOURTH = "{4}";
 
-    final protected static Set<String> SELECTORS = new HashSet<>(Arrays.asList(Selector.FIRST, Selector.SECOND, Selector.THIRD, Selector.FOURTH));
+    final protected static Set<String> SELECTORS = new HashSet<>(
+            Arrays.asList(Selector.FIRST, Selector.SECOND, Selector.THIRD, Selector.FOURTH));
 
     private Selector() {
         throw new IllegalStateException("Utility class");
@@ -24,8 +25,7 @@ public class Selector {
         try {
             substring = substring.substring(substring.indexOf("{") + 1);
             substring = substring.substring(0, substring.indexOf("}"));
-        }
-        catch (Exception e) {
+        } catch (Exception e) {
             substring = "";
         }
 
@@ -34,9 +34,10 @@ public class Selector {
             int index = substring(substring, "|", selector);
             if (index == -1) {
                 param = substring.substring(0, substring.indexOf("|"));
-            }
-            else {
-                param = substring.substring(index + 1, (substring.lastIndexOf("|") > index ? substring(substring, "|", selector + 1) : substring.length()));
+            } else {
+                param = substring.substring(index + 1,
+                        (substring.lastIndexOf("|") > index ? substring(substring, "|", selector + 1)
+                                : substring.length()));
             }
 
             output = output.replace("{" + substring + "}", color + param + (color.length() > 0 ? Color.WHITE : color));

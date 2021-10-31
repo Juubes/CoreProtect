@@ -42,7 +42,8 @@ public final class EntityDamageByEntityListener extends Queue implements Listene
     protected void onEntityDamageByEntity(EntityDamageByEntityEvent event) {
         Entity damager = event.getDamager();
 
-        if (event.getEntity() instanceof ItemFrame || event.getEntity() instanceof ArmorStand || event.getEntity() instanceof EnderCrystal) {
+        if (event.getEntity() instanceof ItemFrame || event.getEntity() instanceof ArmorStand
+                || event.getEntity() instanceof EnderCrystal) {
             boolean inspecting = false;
             String user = "#entity";
 
@@ -66,42 +67,34 @@ public final class EntityDamageByEntityListener extends Queue implements Listene
                             inspecting = true;
                         }
                     }
-                }
-                else if (damager instanceof AbstractArrow) {
+                } else if (damager instanceof AbstractArrow) {
                     AbstractArrow arrow = (AbstractArrow) damager;
                     ProjectileSource source = arrow.getShooter();
 
                     if (source instanceof Player) {
                         Player player = (Player) source;
                         user = player.getName();
-                    }
-                    else if (source instanceof LivingEntity) {
+                    } else if (source instanceof LivingEntity) {
                         EntityType entityType = ((LivingEntity) source).getType();
                         if (entityType != null) { // Check for MyPet plugin
                             String name = entityType.name().toLowerCase(Locale.ROOT);
                             user = "#" + name;
                         }
                     }
-                }
-                else if (damager instanceof TNTPrimed) {
+                } else if (damager instanceof TNTPrimed) {
                     user = "#tnt";
-                }
-                else if (damager instanceof Minecart) {
+                } else if (damager instanceof Minecart) {
                     String name = damager.getType().name();
                     if (name.contains("TNT")) {
                         user = "#tnt";
                     }
-                }
-                else if (damager instanceof Creeper) {
+                } else if (damager instanceof Creeper) {
                     user = "#creeper";
-                }
-                else if (damager instanceof EnderDragon || damager instanceof EnderDragonPart) {
+                } else if (damager instanceof EnderDragon || damager instanceof EnderDragonPart) {
                     user = "#enderdragon";
-                }
-                else if (damager instanceof Wither || damager instanceof WitherSkull) {
+                } else if (damager instanceof Wither || damager instanceof WitherSkull) {
                     user = "#wither";
-                }
-                else if (damager.getType() != null) {
+                } else if (damager.getType() != null) {
                     user = "#" + damager.getType().name().toLowerCase(Locale.ROOT);
                 }
 
@@ -117,21 +110,24 @@ public final class EntityDamageByEntityListener extends Queue implements Listene
                         Material frameType = BukkitAdapter.ADAPTER.getFrameType(entity);
                         Queue.queueBlockBreak(user, block.getState(), frameType, null, data);
                         Queue.queueBlockPlace(user, block.getState(), frameType, null, frameType, data, 1, null);
-                    }
-                    else if (entity instanceof EnderCrystal) {
+                    } else if (entity instanceof EnderCrystal) {
                         EnderCrystal crystal = (EnderCrystal) event.getEntity();
-                        Queue.queueBlockBreak(user, block.getState(), Material.END_CRYSTAL, null, crystal.isShowingBottom() ? 1 : 0);
-                    }
-                    else if (entity instanceof ArmorStand) {
-                        // Do this here, as we're unable to read armor stand contents on EntityDeathEvent (in survival mode)
+                        Queue.queueBlockBreak(user, block.getState(), Material.END_CRYSTAL, null,
+                                crystal.isShowingBottom() ? 1 : 0);
+                    } else if (entity instanceof ArmorStand) {
+                        // Do this here, as we're unable to read armor stand contents on
+                        // EntityDeathEvent (in survival mode)
                         if (Config.getConfig(entityLocation.getWorld()).ITEM_TRANSACTIONS) {
                             String killer = user;
-                            ItemStack[] contents = Util.getContainerContents(Material.ARMOR_STAND, entity, block.getLocation());
+                            ItemStack[] contents = Util.getContainerContents(Material.ARMOR_STAND, entity,
+                                    block.getLocation());
                             Bukkit.getScheduler().runTask(CoreProtect.getInstance(), () -> {
                                 if (entity != null && entity.isDead()) {
                                     entityLocation.setY(entityLocation.getY() + 0.99);
-                                    Database.containerBreakCheck(killer, Material.ARMOR_STAND, entity, contents, block.getLocation());
-                                    Queue.queueBlockBreak(killer, block.getState(), Material.ARMOR_STAND, null, (int) entityLocation.getYaw());
+                                    Database.containerBreakCheck(killer, Material.ARMOR_STAND, entity, contents,
+                                            block.getLocation());
+                                    Queue.queueBlockBreak(killer, block.getState(), Material.ARMOR_STAND, null,
+                                            (int) entityLocation.getYaw());
                                 }
                             });
                         }

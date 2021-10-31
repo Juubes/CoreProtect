@@ -28,45 +28,45 @@ public class ChestTool {
         Type chestType = ((Chest) blockData).getType();
         if (chestType == Type.LEFT) {
             switch (blockFace) {
-                case NORTH:
-                    newFace = BlockFace.EAST;
-                    break;
-                case WEST:
-                    newFace = BlockFace.NORTH;
-                    break;
-                case EAST:
-                    newFace = BlockFace.SOUTH;
-                    break;
-                case SOUTH:
-                    newFace = BlockFace.WEST;
-                    break;
-                default:
-                    break;
+            case NORTH:
+                newFace = BlockFace.EAST;
+                break;
+            case WEST:
+                newFace = BlockFace.NORTH;
+                break;
+            case EAST:
+                newFace = BlockFace.SOUTH;
+                break;
+            case SOUTH:
+                newFace = BlockFace.WEST;
+                break;
+            default:
+                break;
             }
-        }
-        else if (chestType == Type.RIGHT) {
+        } else if (chestType == Type.RIGHT) {
             switch (blockFace) {
-                case NORTH:
-                    newFace = BlockFace.WEST;
-                    break;
-                case WEST:
-                    newFace = BlockFace.SOUTH;
-                    break;
-                case EAST:
-                    newFace = BlockFace.NORTH;
-                    break;
-                case SOUTH:
-                    newFace = BlockFace.EAST;
-                    break;
-                default:
-                    break;
+            case NORTH:
+                newFace = BlockFace.WEST;
+                break;
+            case WEST:
+                newFace = BlockFace.SOUTH;
+                break;
+            case EAST:
+                newFace = BlockFace.NORTH;
+                break;
+            case SOUTH:
+                newFace = BlockFace.EAST;
+                break;
+            default:
+                break;
             }
         }
 
         if (newFace != null) {
             Type newType = (chestType == Type.LEFT) ? Type.RIGHT : Type.LEFT;
             Block relativeBlock = block.getRelative(newFace);
-            if (!forceValidation && (relativeBlock.getBlockData() instanceof Chest) && ((Chest) relativeBlock.getBlockData()).getType() == newType) {
+            if (!forceValidation && (relativeBlock.getBlockData() instanceof Chest)
+                    && ((Chest) relativeBlock.getBlockData()).getType() == newType) {
                 return;
             }
 
@@ -78,15 +78,15 @@ public class ChestTool {
         Bukkit.getServer().getScheduler().scheduleSyncDelayedTask(CoreProtect.getInstance(), () -> {
             try {
                 BlockData relativeBlockData = relativeBlock.getBlockData();
-                if (!blockData.getAsString().equals(block.getBlockData().getAsString()) || !(relativeBlockData instanceof Chest) || ((Chest) relativeBlockData).getType() == newType) {
+                if (!blockData.getAsString().equals(block.getBlockData().getAsString())
+                        || !(relativeBlockData instanceof Chest) || ((Chest) relativeBlockData).getType() == newType) {
                     return;
                 }
 
                 Chest chestData = (Chest) blockData;
                 chestData.setType(newType);
                 relativeBlock.setBlockData(chestData, true);
-            }
-            catch (Exception e) {
+            } catch (Exception e) {
                 e.printStackTrace();
             }
         }, 2);

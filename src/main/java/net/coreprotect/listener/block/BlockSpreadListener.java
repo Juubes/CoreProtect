@@ -20,7 +20,8 @@ public final class BlockSpreadListener extends Queue implements Listener {
     protected void onBlockSpread(BlockSpreadEvent event) {
         // mushrooms, fire
 
-        /* To-do: Improve configuration
+        /*
+         * To-do: Improve configuration
          *
          * # Track when a block changes states, such as from natural block growth.
          * block-change: true
@@ -30,7 +31,8 @@ public final class BlockSpreadListener extends Queue implements Listener {
         if (!event.isCancelled() && Config.getConfig(event.getBlock().getWorld()).VINE_GROWTH) {
             BlockState blockstate = event.getNewState();
             Material type = blockstate.getType();
-            if (!BlockGroup.VINES.contains(type) && !BlockGroup.AMETHYST.contains(type) && type != Material.CHORUS_FLOWER && type != Material.BAMBOO) {
+            if (!BlockGroup.VINES.contains(type) && !BlockGroup.AMETHYST.contains(type)
+                    && type != Material.CHORUS_FLOWER && type != Material.BAMBOO) {
                 return;
             }
 
@@ -44,17 +46,18 @@ public final class BlockSpreadListener extends Queue implements Listener {
             }
 
             if (BlockGroup.VINES.contains(type)) {
-                queueBlockPlace("#vine", block.getState(), block.getType(), null, type, -1, 0, blockstate.getBlockData().getAsString());
-            }
-            else if (BlockGroup.AMETHYST.contains(type)) {
-                queueBlockPlace("#amethyst", block.getState(), block.getType(), block.getState(), type, -1, 0, blockstate.getBlockData().getAsString());
-            }
-            else if (type.equals(Material.CHORUS_FLOWER)) {
+                queueBlockPlace("#vine", block.getState(), block.getType(), null, type, -1, 0,
+                        blockstate.getBlockData().getAsString());
+            } else if (BlockGroup.AMETHYST.contains(type)) {
+                queueBlockPlace("#amethyst", block.getState(), block.getType(), block.getState(), type, -1, 0,
+                        blockstate.getBlockData().getAsString());
+            } else if (type.equals(Material.CHORUS_FLOWER)) {
                 Block sourceBlock = event.getSource();
-                Queue.queueBlockPlaceDelayed("#chorus", sourceBlock.getLocation(), sourceBlock.getType(), null, sourceBlock.getState(), 0);
-                Queue.queueBlockPlaceDelayed("#chorus", block.getLocation(), block.getType(), null, block.getState(), 0);
-            }
-            else if (type.equals(Material.BAMBOO)) {
+                Queue.queueBlockPlaceDelayed("#chorus", sourceBlock.getLocation(), sourceBlock.getType(), null,
+                        sourceBlock.getState(), 0);
+                Queue.queueBlockPlaceDelayed("#chorus", block.getLocation(), block.getType(), null, block.getState(),
+                        0);
+            } else if (type.equals(Material.BAMBOO)) {
                 Block sourceBlock = event.getSource();
                 Location below = sourceBlock.getLocation().clone();
                 below.setY(below.getY() - 2);
@@ -62,15 +65,18 @@ public final class BlockSpreadListener extends Queue implements Listener {
                     if (below.getY() >= 0) {
                         Block belowBlock = below.getBlock();
                         if (belowBlock.getType().equals(Material.BAMBOO)) {
-                            Queue.queueBlockPlaceDelayed("#bamboo", belowBlock.getLocation(), belowBlock.getType(), null, belowBlock.getState(), 0);
+                            Queue.queueBlockPlaceDelayed("#bamboo", belowBlock.getLocation(), belowBlock.getType(),
+                                    null, belowBlock.getState(), 0);
                         }
                     }
                     below.setY(below.getY() + 1);
                 }
                 below = null;
 
-                Queue.queueBlockPlaceDelayed("#bamboo", sourceBlock.getLocation(), sourceBlock.getType(), null, sourceBlock.getState(), 0);
-                Queue.queueBlockPlaceDelayed("#bamboo", block.getLocation(), block.getType(), null, block.getState(), 0);
+                Queue.queueBlockPlaceDelayed("#bamboo", sourceBlock.getLocation(), sourceBlock.getType(), null,
+                        sourceBlock.getState(), 0);
+                Queue.queueBlockPlaceDelayed("#bamboo", block.getLocation(), block.getType(), null, block.getState(),
+                        0);
             }
         }
     }

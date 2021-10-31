@@ -24,8 +24,7 @@ public class Bukkit_v1_15 extends BukkitAdapter implements BukkitInterface {
             info.add(bee.getAnger());
             info.add(bee.hasNectar());
             info.add(bee.hasStung());
-        }
-        else {
+        } else {
             return false;
         }
 
@@ -39,17 +38,14 @@ public class Bukkit_v1_15 extends BukkitAdapter implements BukkitInterface {
             if (count == 0) {
                 int set = (int) value;
                 bee.setAnger(set);
-            }
-            else if (count == 1) {
+            } else if (count == 1) {
                 boolean set = (Boolean) value;
                 bee.setHasNectar(set);
-            }
-            else if (count == 2) {
+            } else if (count == 2) {
                 boolean set = (Boolean) value;
                 bee.setHasStung(set);
             }
-        }
-        else {
+        } else {
             return false;
         }
 
@@ -57,7 +53,8 @@ public class Bukkit_v1_15 extends BukkitAdapter implements BukkitInterface {
     }
 
     @Override
-    public boolean getItemMeta(ItemMeta itemMeta, List<Map<String, Object>> list, List<List<Map<String, Object>>> metadata, int slot) {
+    public boolean getItemMeta(ItemMeta itemMeta, List<Map<String, Object>> list,
+            List<List<Map<String, Object>>> metadata, int slot) {
         if (itemMeta instanceof SuspiciousStewMeta) {
             SuspiciousStewMeta meta = (SuspiciousStewMeta) itemMeta;
             SuspiciousStewMeta subMeta = meta.clone();
@@ -72,8 +69,7 @@ public class Bukkit_v1_15 extends BukkitAdapter implements BukkitInterface {
                     metadata.add(list);
                 }
             }
-        }
-        else {
+        } else {
             return false;
         }
 
@@ -89,8 +85,7 @@ public class Bukkit_v1_15 extends BukkitAdapter implements BukkitInterface {
                 meta.addCustomEffect(effect, true);
                 itemstack.setItemMeta(meta);
             }
-        }
-        else {
+        } else {
             return false;
         }
 

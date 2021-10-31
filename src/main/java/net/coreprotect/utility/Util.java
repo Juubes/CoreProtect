@@ -107,7 +107,8 @@ import net.coreprotect.worldedit.CoreProtectEditSessionEvent;
 
 public class Util extends Queue {
 
-    public static final java.util.regex.Pattern tagParser = java.util.regex.Pattern.compile(Chat.COMPONENT_TAG_OPEN + "(.+?)" + Chat.COMPONENT_TAG_CLOSE + "|(.+?)", java.util.regex.Pattern.DOTALL);
+    public static final java.util.regex.Pattern tagParser = java.util.regex.Pattern.compile(
+            Chat.COMPONENT_TAG_OPEN + "(.+?)" + Chat.COMPONENT_TAG_CLOSE + "|(.+?)", java.util.regex.Pattern.DOTALL);
     private static final String NAMESPACE = "minecraft:";
 
     private Util() {
@@ -133,8 +134,7 @@ public class Util extends Queue {
             String[] versionSplit = pluginVersion.split("\\.");
             minor = Integer.parseInt(versionSplit[0]);
             revision = Integer.parseInt(versionSplit[1]);
-        }
-        else {
+        } else {
             minor = Integer.parseInt(pluginVersion);
         }
 
@@ -159,7 +159,8 @@ public class Util extends Queue {
         return getBlockId(material.name(), true);
     }
 
-    public static String getCoordinates(String command, int worldId, int x, int y, int z, boolean displayWorld, boolean italic) {
+    public static String getCoordinates(String command, int worldId, int x, int y, int z, boolean displayWorld,
+            boolean italic) {
         StringBuilder message = new StringBuilder(Chat.COMPONENT_TAG_OPEN + Chat.COMPONENT_COMMAND);
 
         StringBuilder worldDisplay = new StringBuilder();
@@ -168,10 +169,12 @@ public class Util extends Queue {
         }
 
         // command
-        message.append("|/" + command + " teleport wid:" + worldId + " " + (x + 0.50) + " " + y + " " + (z + 0.50) + "|");
+        message.append(
+                "|/" + command + " teleport wid:" + worldId + " " + (x + 0.50) + " " + y + " " + (z + 0.50) + "|");
 
         // chat output
-        message.append(Color.GREY + (italic ? Color.ITALIC : "") + "(x" + x + "/y" + y + "/z" + z + worldDisplay.toString() + ")");
+        message.append(Color.GREY + (italic ? Color.ITALIC : "") + "(x" + x + "/y" + y + "/z" + z
+                + worldDisplay.toString() + ")");
 
         return message.append(Chat.COMPONENT_TAG_CLOSE).toString();
     }
@@ -183,17 +186,21 @@ public class Util extends Queue {
         String backArrow = "";
         if (page > 1) {
             backArrow = "◀ ";
-            backArrow = Chat.COMPONENT_TAG_OPEN + Chat.COMPONENT_COMMAND + "|/" + command + " l " + (page - 1) + "|" + backArrow + Chat.COMPONENT_TAG_CLOSE;
+            backArrow = Chat.COMPONENT_TAG_OPEN + Chat.COMPONENT_COMMAND + "|/" + command + " l " + (page - 1) + "|"
+                    + backArrow + Chat.COMPONENT_TAG_CLOSE;
         }
 
         // next arrow
         String nextArrow = " ";
         if (page < totalPages) {
             nextArrow = " ▶ ";
-            nextArrow = Chat.COMPONENT_TAG_OPEN + Chat.COMPONENT_COMMAND + "|/" + command + " l " + (page + 1) + "|" + nextArrow + Chat.COMPONENT_TAG_CLOSE;
+            nextArrow = Chat.COMPONENT_TAG_OPEN + Chat.COMPONENT_COMMAND + "|/" + command + " l " + (page + 1) + "|"
+                    + nextArrow + Chat.COMPONENT_TAG_CLOSE;
         }
 
-        return message.append(Color.WHITE + backArrow + Phrase.build(Phrase.LOOKUP_PAGE, page + "/" + totalPages) + nextArrow).toString();
+        return message
+                .append(Color.WHITE + backArrow + Phrase.build(Phrase.LOOKUP_PAGE, page + "/" + totalPages) + nextArrow)
+                .toString();
     }
 
     public static String getTimeSince(int logTime, int currentTime, boolean component) {
@@ -224,7 +231,8 @@ public class Util extends Queue {
             Date logDate = new Date(logTime * 1000L);
             String formattedTimestamp = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss z").format(logDate);
 
-            return Chat.COMPONENT_TAG_OPEN + Chat.COMPONENT_POPUP + "|" + Color.GREY + formattedTimestamp + "|" + Color.GREY + message.toString() + Chat.COMPONENT_TAG_CLOSE;
+            return Chat.COMPONENT_TAG_OPEN + Chat.COMPONENT_POPUP + "|" + Color.GREY + formattedTimestamp + "|"
+                    + Color.GREY + message.toString() + Chat.COMPONENT_TAG_CLOSE;
         }
 
         return message.toString();
@@ -269,8 +277,7 @@ public class Util extends Queue {
 
         if (ConfigHandler.materials.get(name) != null) {
             id = ConfigHandler.materials.get(name);
-        }
-        else if (internal) {
+        } else if (internal) {
             int mid = ConfigHandler.materialId + 1;
             ConfigHandler.materials.put(name, mid);
             ConfigHandler.materialsReversed.put(mid, name);
@@ -288,8 +295,7 @@ public class Util extends Queue {
 
         if (ConfigHandler.blockdata.get(data) != null) {
             id = ConfigHandler.blockdata.get(data);
-        }
-        else if (internal) {
+        } else if (internal) {
             int bid = ConfigHandler.blockdataId + 1;
             ConfigHandler.blockdata.put(data, bid);
             ConfigHandler.blockdataReversed.put(bid, data);
@@ -336,7 +342,8 @@ public class Util extends Queue {
             for (ItemStack o1 : items) {
                 int c2 = 0;
                 for (ItemStack o2 : items) {
-                    if (o1 != null && o2 != null && c2 > c1 && o1.isSimilar(o2) && !Util.isAir(o1.getType())) { // Ignores amount
+                    if (o1 != null && o2 != null && c2 > c1 && o1.isSimilar(o2) && !Util.isAir(o1.getType())) { // Ignores
+                                                                                                                // amount
                         int namount = o1.getAmount() + o2.getAmount();
                         o1.setAmount(namount);
                         o2.setAmount(0);
@@ -345,8 +352,7 @@ public class Util extends Queue {
                 }
                 c1++;
             }
-        }
-        catch (Exception e) {
+        } catch (Exception e) {
             e.printStackTrace();
         }
     }
@@ -367,7 +373,9 @@ public class Util extends Queue {
                 return result;
             }
 
-            if (material.isBlock() && !createBlockData(material).getAsString().equals(string) && string.startsWith(NAMESPACE + material.name().toLowerCase(Locale.ROOT) + "[") && string.endsWith("]")) {
+            if (material.isBlock() && !createBlockData(material).getAsString().equals(string)
+                    && string.startsWith(NAMESPACE + material.name().toLowerCase(Locale.ROOT) + "[")
+                    && string.endsWith("]")) {
                 String substring = string.substring(material.name().length() + 11, string.length() - 1);
                 String[] blockDataSplit = substring.split(",");
                 ArrayList<String> blockDataArray = new ArrayList<>();
@@ -378,8 +386,7 @@ public class Util extends Queue {
                     }
                 }
                 string = String.join(",", blockDataArray);
-            }
-            else {
+            } else {
                 return result;
             }
 
@@ -411,9 +418,9 @@ public class Util extends Queue {
                             blockDataArray.add(block);
                         }
                     }
-                    result = NAMESPACE + material.name().toLowerCase(Locale.ROOT) + "[" + String.join(",", blockDataArray) + "]";
-                }
-                else {
+                    result = NAMESPACE + material.name().toLowerCase(Locale.ROOT) + "["
+                            + String.join(",", blockDataArray) + "]";
+                } else {
                     result = "";
                 }
             }
@@ -436,8 +443,7 @@ public class Util extends Queue {
             oos.close();
             bos.close();
             result = bos.toByteArray();
-        }
-        catch (Exception e) {
+        } catch (Exception e) {
             e.printStackTrace();
         }
 
@@ -547,8 +553,7 @@ public class Util extends Queue {
 
         if (ConfigHandler.art.get(name) != null) {
             id = ConfigHandler.art.get(name);
-        }
-        else if (internal) {
+        } else if (internal) {
             int artID = ConfigHandler.artId + 1;
             ConfigHandler.art.put(name, artID);
             ConfigHandler.artReversed.put(artID, name);
@@ -571,79 +576,79 @@ public class Util extends Queue {
 
     public static int getBlockFace(BlockFace rotation) {
         switch (rotation) {
-            case NORTH:
-                return 0;
-            case NORTH_NORTH_EAST:
-                return 1;
-            case NORTH_EAST:
-                return 2;
-            case EAST_NORTH_EAST:
-                return 3;
-            case EAST:
-                return 4;
-            case EAST_SOUTH_EAST:
-                return 5;
-            case SOUTH_EAST:
-                return 6;
-            case SOUTH_SOUTH_EAST:
-                return 7;
-            case SOUTH:
-                return 8;
-            case SOUTH_SOUTH_WEST:
-                return 9;
-            case SOUTH_WEST:
-                return 10;
-            case WEST_SOUTH_WEST:
-                return 11;
-            case WEST:
-                return 12;
-            case WEST_NORTH_WEST:
-                return 13;
-            case NORTH_WEST:
-                return 14;
-            case NORTH_NORTH_WEST:
-                return 15;
-            default:
-                throw new IllegalArgumentException("Invalid BlockFace rotation: " + rotation);
+        case NORTH:
+            return 0;
+        case NORTH_NORTH_EAST:
+            return 1;
+        case NORTH_EAST:
+            return 2;
+        case EAST_NORTH_EAST:
+            return 3;
+        case EAST:
+            return 4;
+        case EAST_SOUTH_EAST:
+            return 5;
+        case SOUTH_EAST:
+            return 6;
+        case SOUTH_SOUTH_EAST:
+            return 7;
+        case SOUTH:
+            return 8;
+        case SOUTH_SOUTH_WEST:
+            return 9;
+        case SOUTH_WEST:
+            return 10;
+        case WEST_SOUTH_WEST:
+            return 11;
+        case WEST:
+            return 12;
+        case WEST_NORTH_WEST:
+            return 13;
+        case NORTH_WEST:
+            return 14;
+        case NORTH_NORTH_WEST:
+            return 15;
+        default:
+            throw new IllegalArgumentException("Invalid BlockFace rotation: " + rotation);
         }
     }
 
     public static BlockFace getBlockFace(int rotation) {
         switch (rotation) {
-            case 0:
-                return BlockFace.NORTH;
-            case 1:
-                return BlockFace.NORTH_NORTH_EAST;
-            case 2:
-                return BlockFace.NORTH_EAST;
-            case 3:
-                return BlockFace.EAST_NORTH_EAST;
-            case 4:
-                return BlockFace.EAST;
-            case 5:
-                return BlockFace.EAST_SOUTH_EAST;
-            case 6:
-                return BlockFace.SOUTH_EAST;
-            case 7:
-                return BlockFace.SOUTH_SOUTH_EAST;
-            case 8:
-                return BlockFace.SOUTH;
-            case 9:
-                return BlockFace.SOUTH_SOUTH_WEST;
-            case 10:
-                return BlockFace.SOUTH_WEST;
-            case 11:
-                return BlockFace.WEST_SOUTH_WEST;
-            case 12:
-                return BlockFace.WEST;
-            case 13:
-                return BlockFace.WEST_NORTH_WEST;
-            case 14:
-                return BlockFace.NORTH_WEST;
-            case 15:
-                return BlockFace.NORTH_NORTH_WEST;
-            default:
-                throw new AssertionError(rotation);
+        case 0:
+            return BlockFace.NORTH;
+        case 1:
+            return BlockFace.NORTH_NORTH_EAST;
+        case 2:
+            return BlockFace.NORTH_EAST;
+        case 3:
+            return BlockFace.EAST_NORTH_EAST;
+        case 4:
+            return BlockFace.EAST;
+        case 5:
+            return BlockFace.EAST_SOUTH_EAST;
+        case 6:
+            return BlockFace.SOUTH_EAST;
+        case 7:
+            return BlockFace.SOUTH_SOUTH_EAST;
+        case 8:
+            return BlockFace.SOUTH;
+        case 9:
+            return BlockFace.SOUTH_SOUTH_WEST;
+        case 10:
+            return BlockFace.SOUTH_WEST;
+        case 11:
+            return BlockFace.WEST_SOUTH_WEST;
+        case 12:
+            return BlockFace.WEST;
+        case 13:
+            return BlockFace.WEST_NORTH_WEST;
+        case 14:
+            return BlockFace.NORTH_WEST;
+        case 15:
+            return BlockFace.NORTH_NORTH_WEST;
+        default:
+            throw new AssertionError(rotation);
         }
     }
 
@@ -655,8 +660,7 @@ public class Util extends Queue {
             System.arraycopy(armorContent, 0, contents, 0, 4);
             contents[4] = equipment.getItemInMainHand();
             contents[5] = equipment.getItemInOffHand();
-        }
-        else {
+        } else {
             Arrays.fill(contents, new ItemStack(Material.AIR));
         }
 
@@ -678,8 +682,7 @@ public class Util extends Queue {
                     if (equipment != null) {
                         contents = getArmorStandContents(equipment);
                     }
-                }
-                else {
+                } else {
                     Block block = (Block) container;
                     Inventory inventory = Util.getContainerInventory(block.getState(), true);
                     if (inventory != null) {
@@ -702,8 +705,7 @@ public class Util extends Queue {
                 if (contents != null) {
                     contents = Util.getContainerState(contents);
                 }
-            }
-            catch (Exception e) {
+            } catch (Exception e) {
                 e.printStackTrace();
             }
         }
@@ -726,8 +728,7 @@ public class Util extends Queue {
                     inventory = ((BlockInventoryHolder) blockState).getInventory();
                 }
             }
-        }
-        catch (Exception e) {
+        } catch (Exception e) {
             e.printStackTrace();
         }
         return inventory;
@@ -737,8 +738,7 @@ public class Util extends Queue {
         EntityEquipment equipment = null;
         try {
             equipment = entity.getEquipment();
-        }
-        catch (Exception e) {
+        } catch (Exception e) {
             e.printStackTrace();
         }
         return equipment;
@@ -754,8 +754,7 @@ public class Util extends Queue {
 
         if (ConfigHandler.entities.get(name) != null) {
             id = ConfigHandler.entities.get(name);
-        }
-        else if (internal) {
+        } else if (internal) {
             int entityID = ConfigHandler.entityId + 1;
             ConfigHandler.entities.put(name, entityID);
             ConfigHandler.entitiesReversed.put(entityID, name);
@@ -769,12 +768,12 @@ public class Util extends Queue {
 
     public static Material getEntityMaterial(EntityType type) {
         switch (type) {
-            case ARMOR_STAND:
-                return Material.ARMOR_STAND;
-            case ENDER_CRYSTAL:
-                return Material.END_CRYSTAL;
-            default:
-                return null;
+        case ARMOR_STAND:
+            return Material.ARMOR_STAND;
+        case ENDER_CRYSTAL:
+            return Material.END_CRYSTAL;
+        default:
+            return null;
         }
     }
 
@@ -828,8 +827,7 @@ public class Util extends Queue {
     public static int getItemStackHashCode(ItemStack item) {
         try {
             return item.hashCode();
-        }
-        catch (Exception exception) {
+        } catch (Exception exception) {
             return -1;
         }
     }
@@ -912,8 +910,7 @@ public class Util extends Queue {
                 Queue.queueWorldInsert(wid, name);
             }
             id = ConfigHandler.worlds.get(name);
-        }
-        catch (Exception e) {
+        } catch (Exception e) {
             e.printStackTrace();
         }
         return id;
@@ -925,8 +922,7 @@ public class Util extends Queue {
             if (ConfigHandler.worldsReversed.get(id) != null) {
                 name = ConfigHandler.worldsReversed.get(id);
             }
-        }
-        catch (Exception e) {
+        } catch (Exception e) {
             e.printStackTrace();
         }
         return name;
@@ -936,7 +932,8 @@ public class Util extends Queue {
         if (type.equals(Material.ICE)) { // Ice block
             int unixtimestamp = (int) (System.currentTimeMillis() / 1000L);
             int wid = Util.getWorldId(block.getWorld().getName());
-            CacheHandler.lookupCache.put("" + block.getX() + "." + block.getY() + "." + block.getZ() + "." + wid + "", new Object[] { unixtimestamp, user, Material.WATER });
+            CacheHandler.lookupCache.put("" + block.getX() + "." + block.getY() + "." + block.getZ() + "." + wid + "",
+                    new Object[] { unixtimestamp, user, Material.WATER });
             return true;
         }
         return false;
@@ -965,12 +962,10 @@ public class Util extends Queue {
                     if (value < 6) {
                         validVersion = false;
                     }
-                }
-                else {
+                } else {
                     if (version.contains("+")) {
                         version = version.split("\\+")[1];
-                    }
-                    else {
+                    } else {
                         version = version.split(";")[1];
                     }
 
@@ -981,22 +976,22 @@ public class Util extends Queue {
                         }
                     }
                 }
-            }
-            else if (version.contains(".")) {
+            } else if (version.contains(".")) {
                 String[] worldEditVersion = version.split("-|\\.");
                 if (worldEditVersion.length >= 2) {
                     worldEditVersion[0] = worldEditVersion[0].replaceAll("[^0-9]", "");
                     worldEditVersion[1] = worldEditVersion[1].replaceAll("[^0-9]", "");
-                    if (worldEditVersion[0].length() == 0 || worldEditVersion[1].length() == 0 || Util.newVersion(worldEditVersion[0] + "." + worldEditVersion[1], "7.1")) {
+                    if (worldEditVersion[0].length() == 0 || worldEditVersion[1].length() == 0
+                            || Util.newVersion(worldEditVersion[0] + "." + worldEditVersion[1], "7.1")) {
                         validVersion = false;
                     }
                 }
-            }
-            else if (version.equals("unspecified")) { // FAWE
+            } else if (version.equals("unspecified")) { // FAWE
                 validVersion = false;
                 Plugin fawe = Bukkit.getServer().getPluginManager().getPlugin("FastAsyncWorldEdit");
                 if (fawe != null) {
-                    String apiVersion = Bukkit.getServer().getPluginManager().getPlugin("WorldEdit").getDescription().getAPIVersion();
+                    String apiVersion = Bukkit.getServer().getPluginManager().getPlugin("WorldEdit").getDescription()
+                            .getAPIVersion();
                     String faweVersion = fawe.getDescription().getVersion();
                     double apiDouble = Double.parseDouble(apiVersion);
                     double faweDouble = Double.parseDouble(faweVersion);
@@ -1004,19 +999,16 @@ public class Util extends Queue {
                         validVersion = true;
                     }
                 }
-            }
-            else {
+            } else {
                 validVersion = false;
             }
 
             if (validVersion) {
                 CoreProtectEditSessionEvent.register();
-            }
-            else {
+            } else {
                 Chat.console(Phrase.build(Phrase.INTEGRATION_VERSION, "WorldEdit"));
             }
-        }
-        catch (Exception e) {
+        } catch (Exception e) {
             e.printStackTrace();
         }
     }
@@ -1024,8 +1016,7 @@ public class Util extends Queue {
     public static void unloadWorldEdit() {
         try {
             CoreProtectEditSessionEvent.unregister();
-        }
-        catch (Exception e) {
+        } catch (Exception e) {
             e.printStackTrace();
         }
     }
@@ -1052,11 +1043,9 @@ public class Util extends Queue {
                 if (worldName.toLowerCase(Locale.ROOT).equals(name)) {
                     result = world.getName();
                     break;
-                }
-                else if (worldName.toLowerCase(Locale.ROOT).endsWith(name)) {
+                } else if (worldName.toLowerCase(Locale.ROOT).endsWith(name)) {
                     result = world.getName();
-                }
-                else if (worldName.toLowerCase(Locale.ROOT).replaceAll("[^a-zA-Z0-9]", "").endsWith(name)) {
+                } else if (worldName.toLowerCase(Locale.ROOT).replaceAll("[^a-zA-Z0-9]", "").endsWith(name)) {
                     result = world.getName();
                 }
             }
@@ -1064,17 +1053,18 @@ public class Util extends Queue {
             if (result.length() > 0) {
                 id = getWorldId(result);
             }
-        }
-        catch (Exception e) {
+        } catch (Exception e) {
             e.printStackTrace();
         }
 
         return id;
     }
 
-    // This theoretically initializes the component code, to prevent gson adapter errors
+    // This theoretically initializes the component code, to prevent gson adapter
+    // errors
     public static void sendConsoleComponentStartup(ConsoleCommandSender consoleSender, String string) {
-        Chat.sendComponent(consoleSender, Color.RESET + "[CoreProtect] " + string + Chat.COMPONENT_TAG_OPEN + Chat.COMPONENT_POPUP + "| | " + Chat.COMPONENT_TAG_CLOSE);
+        Chat.sendComponent(consoleSender, Color.RESET + "[CoreProtect] " + string + Chat.COMPONENT_TAG_OPEN
+                + Chat.COMPONENT_POPUP + "| | " + Chat.COMPONENT_TAG_CLOSE);
     }
 
     public static void performSafeTeleport(Player player, Location location, boolean enforceTeleport) {
@@ -1105,8 +1095,7 @@ public class Util extends Queue {
                 if (!Util.solidBlock(type1) && !Util.solidBlock(type2)) {
                     if (unsafeBlocks.contains(type1)) {
                         placeSafe = true;
-                    }
-                    else {
+                    } else {
                         safeBlock = true;
                         if (placeSafe) {
                             int below = checkY - 1;
@@ -1141,21 +1130,23 @@ public class Util extends Queue {
                     if (!enforceTeleport) {
                         // Only send a message if the player was moved by at least 1 block
                         if (location.getY() >= (oldY + 1.00)) {
-                            Chat.sendMessage(player, Color.DARK_AQUA + "CoreProtect " + Color.WHITE + "- " + Phrase.build(Phrase.TELEPORTED_SAFETY));
+                            Chat.sendMessage(player, Color.DARK_AQUA + "CoreProtect " + Color.WHITE + "- "
+                                    + Phrase.build(Phrase.TELEPORTED_SAFETY));
                         }
-                    }
-                    else {
-                        Chat.sendMessage(player, Color.DARK_AQUA + "CoreProtect " + Color.WHITE + "- " + Phrase.build(Phrase.TELEPORTED, "x" + playerX + "/y" + checkY + "/z" + playerZ + "/" + location.getWorld().getName()));
+                    } else {
+                        Chat.sendMessage(player, Color.DARK_AQUA + "CoreProtect " + Color.WHITE + "- " + Phrase.build(
+                                Phrase.TELEPORTED,
+                                "x" + playerX + "/y" + checkY + "/z" + playerZ + "/" + location.getWorld().getName()));
                     }
                     if (alert) {
-                        Chat.sendMessage(player, Color.DARK_AQUA + "CoreProtect " + Color.WHITE + Color.ITALIC + "- " + Phrase.build(Phrase.DIRT_BLOCK));
+                        Chat.sendMessage(player, Color.DARK_AQUA + "CoreProtect " + Color.WHITE + Color.ITALIC + "- "
+                                + Phrase.build(Phrase.DIRT_BLOCK));
                     }
                 }
 
                 checkY++;
             }
-        }
-        catch (Exception e) {
+        } catch (Exception e) {
             e.printStackTrace();
         }
     }
@@ -1163,27 +1154,27 @@ public class Util extends Queue {
     public static String nameFilter(String name, int data) {
         if (name.equals("stone")) {
             switch (data) {
-                case 1:
-                    name = "granite";
-                    break;
-                case 2:
-                    name = "polished_granite";
-                    break;
-                case 3:
-                    name = "diorite";
-                    break;
-                case 4:
-                    name = "polished_diorite";
-                    break;
-                case 5:
-                    name = "andesite";
-                    break;
-                case 6:
-                    name = "polished_andesite";
-                    break;
-                default:
-                    name = "stone";
-                    break;
+            case 1:
+                name = "granite";
+                break;
+            case 2:
+                name = "polished_granite";
+                break;
+            case 3:
+                name = "diorite";
+                break;
+            case 4:
+                name = "polished_diorite";
+                break;
+            case 5:
+                name = "andesite";
+                break;
+            case 6:
+                name = "polished_andesite";
+                break;
+            default:
+                name = "stone";
+                break;
             }
         }
 
@@ -1201,8 +1192,7 @@ public class Util extends Queue {
     public static boolean isSpigot() {
         try {
             Class.forName("org.spigotmc.SpigotConfig");
-        }
-        catch (Exception e) {
+        } catch (Exception e) {
             return false;
         }
 
@@ -1212,8 +1202,7 @@ public class Util extends Queue {
     public static boolean isPaper() {
         try {
             Class.forName("com.destroystokyo.paper.PaperConfig");
-        }
-        catch (Exception e) {
+        } catch (Exception e) {
             return false;
         }
 
@@ -1223,7 +1212,8 @@ public class Util extends Queue {
     public static String getBranch() {
         String branch = "";
         try {
-            InputStreamReader reader = new InputStreamReader(CoreProtect.getInstance().getClass().getResourceAsStream("/plugin.yml"));
+            InputStreamReader reader = new InputStreamReader(
+                    CoreProtect.getInstance().getClass().getResourceAsStream("/plugin.yml"));
             branch = YamlConfiguration.loadConfiguration(reader).getString("branch");
             reader.close();
 
@@ -1236,8 +1226,7 @@ public class Util extends Queue {
             if (branch.length() > 0) {
                 branch = "-" + branch;
             }
-        }
-        catch (Exception e) {
+        } catch (Exception e) {
             e.printStackTrace();
         }
 
@@ -1248,16 +1237,15 @@ public class Util extends Queue {
         if (oldVersion[0] < currentVersion[0]) {
             // Major version
             return true;
-        }
-        else if (oldVersion[0].equals(currentVersion[0]) && oldVersion[1] < currentVersion[1]) {
+        } else if (oldVersion[0].equals(currentVersion[0]) && oldVersion[1] < currentVersion[1]) {
             // Minor version
             return true;
-        }
-        else if (oldVersion.length < 3 && currentVersion.length >= 3 && oldVersion[0].equals(currentVersion[0]) && oldVersion[1].equals(currentVersion[1]) && 0 < currentVersion[2]) {
+        } else if (oldVersion.length < 3 && currentVersion.length >= 3 && oldVersion[0].equals(currentVersion[0])
+                && oldVersion[1].equals(currentVersion[1]) && 0 < currentVersion[2]) {
             // Revision version (#.# vs #.#.#)
             return true;
-        }
-        else if (oldVersion.length >= 3 && currentVersion.length >= 3 && oldVersion[0].equals(currentVersion[0]) && oldVersion[1].equals(currentVersion[1]) && oldVersion[2] < currentVersion[2]) {
+        } else if (oldVersion.length >= 3 && currentVersion.length >= 3 && oldVersion[0].equals(currentVersion[0])
+                && oldVersion[1].equals(currentVersion[1]) && oldVersion[2] < currentVersion[2]) {
             // Revision version (#.#.# vs #.#.#)
             return true;
         }
@@ -1349,16 +1337,14 @@ public class Util extends Queue {
                 if (command.length() > 0) {
                     meta.add(command);
                 }
-            }
-            else if (block instanceof Banner) {
+            } else if (block instanceof Banner) {
                 Banner banner = (Banner) block;
                 meta.add(banner.getBaseColor());
                 List<Pattern> patterns = banner.getPatterns();
                 for (Pattern pattern : patterns) {
                     meta.add(pattern.serialize());
                 }
-            }
-            else if (block instanceof ShulkerBox) {
+            } else if (block instanceof ShulkerBox) {
                 ShulkerBox shulkerBox = (ShulkerBox) block;
                 ItemStack[] inventory = shulkerBox.getSnapshotInventory().getStorageContents();
                 int slot = 0;
@@ -1370,8 +1356,7 @@ public class Util extends Queue {
                     slot++;
                 }
             }
-        }
-        catch (Exception e) {
+        } catch (Exception e) {
             e.printStackTrace();
         }
 
@@ -1387,13 +1372,13 @@ public class Util extends Queue {
                 for (Entity e : block.getChunk().getEntities()) {
                     if (e instanceof ItemFrame || e instanceof Painting) {
                         Location el = e.getLocation();
-                        if (el.getBlockX() == block.getX() && el.getBlockY() == block.getY() && el.getBlockZ() == block.getZ()) {
+                        if (el.getBlockX() == block.getX() && el.getBlockY() == block.getY()
+                                && el.getBlockZ() == block.getZ()) {
                             e.remove();
                         }
                     }
                 }
-            }
-            catch (Exception e) {
+            } catch (Exception e) {
                 e.printStackTrace();
             }
         }, delay);
@@ -1457,7 +1442,8 @@ public class Util extends Queue {
 
                 int unixtimestamp = (int) (System.currentTimeMillis() / 1000L);
                 int wid = Util.getWorldId(block.getWorld().getName());
-                String token = "" + block.getX() + "." + block.getY() + "." + block.getZ() + "." + wid + "." + type.name() + "";
+                String token = "" + block.getX() + "." + block.getY() + "." + block.getZ() + "." + wid + "."
+                        + type.name() + "";
                 CacheHandler.entityCache.put(token, new Object[] { unixtimestamp, entity.getEntityId() });
 
                 if (entity instanceof Ageable) {
@@ -1467,25 +1453,20 @@ public class Util extends Queue {
                         if (count == 0) {
                             int set = (Integer) value;
                             ageable.setAge(set);
-                        }
-                        else if (count == 1) {
+                        } else if (count == 1) {
                             boolean set = (Boolean) value;
                             ageable.setAgeLock(set);
-                        }
-                        else if (count == 2) {
+                        } else if (count == 2) {
                             boolean set = (Boolean) value;
                             if (set) {
                                 ageable.setAdult();
-                            }
-                            else {
+                            } else {
                                 ageable.setBaby();
                             }
-                        }
-                        else if (count == 3) {
+                        } else if (count == 3) {
                             boolean set = (Boolean) value;
                             ageable.setBreed(set);
-                        }
-                        else if (count == 4 && value != null) {
+                        } else if (count == 4 && value != null) {
                             // deprecated
                             double set = (Double) value;
                             ageable.setMaxHealth(set);
@@ -1500,8 +1481,7 @@ public class Util extends Queue {
                         if (count == 0) {
                             boolean set = (Boolean) value;
                             tameable.setTamed(set);
-                        }
-                        else if (count == 1) {
+                        } else if (count == 1) {
                             String set = (String) value;
                             if (set.length() > 0) {
                                 Player owner = Bukkit.getServer().getPlayer(set);
@@ -1510,8 +1490,7 @@ public class Util extends Queue {
                                     if (offlinePlayer != null) {
                                         tameable.setOwner(offlinePlayer);
                                     }
-                                }
-                                else {
+                                } else {
                                     tameable.setOwner(owner);
                                 }
                             }
@@ -1555,8 +1534,7 @@ public class Util extends Queue {
                         if (count == 0) {
                             boolean set = (Boolean) value;
                             livingEntity.setRemoveWhenFarAway(set);
-                        }
-                        else if (count == 1) {
+                        } else if (count == 1) {
                             boolean set = (Boolean) value;
                             livingEntity.setCanPickupItems(set);
                         }
@@ -1572,117 +1550,98 @@ public class Util extends Queue {
                             boolean set = (Boolean) value;
                             creeper.setPowered(set);
                         }
-                    }
-                    else if (entity instanceof Enderman) {
+                    } else if (entity instanceof Enderman) {
                         Enderman enderman = (Enderman) entity;
                         if (count == 1) {
                             String blockDataString = (String) value;
                             BlockData blockData = Bukkit.getServer().createBlockData(blockDataString);
                             enderman.setCarriedBlock(blockData);
                         }
-                    }
-                    else if (entity instanceof IronGolem) {
+                    } else if (entity instanceof IronGolem) {
                         IronGolem irongolem = (IronGolem) entity;
                         if (count == 0) {
                             boolean set = (Boolean) value;
                             irongolem.setPlayerCreated(set);
                         }
-                    }
-                    else if (entity instanceof Cat) {
+                    } else if (entity instanceof Cat) {
                         Cat cat = (Cat) entity;
                         if (count == 0) {
                             Cat.Type set = (Cat.Type) value;
                             cat.setCatType(set);
-                        }
-                        else if (count == 1) {
+                        } else if (count == 1) {
                             DyeColor set = (DyeColor) value;
                             cat.setCollarColor(set);
                         }
-                    }
-                    else if (entity instanceof Fox) {
+                    } else if (entity instanceof Fox) {
                         Fox fox = (Fox) entity;
                         if (count == 0) {
                             Fox.Type set = (Fox.Type) value;
                             fox.setFoxType(set);
-                        }
-                        else if (count == 1) {
+                        } else if (count == 1) {
                             boolean set = (Boolean) value;
                             fox.setSitting(set);
                         }
-                    }
-                    else if (entity instanceof Panda) {
+                    } else if (entity instanceof Panda) {
                         Panda panda = (Panda) entity;
                         if (count == 0) {
                             Gene set = (Gene) value;
                             panda.setMainGene(set);
-                        }
-                        else if (count == 1) {
+                        } else if (count == 1) {
                             Gene set = (Gene) value;
                             panda.setHiddenGene(set);
                         }
-                    }
-                    else if (entity instanceof Pig) {
+                    } else if (entity instanceof Pig) {
                         Pig pig = (Pig) entity;
                         if (count == 0) {
                             boolean set = (Boolean) value;
                             pig.setSaddle(set);
                         }
-                    }
-                    else if (entity instanceof Sheep) {
+                    } else if (entity instanceof Sheep) {
                         Sheep sheep = (Sheep) entity;
                         if (count == 0) {
                             boolean set = (Boolean) value;
                             sheep.setSheared(set);
-                        }
-                        else if (count == 1) {
+                        } else if (count == 1) {
                             DyeColor set = (DyeColor) value;
                             sheep.setColor(set);
                         }
-                    }
-                    else if (entity instanceof MushroomCow) {
+                    } else if (entity instanceof MushroomCow) {
                         MushroomCow mushroomCow = (MushroomCow) entity;
                         if (count == 0) {
                             MushroomCow.Variant set = (MushroomCow.Variant) value;
                             mushroomCow.setVariant(set);
                         }
-                    }
-                    else if (entity instanceof Slime) {
+                    } else if (entity instanceof Slime) {
                         Slime slime = (Slime) entity;
                         if (count == 0) {
                             int set = (Integer) value;
                             slime.setSize(set);
                         }
-                    }
-                    else if (entity instanceof Parrot) {
+                    } else if (entity instanceof Parrot) {
                         Parrot parrot = (Parrot) entity;
                         if (count == 0) {
                             Variant set = (Variant) value;
                             parrot.setVariant(set);
                         }
-                    }
-                    else if (entity instanceof TropicalFish) {
+                    } else if (entity instanceof TropicalFish) {
                         TropicalFish tropicalFish = (TropicalFish) entity;
                         if (count == 0) {
                             DyeColor set = (DyeColor) value;
                             tropicalFish.setBodyColor(set);
-                        }
-                        else if (count == 1) {
+                        } else if (count == 1) {
                             TropicalFish.Pattern set = (TropicalFish.Pattern) value;
                             tropicalFish.setPattern(set);
-                        }
-                        else if (count == 2) {
+                        } else if (count == 2) {
                             DyeColor set = (DyeColor) value;
                             tropicalFish.setPatternColor(set);
                         }
-                    }
-                    else if (entity instanceof Phantom) {
+                    } else if (entity instanceof Phantom) {
                         Phantom phantom = (Phantom) entity;
                         if (count == 0) {
                             int set = (Integer) value;
                             phantom.setSize(set);
                         }
-                    }
-                    else if (entity instanceof AbstractVillager) {
+                    } else if (entity instanceof AbstractVillager) {
                         AbstractVillager abstractVillager = (AbstractVillager) entity;
                         if (count == 0) {
                             if (abstractVillager instanceof Villager) {
@@ -1690,15 +1649,13 @@ public class Util extends Queue {
                                 Profession set = (Profession) value;
                                 villager.setProfession(set);
                             }
-                        }
-                        else if (count == 1) {
+                        } else if (count == 1) {
                             if (abstractVillager instanceof Villager && value instanceof Villager.Type) {
                                 Villager villager = (Villager) abstractVillager;
                                 Villager.Type set = (Villager.Type) value;
                                 villager.setVillagerType(set);
                             }
-                        }
-                        else if (count == 2) {
+                        } else if (count == 2) {
                             List<MerchantRecipe> merchantRecipes = new ArrayList<>();
                             @SuppressWarnings("unchecked")
                             List<Object> set = (List<Object>) value;
@@ -1710,7 +1667,8 @@ public class Util extends Queue {
                                 @SuppressWarnings("unchecked")
                                 ItemStack result = ItemStack.deserialize((Map<String, Object>) itemMap.get(0));
                                 @SuppressWarnings("unchecked")
-                                List<List<Map<String, Object>>> metadata = (List<List<Map<String, Object>>>) itemMap.get(1);
+                                List<List<Map<String, Object>>> metadata = (List<List<Map<String, Object>>>) itemMap
+                                        .get(1);
                                 Object[] populatedStack = Rollback.populateItemStack(result, metadata);
                                 result = (ItemStack) populatedStack[1];
                                 int uses = (int) recipe.get(1);
@@ -1725,16 +1683,19 @@ public class Util extends Queue {
                                     @SuppressWarnings("unchecked")
                                     ItemStack item = ItemStack.deserialize((Map<String, Object>) ingredientMap.get(0));
                                     @SuppressWarnings("unchecked")
-                                    List<List<Map<String, Object>>> itemMetaData = (List<List<Map<String, Object>>>) ingredientMap.get(1);
+                                    List<List<Map<String, Object>>> itemMetaData = (List<List<Map<String, Object>>>) ingredientMap
+                                            .get(1);
                                     populatedStack = Rollback.populateItemStack(item, itemMetaData);
                                     item = (ItemStack) populatedStack[1];
                                     merchantIngredients.add(item);
                                 }
-                                MerchantRecipe merchantRecipe = new MerchantRecipe(result, uses, maxUses, experienceReward);
+                                MerchantRecipe merchantRecipe = new MerchantRecipe(result, uses, maxUses,
+                                        experienceReward);
                                 if (recipe.size() > 6) {
                                     int villagerExperience = (int) recipe.get(5);
                                     float priceMultiplier = (float) recipe.get(6);
-                                    merchantRecipe = new MerchantRecipe(result, uses, maxUses, experienceReward, villagerExperience, priceMultiplier);
+                                    merchantRecipe = new MerchantRecipe(result, uses, maxUses, experienceReward,
+                                            villagerExperience, priceMultiplier);
                                 }
                                 merchantRecipe.setIngredients(merchantIngredients);
                                 merchantRecipes.add(merchantRecipe);
@@ -1742,21 +1703,18 @@ public class Util extends Queue {
                             if (!merchantRecipes.isEmpty()) {
                                 abstractVillager.setRecipes(merchantRecipes);
                             }
-                        }
-                        else {
+                        } else {
                             Villager villager = (Villager) abstractVillager;
 
                             if (count == 3) {
                                 int set = (int) value;
                                 villager.setVillagerLevel(set);
-                            }
-                            else if (count == 4) {
+                            } else if (count == 4) {
                                 int set = (int) value;
                                 villager.setVillagerExperience(set);
                             }
                         }
-                    }
-                    else if (entity instanceof Raider) {
+                    } else if (entity instanceof Raider) {
                         Raider raider = (Raider) entity;
                         if (count == 0) {
                             boolean set = (Boolean) value;
@@ -1768,37 +1726,31 @@ public class Util extends Queue {
                             Spell set = (Spell) value;
                             spellcaster.setSpell(set);
                         }
-                    }
-                    else if (entity instanceof Wolf) {
+                    } else if (entity instanceof Wolf) {
                         Wolf wolf = (Wolf) entity;
                         if (count == 0) {
                             boolean set = (Boolean) value;
                             wolf.setSitting(set);
-                        }
-                        else if (count == 1) {
+                        } else if (count == 1) {
                             DyeColor set = (DyeColor) value;
                             wolf.setCollarColor(set);
                         }
-                    }
-                    else if (entity instanceof ZombieVillager) {
+                    } else if (entity instanceof ZombieVillager) {
                         ZombieVillager zombieVillager = (ZombieVillager) entity;
                         if (count == 0) {
                             boolean set = (Boolean) value;
                             zombieVillager.setBaby(set);
-                        }
-                        else if (count == 1) {
+                        } else if (count == 1) {
                             Profession set = (Profession) value;
                             zombieVillager.setVillagerProfession(set);
                         }
-                    }
-                    else if (entity instanceof Zombie) {
+                    } else if (entity instanceof Zombie) {
                         Zombie zombie = (Zombie) entity;
                         if (count == 0) {
                             boolean set = (Boolean) value;
                             zombie.setBaby(set);
                         }
-                    }
-                    else if (entity instanceof AbstractHorse) {
+                    } else if (entity instanceof AbstractHorse) {
                         AbstractHorse abstractHorse = (AbstractHorse) entity;
                         if (count == 0 && value != null) {
                             // deprecated
@@ -1807,28 +1759,23 @@ public class Util extends Queue {
                                 ChestedHorse chestedHorse = (ChestedHorse) entity;
                                 chestedHorse.setCarryingChest(set);
                             }
-                        }
-                        else if (count == 1 && value != null) {
+                        } else if (count == 1 && value != null) {
                             // deprecated
                             org.bukkit.entity.Horse.Color set = (org.bukkit.entity.Horse.Color) value;
                             if (entity instanceof Horse) {
                                 Horse horse = (Horse) entity;
                                 horse.setColor(set);
                             }
-                        }
-                        else if (count == 2) {
+                        } else if (count == 2) {
                             int set = (Integer) value;
                             abstractHorse.setDomestication(set);
-                        }
-                        else if (count == 3) {
+                        } else if (count == 3) {
                             double set = (Double) value;
                             abstractHorse.setJumpStrength(set);
-                        }
-                        else if (count == 4) {
+                        } else if (count == 4) {
                             int set = (Integer) value;
                             abstractHorse.setMaxDomestication(set);
-                        }
-                        else if (count == 5 && value != null) {
+                        } else if (count == 5 && value != null) {
                             // deprecated
                             Style set = (Style) value;
                             Horse horse = (Horse) entity;
@@ -1842,23 +1789,19 @@ public class Util extends Queue {
                                     ItemStack set = ItemStack.deserialize((Map<String, Object>) value);
                                     horse.getInventory().setSaddle(set);
                                 }
-                            }
-                            else if (count == 9) {
+                            } else if (count == 9) {
                                 org.bukkit.entity.Horse.Color set = (org.bukkit.entity.Horse.Color) value;
                                 horse.setColor(set);
-                            }
-                            else if (count == 10) {
+                            } else if (count == 10) {
                                 Style set = (Style) value;
                                 horse.setStyle(set);
-                            }
-                            else if (count == 11) {
+                            } else if (count == 11) {
                                 if (value != null) {
                                     @SuppressWarnings("unchecked")
                                     ItemStack set = ItemStack.deserialize((Map<String, Object>) value);
                                     horse.getInventory().setArmor(set);
                                 }
-                            }
-                            else if (count == 12 && value != null) {
+                            } else if (count == 12 && value != null) {
                                 @SuppressWarnings("unchecked")
                                 org.bukkit.Color set = org.bukkit.Color.deserialize((Map<String, Object>) value);
                                 ItemStack armor = horse.getInventory().getArmor();
@@ -1871,8 +1814,7 @@ public class Util extends Queue {
                                     }
                                 }
                             }
-                        }
-                        else if (entity instanceof ChestedHorse) {
+                        } else if (entity instanceof ChestedHorse) {
                             if (count == 7) {
                                 ChestedHorse chestedHorse = (ChestedHorse) entity;
                                 boolean set = (Boolean) value;
@@ -1886,21 +1828,18 @@ public class Util extends Queue {
                                         ItemStack set = ItemStack.deserialize((Map<String, Object>) value);
                                         llama.getInventory().setDecor(set);
                                     }
-                                }
-                                else if (count == 9) {
+                                } else if (count == 9) {
                                     Llama.Color set = (Llama.Color) value;
                                     llama.setColor(set);
                                 }
                             }
                         }
-                    }
-                    else {
+                    } else {
                         BukkitAdapter.ADAPTER.setEntityMeta(entity, value, count);
                     }
                     count++;
                 }
-            }
-            catch (Exception e) {
+            } catch (Exception e) {
                 e.printStackTrace();
             }
         });
@@ -1916,7 +1855,8 @@ public class Util extends Queue {
                 int z = block.getZ();
 
                 for (Entity e : block.getChunk().getEntities()) {
-                    if ((BukkitAdapter.ADAPTER.isItemFrame(rowType) && e instanceof ItemFrame) || (rowType.equals(Material.PAINTING) && e instanceof Painting)) {
+                    if ((BukkitAdapter.ADAPTER.isItemFrame(rowType) && e instanceof ItemFrame)
+                            || (rowType.equals(Material.PAINTING) && e instanceof Painting)) {
                         Location el = e.getLocation();
                         if (el.getBlockX() == x && el.getBlockY() == y && el.getBlockZ() == z) {
                             e.remove();
@@ -1934,16 +1874,13 @@ public class Util extends Queue {
                 if (!BlockGroup.NON_ATTACHABLE.contains(c1.getType())) {
                     faceSet = BlockFace.WEST;
                     block = c1;
-                }
-                else if (!BlockGroup.NON_ATTACHABLE.contains(c2.getType())) {
+                } else if (!BlockGroup.NON_ATTACHABLE.contains(c2.getType())) {
                     faceSet = BlockFace.EAST;
                     block = c2;
-                }
-                else if (!BlockGroup.NON_ATTACHABLE.contains(c3.getType())) {
+                } else if (!BlockGroup.NON_ATTACHABLE.contains(c3.getType())) {
                     faceSet = BlockFace.NORTH;
                     block = c3;
-                }
-                else if (!BlockGroup.NON_ATTACHABLE.contains(c4.getType())) {
+                } else if (!BlockGroup.NON_ATTACHABLE.contains(c4.getType())) {
                     faceSet = BlockFace.SOUTH;
                     block = c4;
                 }
@@ -1951,14 +1888,11 @@ public class Util extends Queue {
                 BlockFace face = null;
                 if (!solidBlock(Util.getType(block.getRelative(BlockFace.EAST)))) {
                     face = BlockFace.EAST;
-                }
-                else if (!solidBlock(Util.getType(block.getRelative(BlockFace.NORTH)))) {
+                } else if (!solidBlock(Util.getType(block.getRelative(BlockFace.NORTH)))) {
                     face = BlockFace.NORTH;
-                }
-                else if (!solidBlock(Util.getType(block.getRelative(BlockFace.WEST)))) {
+                } else if (!solidBlock(Util.getType(block.getRelative(BlockFace.WEST)))) {
                     face = BlockFace.WEST;
-                }
-                else if (!solidBlock(Util.getType(block.getRelative(BlockFace.SOUTH)))) {
+                } else if (!solidBlock(Util.getType(block.getRelative(BlockFace.SOUTH)))) {
                     face = BlockFace.SOUTH;
                 }
 
@@ -1980,8 +1914,7 @@ public class Util extends Queue {
                             if (width > 1) {
                                 if (faceSet.equals(BlockFace.WEST)) {
                                     paintingZ--;
-                                }
-                                else if (faceSet.equals(BlockFace.SOUTH)) {
+                                } else if (faceSet.equals(BlockFace.SOUTH)) {
                                     paintingX--;
                                 }
                             }
@@ -1991,16 +1924,15 @@ public class Util extends Queue {
                         Painting hanging = null;
                         try {
                             hanging = block.getWorld().spawn(spawnBlock.getLocation(), Painting.class);
-                        }
-                        catch (Exception e) {
+                        } catch (Exception e) {
                         }
                         if (hanging != null) {
-                            hanging.teleport(block.getWorld().getBlockAt(paintingX, paintingY, paintingZ).getLocation());
+                            hanging.teleport(
+                                    block.getWorld().getBlockAt(paintingX, paintingY, paintingZ).getLocation());
                             hanging.setFacingDirection(faceSet, true);
                             hanging.setArt(painting, true);
                         }
-                    }
-                    else if (BukkitAdapter.ADAPTER.isItemFrame(rowType)) {
+                    } else if (BukkitAdapter.ADAPTER.isItemFrame(rowType)) {
                         try {
                             Block spawnBlock = block.getRelative(face);
                             Util.setTypeAndData(spawnBlock, Material.AIR, null, true);
@@ -2017,13 +1949,11 @@ public class Util extends Queue {
                                     hanging.setItem(istack);
                                 }
                             }
-                        }
-                        catch (Exception e) {
+                        } catch (Exception e) {
                         }
                     }
                 }
-            }
-            catch (Exception e) {
+            } catch (Exception e) {
                 e.printStackTrace();
             }
         }, delay);
@@ -2039,8 +1969,7 @@ public class Util extends Queue {
             }
             resultSet.close();
             preparedStmt.close();
-        }
-        catch (Exception e) {
+        } catch (Exception e) {
             e.printStackTrace();
         }
         return result;
@@ -2076,8 +2005,7 @@ public class Util extends Queue {
                     }
                 }
                 block.update();
-            }
-            catch (Exception e) {
+            } catch (Exception e) {
                 e.printStackTrace();
             }
         });

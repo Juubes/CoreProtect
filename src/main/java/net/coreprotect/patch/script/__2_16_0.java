@@ -15,17 +15,19 @@ public class __2_16_0 {
         try {
             if (Config.getGlobal().MYSQL) {
                 try {
-                    statement.executeUpdate("ALTER TABLE " + ConfigHandler.prefix + "skull MODIFY owner VARCHAR(64), DROP COLUMN type, DROP COLUMN data, DROP COLUMN rotation");
-                }
-                catch (Exception e) {
+                    statement.executeUpdate("ALTER TABLE " + ConfigHandler.prefix
+                            + "skull MODIFY owner VARCHAR(64), DROP COLUMN type, DROP COLUMN data, DROP COLUMN rotation");
+                } catch (Exception e) {
                     // update already ran
                 }
-            }
-            else {
+            } else {
                 statement.executeUpdate("BEGIN TRANSACTION");
-                statement.executeUpdate("ALTER TABLE " + ConfigHandler.prefix + "skull RENAME TO " + ConfigHandler.prefix + "skull_temp");
-                statement.executeUpdate("CREATE TABLE IF NOT EXISTS " + ConfigHandler.prefix + "skull (id INTEGER PRIMARY KEY ASC, time INTEGER, owner TEXT);");
-                statement.executeUpdate("INSERT INTO " + ConfigHandler.prefix + "skull SELECT id, time, owner FROM " + ConfigHandler.prefix + "skull_temp");
+                statement.executeUpdate("ALTER TABLE " + ConfigHandler.prefix + "skull RENAME TO "
+                        + ConfigHandler.prefix + "skull_temp");
+                statement.executeUpdate("CREATE TABLE IF NOT EXISTS " + ConfigHandler.prefix
+                        + "skull (id INTEGER PRIMARY KEY ASC, time INTEGER, owner TEXT);");
+                statement.executeUpdate("INSERT INTO " + ConfigHandler.prefix + "skull SELECT id, time, owner FROM "
+                        + ConfigHandler.prefix + "skull_temp");
                 statement.executeUpdate("DROP TABLE " + ConfigHandler.prefix + "skull_temp");
                 statement.executeUpdate("COMMIT TRANSACTION");
             }
@@ -36,23 +38,25 @@ public class __2_16_0 {
 
             try {
                 String idList = "";
-                String query = "SELECT id FROM " + ConfigHandler.prefix + "material_map WHERE material LIKE '%_CONCRETE' OR material LIKE '%_CONCRETE_POWDER'";
+                String query = "SELECT id FROM " + ConfigHandler.prefix
+                        + "material_map WHERE material LIKE '%_CONCRETE' OR material LIKE '%_CONCRETE_POWDER'";
                 ResultSet resultSet = statement.executeQuery(query);
                 while (resultSet.next()) {
                     String id = resultSet.getString("id");
                     if (idList.length() == 0) {
                         idList = id;
-                    }
-                    else {
+                    } else {
                         idList = idList + ", " + id;
                     }
                 }
                 resultSet.close();
 
                 if (idList.length() > 0) {
-                    query = "SELECT rowid as id FROM " + ConfigHandler.prefix + "block WHERE type IN(" + idList + ") AND y='0'";
+                    query = "SELECT rowid as id FROM " + ConfigHandler.prefix + "block WHERE type IN(" + idList
+                            + ") AND y='0'";
                     String preparedQueryDelete = "DELETE FROM " + ConfigHandler.prefix + "block WHERE rowid = ?";
-                    PreparedStatement preparedStatementDelete = statement.getConnection().prepareStatement(preparedQueryDelete);
+                    PreparedStatement preparedStatementDelete = statement.getConnection()
+                            .prepareStatement(preparedQueryDelete);
                     Database.beginTransaction(statement);
                     resultSet = statement.executeQuery(query);
                     while (resultSet.next()) {
@@ -63,8 +67,7 @@ public class __2_16_0 {
                     resultSet.close();
                     Database.commitTransaction(statement);
                 }
-            }
-            catch (Exception e) {
+            } catch (Exception e) {
                 e.printStackTrace();
             }
 
@@ -73,7 +76,12 @@ public class __2_16_0 {
             }
 
             String query = "SELECT rowid as id, user FROM " + ConfigHandler.prefix + "user WHERE uuid IS NULL";
-            String preparedQuerySelect = "SELECT EXISTS (SELECT user FROM " + ConfigHandler.prefix + "session WHERE user = ?) OR EXISTS (SELECT user FROM " + ConfigHandler.prefix + "container WHERE user = ?) OR EXISTS (SELECT user FROM " + ConfigHandler.prefix + "command WHERE user = ?) OR EXISTS (SELECT user FROM " + ConfigHandler.prefix + "chat WHERE user = ?) OR EXISTS (SELECT user FROM " + ConfigHandler.prefix + "block WHERE user = ?) as userExists";
+            String preparedQuerySelect = "SELECT EXISTS (SELECT user FROM " + ConfigHandler.prefix
+                    + "session WHERE user = ?) OR EXISTS (SELECT user FROM " + ConfigHandler.prefix
+                    + "container WHERE user = ?) OR EXISTS (SELECT user FROM " + ConfigHandler.prefix
+                    + "command WHERE user = ?) OR EXISTS (SELECT user FROM " + ConfigHandler.prefix
+                    + "chat WHERE user = ?) OR EXISTS (SELECT user FROM " + ConfigHandler.prefix
+                    + "block WHERE user = ?) as userExists";
             String preparedQueryDelete = "DELETE FROM " + ConfigHandler.prefix + "user WHERE rowid = ?";
             PreparedStatement preparedStatementSelect = statement.getConnection().prepareStatement(preparedQuerySelect);
             PreparedStatement preparedStatementDelete = statement.getConnection().prepareStatement(preparedQueryDelete);
@@ -97,8 +105,7 @@ public class __2_16_0 {
             }
             resultSet.close();
             Database.commitTransaction(statement);
-        }
-        catch (Exception e) {
+        } catch (Exception e) {
             e.printStackTrace();
         }
 

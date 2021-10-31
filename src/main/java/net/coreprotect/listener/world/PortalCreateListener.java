@@ -43,9 +43,9 @@ public final class PortalCreateListener extends Queue implements Listener {
 
             if (Util.isAir(type)) {
                 Queue.queueBlockBreak(user, oldBlock, oldBlock.getType(), oldBlock.getBlockData().getAsString(), 0);
-            }
-            else {
-                Queue.queueBlockPlace(user, blockState, oldBlock.getType(), oldBlock, type, -1, 0, blockState.getBlockData().getAsString());
+            } else {
+                Queue.queueBlockPlace(user, blockState, oldBlock.getType(), oldBlock, type, -1, 0,
+                        blockState.getBlockData().getAsString());
             }
         }
     }

@@ -12,21 +12,22 @@ import net.coreprotect.utility.Chat;
 
 class WorldInsertProcess {
 
-    static void process(PreparedStatement preparedStmt, int batchCount, Statement statement, Object world, int worldId) {
+    static void process(PreparedStatement preparedStmt, int batchCount, Statement statement, Object world,
+            int worldId) {
         if (world instanceof String) {
             String query = "SELECT id FROM " + ConfigHandler.prefix + "world WHERE id = '" + worldId + "' LIMIT 0, 1";
             boolean hasMaterial = MaterialStatement.hasMaterial(statement, query);
             if (!hasMaterial) {
                 WorldStatement.insert(preparedStmt, batchCount, worldId, (String) world);
 
-                // validate ID maps to ensure mapping wasn't reloaded from database prior to this insertion completing
+                // validate ID maps to ensure mapping wasn't reloaded from database prior to
+                // this insertion completing
                 ConfigHandler.worlds.put((String) world, worldId);
                 ConfigHandler.worldsReversed.put(worldId, (String) world);
                 if (worldId > ConfigHandler.worldId) {
                     ConfigHandler.worldId = worldId;
                 }
-            }
-            else {
+            } else {
                 Chat.console(Phrase.build(Phrase.CACHE_ERROR, "world"));
                 Chat.console(Phrase.build(Phrase.CACHE_RELOAD, Selector.SECOND));
                 ConfigHandler.loadWorlds(statement);

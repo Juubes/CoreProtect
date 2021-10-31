@@ -26,14 +26,15 @@ public final class HangingBreakListener extends Queue implements Listener {
         Block blockEvent = event.getEntity().getLocation().getBlock();
 
         if (entity instanceof ItemFrame || entity instanceof Painting) {
-            if (cause.equals(HangingBreakEvent.RemoveCause.EXPLOSION) || cause.equals(HangingBreakEvent.RemoveCause.PHYSICS) || cause.equals(HangingBreakEvent.RemoveCause.OBSTRUCTION)) {
+            if (cause.equals(HangingBreakEvent.RemoveCause.EXPLOSION)
+                    || cause.equals(HangingBreakEvent.RemoveCause.PHYSICS)
+                    || cause.equals(HangingBreakEvent.RemoveCause.OBSTRUCTION)) {
                 String causeName = "#explosion";
                 Block attachedBlock = null;
 
                 if (cause.equals(HangingBreakEvent.RemoveCause.PHYSICS)) {
                     causeName = "#physics";
-                }
-                else if (cause.equals(HangingBreakEvent.RemoveCause.OBSTRUCTION)) {
+                } else if (cause.equals(HangingBreakEvent.RemoveCause.OBSTRUCTION)) {
                     causeName = "#obstruction";
                 }
 
@@ -52,8 +53,7 @@ public final class HangingBreakListener extends Queue implements Listener {
                     if (itemframe.getItem() != null) {
                         itemData = Util.getBlockId(itemframe.getItem().getType());
                     }
-                }
-                else {
+                } else {
                     material = Material.PAINTING;
                     Painting painting = (Painting) entity;
                     itemData = Util.getArtId(painting.getArt().toString(), true);

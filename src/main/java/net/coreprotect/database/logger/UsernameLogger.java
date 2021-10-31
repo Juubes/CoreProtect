@@ -36,13 +36,13 @@ public class UsernameLogger {
             if (userRow == null) {
                 idRow = ConfigHandler.playerIdCache.get(user.toLowerCase(Locale.ROOT));
                 update = true;
-            }
-            else if (!user.equalsIgnoreCase(userRow)) {
+            } else if (!user.equalsIgnoreCase(userRow)) {
                 update = true;
             }
 
             if (update) {
-                preparedStmt = connection.prepareStatement("UPDATE " + ConfigHandler.prefix + "user SET user = ?, uuid = ? WHERE rowid = ?");
+                preparedStmt = connection.prepareStatement(
+                        "UPDATE " + ConfigHandler.prefix + "user SET user = ?, uuid = ? WHERE rowid = ?");
                 preparedStmt.setString(1, user);
                 preparedStmt.setString(2, uuid);
                 preparedStmt.setInt(3, idRow);
@@ -50,18 +50,15 @@ public class UsernameLogger {
                 preparedStmt.close();
 
                 /*
-                    //Commented out to prevent potential issues if player manages to stay logged in with old username
-                    if (ConfigHandler.playerIdCache.get(user_row)!=null){
-                        int cache_id = ConfigHandler.playerIdCache.get(user_row);
-                        if (cache_id==id_row){
-                            ConfigHandler.playerIdCache.remove(user_row);
-                        }
-                    }
+                 * //Commented out to prevent potential issues if player manages to stay logged
+                 * in with old username if (ConfigHandler.playerIdCache.get(user_row)!=null){
+                 * int cache_id = ConfigHandler.playerIdCache.get(user_row); if
+                 * (cache_id==id_row){ ConfigHandler.playerIdCache.remove(user_row); } }
                  */
-            }
-            else {
+            } else {
                 boolean foundUUID = false;
-                query = "SELECT rowid as id FROM " + ConfigHandler.prefix + "username_log WHERE uuid = ? AND user = ? LIMIT 0, 1";
+                query = "SELECT rowid as id FROM " + ConfigHandler.prefix
+                        + "username_log WHERE uuid = ? AND user = ? LIMIT 0, 1";
                 PreparedStatement preparedStatement = connection.prepareStatement(query);
                 preparedStatement.setString(1, uuid);
                 preparedStatement.setString(2, user);
@@ -78,7 +75,8 @@ public class UsernameLogger {
             }
 
             if (update && configUsernames == 1) {
-                preparedStmt = connection.prepareStatement("INSERT INTO " + ConfigHandler.prefix + "username_log (time, uuid, user) VALUES (?, ?, ?)");
+                preparedStmt = connection.prepareStatement(
+                        "INSERT INTO " + ConfigHandler.prefix + "username_log (time, uuid, user) VALUES (?, ?, ?)");
                 preparedStmt.setInt(1, time);
                 preparedStmt.setString(2, uuid);
                 preparedStmt.setString(3, user);
@@ -90,8 +88,7 @@ public class UsernameLogger {
             ConfigHandler.playerIdCacheReversed.put(idRow, user);
             ConfigHandler.uuidCache.put(user.toLowerCase(Locale.ROOT), uuid);
             ConfigHandler.uuidCacheReversed.put(uuid, user);
-        }
-        catch (Exception e) {
+        } catch (Exception e) {
             e.printStackTrace();
         }
     }

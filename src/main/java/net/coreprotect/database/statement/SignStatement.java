@@ -17,7 +17,8 @@ public class SignStatement {
         throw new IllegalStateException("Database class");
     }
 
-    public static void insert(PreparedStatement preparedStmt, int batchCount, int time, int id, int wid, int x, int y, int z, int action, int color, int data, String line1, String line2, String line3, String line4) {
+    public static void insert(PreparedStatement preparedStmt, int batchCount, int time, int id, int wid, int x, int y,
+            int z, int action, int color, int data, String line1, String line2, String line3, String line4) {
         try {
             preparedStmt.setInt(1, time);
             preparedStmt.setInt(2, id);
@@ -37,8 +38,7 @@ public class SignStatement {
             if (batchCount > 0 && batchCount % 1000 == 0) {
                 preparedStmt.executeBatch();
             }
-        }
-        catch (Exception e) {
+        } catch (Exception e) {
             e.printStackTrace();
         }
     }
@@ -75,8 +75,7 @@ public class SignStatement {
             }
 
             resultSet.close();
-        }
-        catch (Exception e) {
+        } catch (Exception e) {
             e.printStackTrace();
         }
     }

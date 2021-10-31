@@ -55,48 +55,53 @@ public final class ArmorStandManipulateListener extends Queue implements Listene
                         public void run() {
                             try {
                                 if (ConfigHandler.converterRunning) {
-                                    Chat.sendMessage(finalPlayer, Color.DARK_AQUA + "CoreProtect " + Color.WHITE + "- " + Phrase.build(Phrase.UPGRADE_IN_PROGRESS));
+                                    Chat.sendMessage(finalPlayer, Color.DARK_AQUA + "CoreProtect " + Color.WHITE + "- "
+                                            + Phrase.build(Phrase.UPGRADE_IN_PROGRESS));
                                     return;
                                 }
                                 if (ConfigHandler.purgeRunning) {
-                                    Chat.sendMessage(finalPlayer, Color.DARK_AQUA + "CoreProtect " + Color.WHITE + "- " + Phrase.build(Phrase.PURGE_IN_PROGRESS));
+                                    Chat.sendMessage(finalPlayer, Color.DARK_AQUA + "CoreProtect " + Color.WHITE + "- "
+                                            + Phrase.build(Phrase.PURGE_IN_PROGRESS));
                                     return;
                                 }
                                 if (ConfigHandler.lookupThrottle.get(finalPlayer.getName()) != null) {
                                     Object[] lookupThrottle = ConfigHandler.lookupThrottle.get(finalPlayer.getName());
-                                    if ((boolean) lookupThrottle[0] || ((System.currentTimeMillis() - (long) lookupThrottle[1])) < 100) {
-                                        Chat.sendMessage(finalPlayer, Color.DARK_AQUA + "CoreProtect " + Color.WHITE + "- " + Phrase.build(Phrase.DATABASE_BUSY));
+                                    if ((boolean) lookupThrottle[0]
+                                            || ((System.currentTimeMillis() - (long) lookupThrottle[1])) < 100) {
+                                        Chat.sendMessage(finalPlayer, Color.DARK_AQUA + "CoreProtect " + Color.WHITE
+                                                + "- " + Phrase.build(Phrase.DATABASE_BUSY));
                                         return;
                                     }
                                 }
-                                ConfigHandler.lookupThrottle.put(finalPlayer.getName(), new Object[] { true, System.currentTimeMillis() });
+                                ConfigHandler.lookupThrottle.put(finalPlayer.getName(),
+                                        new Object[] { true, System.currentTimeMillis() });
 
                                 Connection connection = Database.getConnection(true);
                                 if (connection != null) {
                                     Statement statement = connection.createStatement();
                                     Location standLocation = armorStand.getLocation();
-                                    String blockData = ChestTransactionLookup.performLookup(null, statement, standLocation, finalPlayer, 1, 7, true);
+                                    String blockData = ChestTransactionLookup.performLookup(null, statement,
+                                            standLocation, finalPlayer, 1, 7, true);
 
                                     if (blockData.contains("\n")) {
                                         for (String b : blockData.split("\n")) {
                                             Chat.sendComponent(finalPlayer, b);
                                         }
-                                    }
-                                    else {
+                                    } else {
                                         Chat.sendComponent(finalPlayer, blockData);
                                     }
                                     statement.close();
                                     connection.close();
+                                } else {
+                                    Chat.sendMessage(finalPlayer, Color.DARK_AQUA + "CoreProtect " + Color.WHITE + "- "
+                                            + Phrase.build(Phrase.DATABASE_BUSY));
                                 }
-                                else {
-                                    Chat.sendMessage(finalPlayer, Color.DARK_AQUA + "CoreProtect " + Color.WHITE + "- " + Phrase.build(Phrase.DATABASE_BUSY));
-                                }
-                            }
-                            catch (Exception e) {
+                            } catch (Exception e) {
                                 e.printStackTrace();
                             }
 
-                            ConfigHandler.lookupThrottle.put(finalPlayer.getName(), new Object[] { false, System.currentTimeMillis() });
+                            ConfigHandler.lookupThrottle.put(finalPlayer.getName(),
+                                    new Object[] { false, System.currentTimeMillis() });
                         }
                     }
 
@@ -118,15 +123,9 @@ public final class ArmorStandManipulateListener extends Queue implements Listene
         }
 
         /*
-            if (item!=null && playerItem==null){
-                //player gets item
-            }
-            if (item==null && playerItem!=null){
-                //players item placed on armor stands
-            }
-            if (item!=null && playerItem!=null){
-                //items are swapped
-            }
+         * if (item!=null && playerItem==null){ //player gets item } if (item==null &&
+         * playerItem!=null){ //players item placed on armor stands } if (item!=null &&
+         * playerItem!=null){ //items are swapped }
          */
 
         Material type = Material.ARMOR_STAND;
@@ -148,14 +147,14 @@ public final class ArmorStandManipulateListener extends Queue implements Listene
                     ConfigHandler.oldContainer.put(loggingChestId, list);
                 }
             }
-        }
-        else {
+        } else {
             List<ItemStack[]> list = new ArrayList<>();
             list.add(Util.getContainerState(contents));
             ConfigHandler.oldContainer.put(loggingChestId, list);
         }
 
-        ConfigHandler.transactingChest.computeIfAbsent(transactingChestId, k -> Collections.synchronizedList(new ArrayList<>()));
+        ConfigHandler.transactingChest.computeIfAbsent(transactingChestId,
+                k -> Collections.synchronizedList(new ArrayList<>()));
         Queue.queueContainerTransaction(player.getName(), standLocation, type, equipment, chestId);
     }
 }

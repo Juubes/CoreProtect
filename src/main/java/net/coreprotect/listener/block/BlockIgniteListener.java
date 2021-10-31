@@ -65,23 +65,29 @@ public final class BlockIgniteListener extends Queue implements Listener {
 
             if (event.getPlayer() == null) {
                 // IgniteCause cause = event.getCause(); // FLINT_AND_STEEL
-                // boolean isDispenser = (event.getIgnitingBlock() != null && event.getIgnitingBlock().getType()==Material.DISPENSER);
+                // boolean isDispenser = (event.getIgnitingBlock() != null &&
+                // event.getIgnitingBlock().getType()==Material.DISPENSER);
 
-                if (event.getCause() == IgniteCause.FIREBALL && (blockType == Material.AIR || blockType == Material.CAVE_AIR)) {
-                    // Fix bug where fire is recorded as being placed above a campfire (when lit via a fireball from a dispenser)
+                if (event.getCause() == IgniteCause.FIREBALL
+                        && (blockType == Material.AIR || blockType == Material.CAVE_AIR)) {
+                    // Fix bug where fire is recorded as being placed above a campfire (when lit via
+                    // a fireball from a dispenser)
                     if (BlockGroup.LIGHTABLES.contains(blockBelow)) {
                         return;
                     }
                 }
 
-                Queue.queueBlockPlace("#fire", block.getState(), block.getType(), replacedBlock, blockIgnited, -1, 0, forceBlockData.getAsString());
-            }
-            else {
+                Queue.queueBlockPlace("#fire", block.getState(), block.getType(), replacedBlock, blockIgnited, -1, 0,
+                        forceBlockData.getAsString());
+            } else {
                 Player player = event.getPlayer();
-                Queue.queueBlockPlace(player.getName(), block.getState(), block.getType(), replacedBlock, blockIgnited, -1, 0, forceBlockData.getAsString());
+                Queue.queueBlockPlace(player.getName(), block.getState(), block.getType(), replacedBlock, blockIgnited,
+                        -1, 0, forceBlockData.getAsString());
                 int unixtimestamp = (int) (System.currentTimeMillis() / 1000L);
                 int world_id = Util.getWorldId(block.getWorld().getName());
-                CacheHandler.lookupCache.put("" + block.getX() + "." + block.getY() + "." + block.getZ() + "." + world_id + "", new Object[] { unixtimestamp, player.getName(), block.getType() });
+                CacheHandler.lookupCache.put(
+                        "" + block.getX() + "." + block.getY() + "." + block.getZ() + "." + world_id + "",
+                        new Object[] { unixtimestamp, player.getName(), block.getType() });
             }
         }
     }

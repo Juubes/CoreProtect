@@ -43,15 +43,19 @@ public class WorldEditLogger extends Queue {
         return (WorldEditPlugin) plugin;
     }
 
-    protected static BaseBlock getBaseBlock(Extent extent, BlockVector3 position, Location location, Material oldType, com.sk89q.worldedit.world.block.BlockState oldBlock) {
-        if (oldType == Material.SPAWNER || (Config.getConfig(location.getWorld()).SIGN_TEXT && Tag.SIGNS.isTagged(oldType))) {
+    protected static BaseBlock getBaseBlock(Extent extent, BlockVector3 position, Location location, Material oldType,
+            com.sk89q.worldedit.world.block.BlockState oldBlock) {
+        if (oldType == Material.SPAWNER
+                || (Config.getConfig(location.getWorld()).SIGN_TEXT && Tag.SIGNS.isTagged(oldType))) {
             return extent.getFullBlock(position);
         }
 
         return null;
     }
 
-    protected static void postProcess(Extent extent, Actor actor, BlockVector3 position, Location location, BlockStateHolder<?> blockStateHolder, BaseBlock baseBlock, Material oldType, com.sk89q.worldedit.world.block.BlockState oldBlockState, ItemStack[] containerContents) {
+    protected static void postProcess(Extent extent, Actor actor, BlockVector3 position, Location location,
+            BlockStateHolder<?> blockStateHolder, BaseBlock baseBlock, Material oldType,
+            com.sk89q.worldedit.world.block.BlockState oldBlockState, ItemStack[] containerContents) {
         BlockData oldBlockData = BukkitAdapter.adapt(oldBlockState);
         BlockData newBlockData = BukkitAdapter.adapt(blockStateHolder.toImmutableState());
         Material newType = newBlockData.getMaterial();
@@ -73,10 +77,12 @@ public class WorldEditLogger extends Queue {
                         String line2 = getSignText(compoundTag.getString("Text2"));
                         String line3 = getSignText(compoundTag.getString("Text3"));
                         String line4 = getSignText(compoundTag.getString("Text4"));
-                        int color = DyeColor.valueOf(baseBlock.getNbtData().getString("Color").toUpperCase()).getColor().asRGB();
+                        int color = DyeColor.valueOf(baseBlock.getNbtData().getString("Color").toUpperCase()).getColor()
+                                .asRGB();
                         boolean isGlowing = (compoundTag.getInt("GlowingText") == 1 ? true : false);
 
-                        Queue.queueSignText(actor.getName(), location, 0, color, isGlowing, line1, line2, line3, line4, 5);
+                        Queue.queueSignText(actor.getName(), location, 0, color, isGlowing, line1, line2, line3, line4,
+                                5);
                     }
                     if (oldType == Material.SPAWNER) {
                         String mobType = getMobType(baseBlock);
@@ -84,8 +90,7 @@ public class WorldEditLogger extends Queue {
                             try {
                                 EntityType entityType = EntityType.valueOf(mobType);
                                 oldBlockExtraData = Util.getSpawnerType(entityType);
-                            }
-                            catch (IllegalArgumentException exception) {
+                            } catch (IllegalArgumentException exception) {
                                 // mobType isn't a valid enum (EntityType.class)
                             }
                         }
@@ -94,20 +99,26 @@ public class WorldEditLogger extends Queue {
                 if (containerContents != null) {
                     Queue.queueContainerBreak(actor.getName(), location, oldType, containerContents);
                 }
-            }
-            catch (Exception e) {
+            } catch (Exception e) {
                 e.printStackTrace();
             }
 
-            if (newType.equals(Material.SKELETON_SKULL) || newType.equals(Material.SKELETON_WALL_SKULL) || newType.equals(Material.WITHER_SKELETON_SKULL) || newType.equals(Material.WITHER_SKELETON_WALL_SKULL) || newType.equals(Material.ZOMBIE_HEAD) || newType.equals(Material.ZOMBIE_WALL_HEAD) || newType.equals(Material.PLAYER_HEAD) || newType.equals(Material.PLAYER_WALL_HEAD) || newType.equals(Material.CREEPER_HEAD) || newType.equals(Material.CREEPER_WALL_HEAD) || newType.equals(Material.DRAGON_HEAD) || newType.equals(Material.DRAGON_WALL_HEAD)) {
+            if (newType.equals(Material.SKELETON_SKULL) || newType.equals(Material.SKELETON_WALL_SKULL)
+                    || newType.equals(Material.WITHER_SKELETON_SKULL)
+                    || newType.equals(Material.WITHER_SKELETON_WALL_SKULL) || newType.equals(Material.ZOMBIE_HEAD)
+                    || newType.equals(Material.ZOMBIE_WALL_HEAD) || newType.equals(Material.PLAYER_HEAD)
+                    || newType.equals(Material.PLAYER_WALL_HEAD) || newType.equals(Material.CREEPER_HEAD)
+                    || newType.equals(Material.CREEPER_WALL_HEAD) || newType.equals(Material.DRAGON_HEAD)
+                    || newType.equals(Material.DRAGON_WALL_HEAD)) {
                 // skull
                 Queue.queueBlockPlaceDelayed(actor.getName(), location, newType, newBlockDataString, oldBlock, 0);
-            }
-            else if ((oldType.equals(Material.AIR) || oldType.equals(Material.CAVE_AIR)) && (!newType.equals(Material.AIR) && !newType.equals(Material.CAVE_AIR))) {
+            } else if ((oldType.equals(Material.AIR) || oldType.equals(Material.CAVE_AIR))
+                    && (!newType.equals(Material.AIR) && !newType.equals(Material.CAVE_AIR))) {
                 // placed a block
-                Queue.queueBlockPlace(actor.getName(), newBlock, newType, null, newType, newBlockExtraData, 0, newBlockDataString);
-            }
-            else if ((!oldType.equals(Material.AIR) && !oldType.equals(Material.CAVE_AIR)) && (!newType.equals(Material.AIR) && !newType.equals(Material.CAVE_AIR))) {
+                Queue.queueBlockPlace(actor.getName(), newBlock, newType, null, newType, newBlockExtraData, 0,
+                        newBlockDataString);
+            } else if ((!oldType.equals(Material.AIR) && !oldType.equals(Material.CAVE_AIR))
+                    && (!newType.equals(Material.AIR) && !newType.equals(Material.CAVE_AIR))) {
                 // replaced a block
                 Waterlogged waterlogged = Util.checkWaterlogged(newBlockData, oldBlock);
                 if (waterlogged != null) {
@@ -115,27 +126,28 @@ public class WorldEditLogger extends Queue {
                     oldBlock = null;
                 }
                 if (oldBlock != null) {
-                    Queue.queueBlockBreak(actor.getName(), oldBlock, oldBlock.getType(), oldBlockDataString, null, oldBlockExtraData, 0);
+                    Queue.queueBlockBreak(actor.getName(), oldBlock, oldBlock.getType(), oldBlockDataString, null,
+                            oldBlockExtraData, 0);
                 }
-                Queue.queueBlockPlace(actor.getName(), newBlock, newType, null, newType, newBlockExtraData, 0, newBlockDataString);
-            }
-            else if ((!oldType.equals(Material.AIR) && !oldType.equals(Material.CAVE_AIR)) && (newType.equals(Material.AIR) || newType.equals(Material.CAVE_AIR))) {
+                Queue.queueBlockPlace(actor.getName(), newBlock, newType, null, newType, newBlockExtraData, 0,
+                        newBlockDataString);
+            } else if ((!oldType.equals(Material.AIR) && !oldType.equals(Material.CAVE_AIR))
+                    && (newType.equals(Material.AIR) || newType.equals(Material.CAVE_AIR))) {
                 // removed a block
-                Queue.queueBlockBreak(actor.getName(), oldBlock, oldBlock.getType(), oldBlockDataString, null, oldBlockExtraData, 0);
+                Queue.queueBlockBreak(actor.getName(), oldBlock, oldBlock.getType(), oldBlockDataString, null,
+                        oldBlockExtraData, 0);
 
                 if (oldBlockData instanceof Waterlogged) {
                     Waterlogged waterlogged = (Waterlogged) oldBlockData;
                     if (waterlogged.isWaterlogged()) {
                         Queue.queueBlockPlace(actor.getName(), newBlock, newType, null, Material.WATER, -1, 0, null);
                     }
-                }
-                else if (oldBlockData instanceof Bisected) {
+                } else if (oldBlockData instanceof Bisected) {
                     Bisected bisected = (Bisected) oldBlockData;
                     Location bisectLocation = location.clone();
                     if (bisected.getHalf() == Half.TOP) {
                         bisectLocation.setY(bisectLocation.getY() - 1);
-                    }
-                    else {
+                    } else {
                         bisectLocation.setY(bisectLocation.getY() + 1);
                     }
 
@@ -143,7 +155,8 @@ public class WorldEditLogger extends Queue {
                     int worldMinHeight = net.coreprotect.bukkit.BukkitAdapter.ADAPTER.getMinHeight(location.getWorld());
                     if (bisectLocation.getBlockY() >= worldMinHeight && bisectLocation.getBlockY() < worldMaxHeight) {
                         BlockState bisectBlock = location.getWorld().getBlockAt(bisectLocation).getState();
-                        Queue.queueBlockBreak(actor.getName(), bisectBlock, bisectBlock.getType(), bisectBlock.getBlockData().getAsString(), null, 0, 0);
+                        Queue.queueBlockBreak(actor.getName(), bisectBlock, bisectBlock.getType(),
+                                bisectBlock.getBlockData().getAsString(), null, 0, 0);
                     }
                 }
 
@@ -154,14 +167,14 @@ public class WorldEditLogger extends Queue {
     private static String getMobType(BaseBlock fullBlock) {
         String mobType = null;
         try {
-            CompoundTag compoundTag = NBTUtils.getChildTag(fullBlock.getNbtData().getValue(), "SpawnData", CompoundTag.class);
+            CompoundTag compoundTag = NBTUtils.getChildTag(fullBlock.getNbtData().getValue(), "SpawnData",
+                    CompoundTag.class);
             mobType = compoundTag.getString("id").toUpperCase(Locale.ROOT);
             if (mobType.contains("MINECRAFT:")) {
                 String[] mobTypeSplit = mobType.split(":");
                 mobType = mobTypeSplit[1];
             }
-        }
-        catch (Exception e) {
+        } catch (Exception e) {
             e.printStackTrace();
         }
 
@@ -178,8 +191,7 @@ public class WorldEditLogger extends Queue {
         try {
             JSONObject json = (JSONObject) new JSONParser().parse(line);
             return (String) json.get("text");
-        }
-        catch (Exception e) {
+        } catch (Exception e) {
             e.printStackTrace();
         }
 

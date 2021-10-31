@@ -32,29 +32,29 @@ public class CacheHandler implements Runnable {
                     Map cache = CacheHandler.lookupCache;
 
                     switch (id) {
-                        case 1:
-                            cache = CacheHandler.breakCache;
-                            break;
-                        case 2:
-                            cache = CacheHandler.pistonCache;
-                            scanTime = 900; // 15 minutes
-                            break;
-                        case 3:
-                            cache = CacheHandler.spreadCache;
-                            scanTime = 900; // 15 minutes
-                            break;
-                        case 4:
-                            cache = CacheHandler.interactCache;
-                            scanTime = 5;
-                            break;
-                        case 5:
-                            cache = CacheHandler.redstoneCache;
-                            scanTime = 1;
-                            break;
-                        case 6:
-                            cache = CacheHandler.entityCache;
-                            scanTime = 3600; // 60 minutes
-                            break;
+                    case 1:
+                        cache = CacheHandler.breakCache;
+                        break;
+                    case 2:
+                        cache = CacheHandler.pistonCache;
+                        scanTime = 900; // 15 minutes
+                        break;
+                    case 3:
+                        cache = CacheHandler.spreadCache;
+                        scanTime = 900; // 15 minutes
+                        break;
+                    case 4:
+                        cache = CacheHandler.interactCache;
+                        scanTime = 5;
+                        break;
+                    case 5:
+                        cache = CacheHandler.redstoneCache;
+                        scanTime = 1;
+                        break;
+                    case 6:
+                        cache = CacheHandler.entityCache;
+                        scanTime = 3600; // 60 minutes
+                        break;
                     }
 
                     int timestamp = (int) (System.currentTimeMillis() / 1000L) - scanTime;
@@ -68,18 +68,15 @@ public class CacheHandler implements Runnable {
                             if (time < timestamp) {
                                 try {
                                     iterator.remove();
-                                }
-                                catch (Exception e) {
+                                } catch (Exception e) {
                                 }
                             }
-                        }
-                        catch (Exception e) {
+                        } catch (Exception e) {
                             break;
                         }
                     }
                 }
-            }
-            catch (Exception e) {
+            } catch (Exception e) {
                 e.printStackTrace();
             }
         }

@@ -21,7 +21,9 @@ public class UserStatement {
 
         try {
             int unixtimestamp = (int) (System.currentTimeMillis() / 1000L);
-            PreparedStatement preparedStmt = connection.prepareStatement("INSERT INTO " + ConfigHandler.prefix + "user (time, user) VALUES (?, ?)", Statement.RETURN_GENERATED_KEYS);
+            PreparedStatement preparedStmt = connection.prepareStatement(
+                    "INSERT INTO " + ConfigHandler.prefix + "user (time, user) VALUES (?, ?)",
+                    Statement.RETURN_GENERATED_KEYS);
             preparedStmt.setInt(1, unixtimestamp);
             preparedStmt.setString(2, user);
             preparedStmt.executeUpdate();
@@ -30,8 +32,7 @@ public class UserStatement {
             id = keys.getInt(1);
             keys.close();
             preparedStmt.close();
-        }
-        catch (Exception e) {
+        } catch (Exception e) {
             e.printStackTrace();
         }
         return id;
@@ -60,7 +61,8 @@ public class UserStatement {
                 where = where + " OR uuid = ?";
             }
 
-            String query = "SELECT rowid as id, uuid FROM " + ConfigHandler.prefix + "user WHERE " + where + " ORDER BY rowid ASC LIMIT 0, 1";
+            String query = "SELECT rowid as id, uuid FROM " + ConfigHandler.prefix + "user WHERE " + where
+                    + " ORDER BY rowid ASC LIMIT 0, 1";
             PreparedStatement preparedStmt = connection.prepareStatement(query);
             preparedStmt.setString(1, user);
 
@@ -86,8 +88,7 @@ public class UserStatement {
                 ConfigHandler.uuidCache.put(user.toLowerCase(Locale.ROOT), uuid);
                 ConfigHandler.uuidCacheReversed.put(uuid, user);
             }
-        }
-        catch (Exception e) {
+        } catch (Exception e) {
             e.printStackTrace();
         }
 
@@ -101,7 +102,8 @@ public class UserStatement {
 
         try {
             Statement statement = connection.createStatement();
-            String query = "SELECT user, uuid FROM " + ConfigHandler.prefix + "user WHERE rowid='" + id + "' LIMIT 0, 1";
+            String query = "SELECT user, uuid FROM " + ConfigHandler.prefix + "user WHERE rowid='" + id
+                    + "' LIMIT 0, 1";
 
             ResultSet resultSet = statement.executeQuery(query);
             while (resultSet.next()) {
@@ -122,8 +124,7 @@ public class UserStatement {
 
             resultSet.close();
             statement.close();
-        }
-        catch (Exception e) {
+        } catch (Exception e) {
             e.printStackTrace();
         }
 

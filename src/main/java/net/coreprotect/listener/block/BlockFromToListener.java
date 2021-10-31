@@ -36,7 +36,8 @@ public final class BlockFromToListener extends Queue implements Listener {
             }
 
             World world = event.getBlock().getWorld();
-            if ((Config.getConfig(world).WATER_FLOW && type.equals(Material.WATER)) || (Config.getConfig(world).LAVA_FLOW && type.equals(Material.LAVA))) {
+            if ((Config.getConfig(world).WATER_FLOW && type.equals(Material.WATER))
+                    || (Config.getConfig(world).LAVA_FLOW && type.equals(Material.LAVA))) {
                 Block toBlock = event.getToBlock();
                 BlockState toBlockState = toBlock.getState();
 
@@ -57,8 +58,7 @@ public final class BlockFromToListener extends Queue implements Listener {
                 String f = "#flow";
                 if (type.equals(Material.WATER)) {
                     f = "#water";
-                }
-                else if (type.equals(Material.LAVA)) {
+                } else if (type.equals(Material.LAVA)) {
                     f = "#lava";
                 }
 
@@ -84,8 +84,10 @@ public final class BlockFromToListener extends Queue implements Listener {
                     }
                 }
 
-                CacheHandler.lookupCache.put("" + x + "." + y + "." + z + "." + wid + "", new Object[] { unixtimestamp, f, type });
-                Queue.queueBlockPlace(f, toBlock.getState(), block.getType(), toBlockState, type, -1, 0, blockData.getAsString());
+                CacheHandler.lookupCache.put("" + x + "." + y + "." + z + "." + wid + "",
+                        new Object[] { unixtimestamp, f, type });
+                Queue.queueBlockPlace(f, toBlock.getState(), block.getType(), toBlockState, type, -1, 0,
+                        blockData.getAsString());
             }
         }
     }

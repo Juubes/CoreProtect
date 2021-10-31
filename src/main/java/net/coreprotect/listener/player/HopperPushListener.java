@@ -20,12 +20,15 @@ import net.coreprotect.utility.Util;
 
 public final class HopperPushListener {
 
-    static void processHopperPush(Location location, InventoryHolder sourceHolder, InventoryHolder destinationHolder, ItemStack item) {
-        String loggingChestId = "#hopper-push." + location.getBlockX() + "." + location.getBlockY() + "." + location.getBlockZ();
+    static void processHopperPush(Location location, InventoryHolder sourceHolder, InventoryHolder destinationHolder,
+            ItemStack item) {
+        String loggingChestId = "#hopper-push." + location.getBlockX() + "." + location.getBlockY() + "."
+                + location.getBlockZ();
         Object[] lastAbort = ConfigHandler.hopperAbort.get(loggingChestId);
         if (lastAbort != null) {
             ItemStack[] destinationContents = destinationHolder.getInventory().getContents();
-            if (((Set<?>) lastAbort[0]).contains(item) && Arrays.equals(destinationContents, (ItemStack[]) lastAbort[1])) {
+            if (((Set<?>) lastAbort[0]).contains(item)
+                    && Arrays.equals(destinationContents, (ItemStack[]) lastAbort[1])) {
                 return;
             }
         }
@@ -50,15 +53,17 @@ public final class HopperPushListener {
                 if (ConfigHandler.isPaper) {
                     for (ItemStack itemStack : sourceHolder.getInventory().getContents()) {
                         if (itemStack != null && Util.getItemStackHashCode(itemStack) == itemHash) {
-                            if (itemHash != Util.getItemStackHashCode(movedItem) || destinationHolder.getInventory().firstEmpty() == -1 || destinationHolder.getInventory() instanceof BrewerInventory || destinationHolder.getInventory() instanceof FurnaceInventory) {
+                            if (itemHash != Util.getItemStackHashCode(movedItem)
+                                    || destinationHolder.getInventory().firstEmpty() == -1
+                                    || destinationHolder.getInventory() instanceof BrewerInventory
+                                    || destinationHolder.getInventory() instanceof FurnaceInventory) {
                                 abort = true;
                             }
 
                             break;
                         }
                     }
-                }
-                else {
+                } else {
                     ItemStack[] destinationContents = destinationHolder.getInventory().getContents();
                     boolean addedInventory = Util.addedContainer(destinationContainer, destinationContents);
                     if (!addedInventory) {
@@ -74,11 +79,13 @@ public final class HopperPushListener {
                     }
                     movedItems.add(movedItem);
 
-                    ConfigHandler.hopperAbort.put(loggingChestId, new Object[] { movedItems, Util.getContainerState(destinationContents) });
+                    ConfigHandler.hopperAbort.put(loggingChestId,
+                            new Object[] { movedItems, Util.getContainerState(destinationContents) });
                     return;
                 }
 
-                List<Object> list = ConfigHandler.transactingChest.get(location.getWorld().getUID().toString() + "." + location.getBlockX() + "." + location.getBlockY() + "." + location.getBlockZ());
+                List<Object> list = ConfigHandler.transactingChest.get(location.getWorld().getUID().toString() + "."
+                        + location.getBlockX() + "." + location.getBlockY() + "." + location.getBlockZ());
                 if (list != null) {
                     list.add(movedItem);
                 }
@@ -100,8 +107,7 @@ public final class HopperPushListener {
                         if (itemStack.getAmount() >= removeAmount) {
                             itemStack.setAmount(itemStack.getAmount() - removeAmount);
                             removeAmount = 0;
-                        }
-                        else {
+                        } else {
                             removeAmount = removeAmount - itemStack.getAmount();
                             itemStack = null;
                         }
@@ -111,9 +117,9 @@ public final class HopperPushListener {
                 }
 
                 InventoryChangeListener.checkTasks(taskStarted);
-                InventoryChangeListener.onInventoryInteract("#hopper", destinationInventory, originalDestination, null, destinationInventory.getLocation(), true);
-            }
-            catch (Exception e) {
+                InventoryChangeListener.onInventoryInteract("#hopper", destinationInventory, originalDestination, null,
+                        destinationInventory.getLocation(), true);
+            } catch (Exception e) {
                 e.printStackTrace();
             }
         });

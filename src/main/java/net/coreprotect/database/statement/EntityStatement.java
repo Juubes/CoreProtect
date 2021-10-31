@@ -31,8 +31,7 @@ public class EntityStatement {
             preparedStmt.setInt(1, time);
             preparedStmt.setObject(2, byte_data);
             preparedStmt.executeUpdate();
-        }
-        catch (Exception e) {
+        } catch (Exception e) {
             e.printStackTrace();
         }
     }
@@ -54,8 +53,7 @@ public class EntityStatement {
             }
 
             resultSet.close();
-        }
-        catch (Exception e) {
+        } catch (Exception e) {
             e.printStackTrace();
         }
 

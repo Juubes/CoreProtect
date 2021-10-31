@@ -53,7 +53,8 @@ public class CoreProtectLogger extends AbstractDelegateExtent {
         ItemStack[] containerData = Util.getContainerContents(oldType, null, location);
 
         if (eventExtent.setBlock(position, block)) {
-            WorldEditLogger.postProcess(eventExtent, eventActor, position, location, block, baseBlock, oldType, oldBlock, containerData);
+            WorldEditLogger.postProcess(eventExtent, eventActor, position, location, block, baseBlock, oldType,
+                    oldBlock, containerData);
             return true;
         }
 

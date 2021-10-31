@@ -17,7 +17,8 @@ public class SkullPlaceLogger {
         throw new IllegalStateException("Database class");
     }
 
-    public static void log(PreparedStatement preparedStmt, PreparedStatement preparedStmt2, int batchCount, String user, BlockState block, int replaceType, int replaceData) {
+    public static void log(PreparedStatement preparedStmt, PreparedStatement preparedStmt2, int batchCount, String user,
+            BlockState block, int replaceType, int replaceData) {
         try {
             if (ConfigHandler.blacklist.get(user.toLowerCase(Locale.ROOT)) != null || block == null) {
                 return;
@@ -39,9 +40,9 @@ public class SkullPlaceLogger {
                 }
             }
 
-            BlockPlaceLogger.log(preparedStmt, batchCount, user, block, replaceType, replaceData, type, skullKey, true, null, null, null);
-        }
-        catch (Exception e) {
+            BlockPlaceLogger.log(preparedStmt, batchCount, user, block, replaceType, replaceData, type, skullKey, true,
+                    null, null, null);
+        } catch (Exception e) {
             e.printStackTrace();
         }
     }

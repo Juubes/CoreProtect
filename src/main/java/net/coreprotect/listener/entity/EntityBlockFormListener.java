@@ -27,7 +27,8 @@ public final class EntityBlockFormListener extends Queue implements Listener {
                 e = "#snowman";
             }
             if (e.length() > 0) {
-                Queue.queueBlockPlace(e, block.getState(), block.getType(), null, newState.getType(), -1, 0, newState.getBlockData().getAsString());
+                Queue.queueBlockPlace(e, block.getState(), block.getType(), null, newState.getType(), -1, 0,
+                        newState.getBlockData().getAsString());
             }
         }
     }

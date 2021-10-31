@@ -32,23 +32,17 @@ public final class EntityChangeBlockListener extends Queue implements Listener {
             String e = "";
             if (entity instanceof Enderman) {
                 e = "#enderman";
-            }
-            else if (entity instanceof EnderDragon) {
+            } else if (entity instanceof EnderDragon) {
                 e = "#enderdragon";
-            }
-            else if (entity instanceof Fox) {
+            } else if (entity instanceof Fox) {
                 e = "#fox";
-            }
-            else if (entity instanceof Wither) {
+            } else if (entity instanceof Wither) {
                 e = "#wither";
-            }
-            else if (entity instanceof Turtle) {
+            } else if (entity instanceof Turtle) {
                 e = "#turtle";
-            }
-            else if (entity instanceof Ravager) {
+            } else if (entity instanceof Ravager) {
                 e = "#ravager";
-            }
-            else if (entity instanceof Silverfish) {
+            } else if (entity instanceof Silverfish) {
                 if (newtype.equals(Material.AIR) || newtype.equals(Material.CAVE_AIR)) {
                     e = "#silverfish";
                 }
@@ -56,9 +50,9 @@ public final class EntityChangeBlockListener extends Queue implements Listener {
             if (e.length() > 0) {
                 if (newtype.equals(Material.AIR) || newtype.equals(Material.CAVE_AIR)) {
                     Queue.queueBlockBreak(e, block.getState(), type, block.getBlockData().getAsString(), 0);
-                }
-                else {
-                    queueBlockPlace(e, block.getState(), type, block.getState(), newtype, -1, 0, event.getBlockData().getAsString());
+                } else {
+                    queueBlockPlace(e, block.getState(), type, block.getState(), newtype, -1, 0,
+                            event.getBlockData().getAsString());
                 }
             }
         }

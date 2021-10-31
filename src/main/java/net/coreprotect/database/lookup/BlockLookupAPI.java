@@ -39,7 +39,9 @@ public class BlockLookupAPI {
             }
 
             Statement statement = connection.createStatement();
-            String query = "SELECT time,user,action,type,data,blockdata,rolled_back FROM " + ConfigHandler.prefix + "block WHERE wid = '" + worldId + "' AND x = '" + x + "' AND z = '" + z + "' AND y = '" + y + "' AND time > '" + checkTime + "' ORDER BY rowid DESC";
+            String query = "SELECT time,user,action,type,data,blockdata,rolled_back FROM " + ConfigHandler.prefix
+                    + "block WHERE wid = '" + worldId + "' AND x = '" + x + "' AND z = '" + z + "' AND y = '" + y
+                    + "' AND time > '" + checkTime + "' ORDER BY rowid DESC";
             ResultSet results = statement.executeQuery(query);
 
             while (results.next()) {
@@ -56,15 +58,16 @@ public class BlockLookupAPI {
                 String resultUser = ConfigHandler.playerIdCacheReversed.get(resultUserId);
                 String blockData = Util.byteDataToString(resultBlockData, resultType);
 
-                String[] lookupData = new String[] { resultTime, resultUser, String.valueOf(x), String.valueOf(y), String.valueOf(z), String.valueOf(resultType), resultData, resultAction, resultRolledBack, String.valueOf(worldId), blockData };
+                String[] lookupData = new String[] { resultTime, resultUser, String.valueOf(x), String.valueOf(y),
+                        String.valueOf(z), String.valueOf(resultType), resultData, resultAction, resultRolledBack,
+                        String.valueOf(worldId), blockData };
                 String[] lineData = Util.toStringArray(lookupData);
                 result.add(lineData);
             }
             results.close();
             statement.close();
             connection.close();
-        }
-        catch (Exception e) {
+        } catch (Exception e) {
             e.printStackTrace();
         }
 

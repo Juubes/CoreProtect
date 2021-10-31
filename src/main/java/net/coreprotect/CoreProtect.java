@@ -15,11 +15,11 @@ import net.coreprotect.consumer.Consumer;
 import net.coreprotect.consumer.process.Process;
 import net.coreprotect.language.Language;
 import net.coreprotect.language.Phrase;
-import net.coreprotect.listener.ListenerHandler;
 import net.coreprotect.thread.CacheHandler;
 import net.coreprotect.thread.NetworkHandler;
 import net.coreprotect.utility.Chat;
 import net.coreprotect.utility.Color;
+import net.coreprotect.utility.ListenerUtil;
 import net.coreprotect.utility.Util;
 
 public final class CoreProtect extends JavaPlugin {
@@ -56,13 +56,16 @@ public final class CoreProtect extends JavaPlugin {
         if (start) {
             try {
                 Consumer.initialize(); // Prepare consumer (keep this here)
-                new ListenerHandler(this);
+                ListenerUtil.registerEventListeners(this);
+                TabHandler tabHandler = new TabHandler();
                 getCommand("coreprotect").setExecutor(CommandHandler.getInstance());
-                getCommand("coreprotect").setTabCompleter(new TabHandler());
+                getCommand("coreprotect").setTabCompleter(tabHandler);
+
                 getCommand("core").setExecutor(CommandHandler.getInstance());
-                getCommand("core").setTabCompleter(new TabHandler());
+                getCommand("core").setTabCompleter(tabHandler);
+
                 getCommand("co").setExecutor(CommandHandler.getInstance());
-                getCommand("co").setTabCompleter(new TabHandler());
+                getCommand("co").setTabCompleter(tabHandler);
 
                 boolean exists = (new File(ConfigHandler.path)).exists();
                 if (!exists) {

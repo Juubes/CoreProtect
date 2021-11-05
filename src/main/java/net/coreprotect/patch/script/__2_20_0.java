@@ -6,9 +6,9 @@ import java.sql.Statement;
 
 import org.bukkit.entity.EntityType;
 
+import net.coreprotect.CoreProtect;
 import net.coreprotect.config.Config;
 import net.coreprotect.config.ConfigHandler;
-import net.coreprotect.database.Database;
 import net.coreprotect.language.Phrase;
 import net.coreprotect.language.Selector;
 import net.coreprotect.patch.Patch;
@@ -64,7 +64,7 @@ public class __2_20_0 {
                     + "material_map WHERE material='minecraft:spawner' LIMIT 1) ORDER BY rowid ASC";
             String preparedQueryUpdate = "UPDATE " + ConfigHandler.prefix + "block SET data = ? WHERE rowid = ?";
             PreparedStatement preparedStatementUpdate = statement.getConnection().prepareStatement(preparedQueryUpdate);
-            Database.beginTransaction(statement);
+            CoreProtect.getInstance().getDatabase().beginTransaction(statement);
 
             ResultSet resultSet = statement.executeQuery(entityQuery);
             while (resultSet.next()) {
@@ -100,7 +100,7 @@ public class __2_20_0 {
             resultSet.close();
             preparedStatementUpdate.close();
 
-            Database.commitTransaction(statement);
+            CoreProtect.getInstance().getDatabase().commitTransaction(statement);
         } catch (Exception e) {
             e.printStackTrace();
         }

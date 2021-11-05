@@ -10,6 +10,7 @@ import java.util.Map.Entry;
 
 import org.bukkit.Material;
 
+import net.coreprotect.CoreProtect;
 import net.coreprotect.config.ConfigHandler;
 import net.coreprotect.consumer.Consumer;
 import net.coreprotect.database.Database;
@@ -66,7 +67,7 @@ public class Process {
             }
 
             if (connection == null && ConfigHandler.serverRunning) {
-                connection = Database.getConnection(false, 500);
+                connection = CoreProtect.getInstance().getDatabase().getConnection(false, 500);
                 lastConnection = (int) (System.currentTimeMillis() / 1000L);
             }
         } catch (Exception e) {
@@ -89,6 +90,7 @@ public class Process {
     }
 
     protected static void processConsumer(int processId, boolean lastRun) {
+        Database db = CoreProtect.getInstance().getDatabase();
         try {
             // Connection
             validateConnection(lastRun);
@@ -104,7 +106,7 @@ public class Process {
             int consumerDataSize = consumerData.size();
             currentConsumerSize = consumerDataSize;
 
-            Database.beginTransaction(statement);
+            db.beginTransaction(statement);
             // Scan through usernames, ensure everything is loaded in memory.
             for (Entry<Integer, String[]> entry : users.entrySet()) {
                 String[] data = entry.getValue();
@@ -117,26 +119,26 @@ public class Process {
                 }
             }
             updateLockTable(statement, (lastRun ? 0 : 1));
-            Database.commitTransaction(statement);
+            CoreProtect.getInstance().getDatabase().commitTransaction(statement);
 
             // Create prepared statements
-            PreparedStatement preparedStmtSigns = Database.prepareStatement(connection, Database.SIGN, false);
-            PreparedStatement preparedStmtBlocks = Database.prepareStatement(connection, Database.BLOCK, false);
-            PreparedStatement preparedStmtSkulls = Database.prepareStatement(connection, Database.SKULL, true);
-            PreparedStatement preparedStmtContainers = Database.prepareStatement(connection, Database.CONTAINER, false);
-            PreparedStatement preparedStmtItems = Database.prepareStatement(connection, Database.ITEM, false);
-            PreparedStatement preparedStmtWorlds = Database.prepareStatement(connection, Database.WORLD, false);
-            PreparedStatement preparedStmtChat = Database.prepareStatement(connection, Database.CHAT, false);
-            PreparedStatement preparedStmtCommand = Database.prepareStatement(connection, Database.COMMAND, false);
-            PreparedStatement preparedStmtSession = Database.prepareStatement(connection, Database.SESSION, false);
-            PreparedStatement preparedStmtEntities = Database.prepareStatement(connection, Database.ENTITY, true);
-            PreparedStatement preparedStmtMaterials = Database.prepareStatement(connection, Database.MATERIAL, false);
-            PreparedStatement preparedStmtArt = Database.prepareStatement(connection, Database.ART, false);
-            PreparedStatement preparedStmtEntity = Database.prepareStatement(connection, Database.ENTITY_MAP, false);
-            PreparedStatement preparedStmtBlockdata = Database.prepareStatement(connection, Database.BLOCKDATA, false);
+            PreparedStatement preparedStmtSigns = db.prepareStatement(connection, Database.SIGN, false);
+            PreparedStatement preparedStmtBlocks = db.prepareStatement(connection, Database.BLOCK, false);
+            PreparedStatement preparedStmtSkulls = db.prepareStatement(connection, Database.SKULL, true);
+            PreparedStatement preparedStmtContainers = db.prepareStatement(connection, Database.CONTAINER, false);
+            PreparedStatement preparedStmtItems = db.prepareStatement(connection, Database.ITEM, false);
+            PreparedStatement preparedStmtWorlds = db.prepareStatement(connection, Database.WORLD, false);
+            PreparedStatement preparedStmtChat = db.prepareStatement(connection, Database.CHAT, false);
+            PreparedStatement preparedStmtCommand = db.prepareStatement(connection, Database.COMMAND, false);
+            PreparedStatement preparedStmtSession = db.prepareStatement(connection, Database.SESSION, false);
+            PreparedStatement preparedStmtEntities = db.prepareStatement(connection, Database.ENTITY, true);
+            PreparedStatement preparedStmtMaterials = db.prepareStatement(connection, Database.MATERIAL, false);
+            PreparedStatement preparedStmtArt = db.prepareStatement(connection, Database.ART, false);
+            PreparedStatement preparedStmtEntity = db.prepareStatement(connection, Database.ENTITY_MAP, false);
+            PreparedStatement preparedStmtBlockdata = db.prepareStatement(connection, Database.BLOCKDATA, false);
 
             // Scan through consumer data
-            Database.beginTransaction(statement);
+            db.beginTransaction(statement);
             for (int i = 0; i < consumerDataSize; i++) {
                 Object[] data = consumerData.get(i);
                 if (data != null) {
@@ -269,7 +271,7 @@ public class Process {
                                         preparedStmtMaterials, preparedStmtArt, preparedStmtEntity,
                                         preparedStmtBlockdata);
                                 Thread.sleep(500);
-                                Database.beginTransaction(statement);
+                                db.beginTransaction(statement);
                             }
                         } catch (Exception e) {
                             e.printStackTrace();
@@ -342,7 +344,7 @@ public class Process {
             preparedStmtArt.executeBatch();
             preparedStmtEntity.executeBatch();
             preparedStmtBlockdata.executeBatch();
-            Database.commitTransaction(statement);
+            CoreProtect.getInstance().getDatabase().commitTransaction(statement);
         } catch (Exception e) {
             e.printStackTrace();
         }

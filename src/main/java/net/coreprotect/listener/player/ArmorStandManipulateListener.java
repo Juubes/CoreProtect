@@ -18,10 +18,10 @@ import org.bukkit.event.player.PlayerArmorStandManipulateEvent;
 import org.bukkit.inventory.EntityEquipment;
 import org.bukkit.inventory.ItemStack;
 
+import net.coreprotect.CoreProtect;
 import net.coreprotect.config.Config;
 import net.coreprotect.config.ConfigHandler;
 import net.coreprotect.consumer.Queue;
-import net.coreprotect.database.Database;
 import net.coreprotect.database.lookup.ChestTransactionLookup;
 import net.coreprotect.language.Phrase;
 import net.coreprotect.model.BlockGroup;
@@ -76,7 +76,7 @@ public final class ArmorStandManipulateListener extends Queue implements Listene
                                 ConfigHandler.lookupThrottle.put(finalPlayer.getName(),
                                         new Object[] { true, System.currentTimeMillis() });
 
-                                Connection connection = Database.getConnection(true);
+                                Connection connection = CoreProtect.getInstance().getDatabase().getConnection(true);
                                 if (connection != null) {
                                     Statement statement = connection.createStatement();
                                     Location standLocation = armorStand.getLocation();

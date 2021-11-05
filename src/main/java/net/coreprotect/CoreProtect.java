@@ -7,12 +7,14 @@ import org.bukkit.Bukkit;
 import org.bukkit.plugin.PluginDescriptionFile;
 import org.bukkit.plugin.java.JavaPlugin;
 
+import lombok.Getter;
 import net.coreprotect.command.CommandHandler;
 import net.coreprotect.command.TabHandler;
 import net.coreprotect.config.Config;
 import net.coreprotect.config.ConfigHandler;
 import net.coreprotect.consumer.Consumer;
 import net.coreprotect.consumer.process.Process;
+import net.coreprotect.database.Database;
 import net.coreprotect.language.Language;
 import net.coreprotect.language.Phrase;
 import net.coreprotect.thread.CacheHandler;
@@ -45,6 +47,9 @@ public final class CoreProtect extends JavaPlugin {
     public CoreProtectAPI getAPI() {
         return api;
     }
+
+    @Getter
+    public Database database;
 
     @Override
     public void onEnable() {
@@ -189,5 +194,4 @@ public final class CoreProtect extends JavaPlugin {
             e.printStackTrace();
         }
     }
-
 }

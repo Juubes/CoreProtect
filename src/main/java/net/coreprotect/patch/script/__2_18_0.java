@@ -11,9 +11,9 @@ import org.bukkit.block.data.BlockData;
 import org.bukkit.block.data.Directional;
 import org.bukkit.block.data.Rotatable;
 
+import net.coreprotect.CoreProtect;
 import net.coreprotect.config.Config;
 import net.coreprotect.config.ConfigHandler;
-import net.coreprotect.database.Database;
 import net.coreprotect.patch.Patch;
 import net.coreprotect.utility.Util;
 
@@ -66,7 +66,7 @@ public class __2_18_0 {
                         .prepareStatement(preparedContainerUpdateQuery);
                 PreparedStatement preparedMaterialDeleteStatement = statement.getConnection()
                         .prepareStatement(preparedMaterialDeleteQuery);
-                Database.beginTransaction(statement);
+                CoreProtect.getInstance().getDatabase().beginTransaction(statement);
                 try {
                     ResultSet resultSet = statement.executeQuery(query);
                     while (resultSet.next()) {
@@ -172,7 +172,7 @@ public class __2_18_0 {
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
-                Database.commitTransaction(statement);
+                CoreProtect.getInstance().getDatabase().commitTransaction(statement);
 
                 preparedBlockStatement.close();
                 preparedBlockUpdateStatement.close();

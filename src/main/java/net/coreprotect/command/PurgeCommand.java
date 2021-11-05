@@ -13,10 +13,10 @@ import org.bukkit.Location;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
+import net.coreprotect.CoreProtect;
 import net.coreprotect.config.Config;
 import net.coreprotect.config.ConfigHandler;
 import net.coreprotect.consumer.Consumer;
-import net.coreprotect.database.Database;
 import net.coreprotect.language.Phrase;
 import net.coreprotect.language.Selector;
 import net.coreprotect.patch.Patch;
@@ -109,7 +109,7 @@ public class PurgeCommand extends Consumer {
 
                     Connection connection = null;
                     for (int i = 0; i <= 5; i++) {
-                        connection = Database.getConnection(false, 500);
+                        connection = CoreProtect.getInstance().getDatabase().getConnection(false, 500);
                         if (connection != null) {
                             break;
                         }
@@ -170,7 +170,7 @@ public class PurgeCommand extends Consumer {
                             }
                         }
 
-                        Database.createDatabaseTables(purgePrefix, true);
+                        CoreProtect.getInstance().getDatabase().createDatabaseTables(purgePrefix, true);
                     }
 
                     List<String> purgeTables = Arrays.asList("sign", "container", "item", "skull", "session", "chat",

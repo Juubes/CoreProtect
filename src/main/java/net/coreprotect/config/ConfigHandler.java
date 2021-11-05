@@ -21,10 +21,10 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.PluginManager;
 
+import net.coreprotect.CoreProtect;
 import net.coreprotect.bukkit.BukkitAdapter;
 import net.coreprotect.consumer.Consumer;
 import net.coreprotect.consumer.Queue;
-import net.coreprotect.database.Database;
 import net.coreprotect.database.statement.UserStatement;
 import net.coreprotect.language.Phrase;
 import net.coreprotect.model.BlockGroup;
@@ -199,7 +199,7 @@ public class ConfigHandler extends Queue {
         if (ConfigHandler.serverRunning) {
             Consumer.resetConnection = true;
         }
-        Database.createDatabaseTables(ConfigHandler.prefix, false);
+        CoreProtect.getInstance().getDatabase().createDatabaseTables(ConfigHandler.prefix, false);
     }
 
     public static void loadTypes(Statement statement) {
@@ -364,7 +364,7 @@ public class ConfigHandler extends Queue {
             ConfigHandler.loadConfig(); // Load (or create) the configuration file.
             ConfigHandler.loadDatabase(); // Initialize MySQL and create tables if necessary.
 
-            Connection connection = Database.getConnection(true, 0);
+            Connection connection = CoreProtect.getInstance().getDatabase().getConnection(true, 0);
             Statement statement = connection.createStatement();
 
             ConfigHandler.checkPlayers(connection);

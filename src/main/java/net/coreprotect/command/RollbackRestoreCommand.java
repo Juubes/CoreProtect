@@ -18,10 +18,10 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Player;
 
+import net.coreprotect.CoreProtect;
 import net.coreprotect.config.Config;
 import net.coreprotect.config.ConfigHandler;
 import net.coreprotect.database.ContainerRollback;
-import net.coreprotect.database.Database;
 import net.coreprotect.database.Rollback;
 import net.coreprotect.database.lookup.PlayerLookup;
 import net.coreprotect.language.Phrase;
@@ -335,7 +335,8 @@ public class RollbackRestoreCommand {
                                             new Object[] { true, System.currentTimeMillis() });
                                     int action = finalAction;
                                     Location location = locationFinal;
-                                    Connection connection = Database.getConnection(false, 1000);
+                                    Connection connection = CoreProtect.getInstance().getDatabase().getConnection(false,
+                                            1000);
                                     if (connection != null) {
                                         Statement statement = connection.createStatement();
                                         String baduser = "";

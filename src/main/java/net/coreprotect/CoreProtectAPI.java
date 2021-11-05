@@ -18,7 +18,6 @@ import org.bukkit.entity.Player;
 
 import net.coreprotect.config.Config;
 import net.coreprotect.consumer.Queue;
-import net.coreprotect.database.Database;
 import net.coreprotect.database.Lookup;
 import net.coreprotect.database.Rollback;
 import net.coreprotect.database.lookup.BlockLookupAPI;
@@ -293,7 +292,8 @@ public class CoreProtectAPI extends Queue {
                     }
 
                     Block block = location.getBlock();
-                    Database.containerBreakCheck(user, block.getType(), block, null, location);
+                    CoreProtect.getInstance().getDatabase().containerBreakCheck(user, block.getType(), block, null,
+                            location);
                     Queue.queueBlockBreak(user, location.getBlock().getState(), type, blockDataString, 0);
                     return true;
                 }
@@ -468,7 +468,7 @@ public class CoreProtectAPI extends Queue {
         }
 
         try {
-            Connection connection = Database.getConnection(false, 1000);
+            Connection connection = CoreProtect.getInstance().getDatabase().getConnection(false, 1000);
             if (connection != null) {
                 Statement statement = connection.createStatement();
                 boolean restrictWorld = false;

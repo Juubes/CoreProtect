@@ -44,7 +44,6 @@ import net.coreprotect.bukkit.BukkitAdapter;
 import net.coreprotect.config.Config;
 import net.coreprotect.config.ConfigHandler;
 import net.coreprotect.consumer.Queue;
-import net.coreprotect.database.Database;
 import net.coreprotect.database.lookup.BlockLookup;
 import net.coreprotect.database.lookup.ChestTransactionLookup;
 import net.coreprotect.database.lookup.InteractionLookup;
@@ -110,7 +109,7 @@ public final class PlayerInteractListener extends Queue implements Listener {
                             }
                         }
 
-                        Connection connection = Database.getConnection(true);
+                        Connection connection = CoreProtect.getInstance().getDatabase().getConnection(true);
                         if (connection != null) {
                             ConfigHandler.lookupThrottle.put(player.getName(),
                                     new Object[] { true, System.currentTimeMillis() });
@@ -216,7 +215,7 @@ public final class PlayerInteractListener extends Queue implements Listener {
                                     ConfigHandler.lookupThrottle.put(player.getName(),
                                             new Object[] { true, System.currentTimeMillis() });
 
-                                    Connection connection = Database.getConnection(true);
+                                    Connection connection = CoreProtect.getInstance().getDatabase().getConnection(true);
                                     if (connection != null) {
                                         Statement statement = connection.createStatement();
                                         List<String> signData = SignMessageLookup.performLookup(null, statement,
@@ -304,7 +303,7 @@ public final class PlayerInteractListener extends Queue implements Listener {
                                     ConfigHandler.lookupThrottle.put(player.getName(),
                                             new Object[] { true, System.currentTimeMillis() });
 
-                                    Connection connection = Database.getConnection(true);
+                                    Connection connection = CoreProtect.getInstance().getDatabase().getConnection(true);
                                     if (connection != null) {
                                         Statement statement = connection.createStatement();
                                         String blockData = ChestTransactionLookup.performLookup(null, statement,
@@ -378,7 +377,7 @@ public final class PlayerInteractListener extends Queue implements Listener {
                                     ConfigHandler.lookupThrottle.put(player.getName(),
                                             new Object[] { true, System.currentTimeMillis() });
 
-                                    Connection connection = Database.getConnection(true);
+                                    Connection connection = CoreProtect.getInstance().getDatabase().getConnection(true);
                                     if (connection != null) {
                                         Statement statement = connection.createStatement();
                                         String blockData = InteractionLookup.performLookup(null, statement,
@@ -467,7 +466,7 @@ public final class PlayerInteractListener extends Queue implements Listener {
                                     ConfigHandler.lookupThrottle.put(finalPlayer.getName(),
                                             new Object[] { true, System.currentTimeMillis() });
 
-                                    Connection connection = Database.getConnection(true);
+                                    Connection connection = CoreProtect.getInstance().getDatabase().getConnection(true);
                                     if (connection != null) {
                                         Statement statement = connection.createStatement();
                                         if (finalBlock.getType().equals(Material.AIR)

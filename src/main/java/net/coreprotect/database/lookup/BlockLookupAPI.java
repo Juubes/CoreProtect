@@ -8,8 +8,8 @@ import java.util.List;
 
 import org.bukkit.block.Block;
 
+import net.coreprotect.CoreProtect;
 import net.coreprotect.config.ConfigHandler;
-import net.coreprotect.database.Database;
 import net.coreprotect.database.statement.UserStatement;
 import net.coreprotect.utility.Util;
 
@@ -33,7 +33,7 @@ public class BlockLookupAPI {
                 checkTime = time - offset;
             }
 
-            Connection connection = Database.getConnection(false, 1000);
+            Connection connection = CoreProtect.getInstance().getDatabase().getConnection(false, 1000);
             if (connection == null) {
                 return result;
             }

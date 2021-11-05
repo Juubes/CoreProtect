@@ -4,8 +4,8 @@ import java.sql.Statement;
 import java.util.List;
 import java.util.Map;
 
+import net.coreprotect.CoreProtect;
 import net.coreprotect.consumer.Consumer;
-import net.coreprotect.database.Database;
 
 class RollbackUpdateProcess {
 
@@ -17,7 +17,7 @@ class RollbackUpdateProcess {
                 long rowid = (Long) listRow[0];
                 int rolledBack = (Integer) listRow[9];
                 if (rolledBack == action) {
-                    Database.performUpdate(statement, rowid, action, table);
+                    CoreProtect.getInstance().getDatabase().performUpdate(statement, rowid, action, table);
                 }
             }
             updateLists.remove(id);

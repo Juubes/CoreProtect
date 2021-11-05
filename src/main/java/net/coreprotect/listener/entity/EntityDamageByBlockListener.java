@@ -13,10 +13,10 @@ import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntityDamageByBlockEvent;
 
+import net.coreprotect.CoreProtect;
 import net.coreprotect.bukkit.BukkitAdapter;
 import net.coreprotect.config.Config;
 import net.coreprotect.consumer.Queue;
-import net.coreprotect.database.Database;
 import net.coreprotect.utility.Util;
 
 public final class EntityDamageByBlockListener extends Queue implements Listener {
@@ -54,7 +54,8 @@ public final class EntityDamageByBlockListener extends Queue implements Listener
             Queue.queueBlockBreak(user, block.getState(), frameType, null, data);
             Queue.queueBlockPlace(user, block.getState(), frameType, null, frameType, -1, 0, null);
         } else if (entity instanceof ArmorStand) {
-            Database.containerBreakCheck(user, Material.ARMOR_STAND, entity, null, block.getLocation());
+            CoreProtect.getInstance().getDatabase().containerBreakCheck(user, Material.ARMOR_STAND, entity, null,
+                    block.getLocation());
             Queue.queueBlockBreak(user, block.getState(), Material.ARMOR_STAND, null,
                     (int) entity.getLocation().getYaw());
         } else if (entity instanceof EnderCrystal) {

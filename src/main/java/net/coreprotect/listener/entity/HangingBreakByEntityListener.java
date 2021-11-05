@@ -15,11 +15,11 @@ import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.hanging.HangingBreakByEntityEvent;
 
+import net.coreprotect.CoreProtect;
 import net.coreprotect.bukkit.BukkitAdapter;
 import net.coreprotect.config.Config;
 import net.coreprotect.config.ConfigHandler;
 import net.coreprotect.consumer.Queue;
-import net.coreprotect.database.Database;
 import net.coreprotect.database.lookup.BlockLookup;
 import net.coreprotect.language.Phrase;
 import net.coreprotect.utility.Chat;
@@ -34,7 +34,7 @@ public final class HangingBreakByEntityListener extends Queue implements Listene
             @Override
             public void run() {
                 try {
-                    Connection connection = Database.getConnection(true);
+                    Connection connection = CoreProtect.getInstance().getDatabase().getConnection(true);
                     if (connection != null) {
                         Statement statement = connection.createStatement();
                         String blockData = BlockLookup.performLookup(null, statement, block, player, 0, 1, 7);

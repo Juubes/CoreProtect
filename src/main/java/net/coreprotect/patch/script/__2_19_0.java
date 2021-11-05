@@ -9,9 +9,9 @@ import java.util.List;
 import org.bukkit.Material;
 import org.bukkit.Tag;
 
+import net.coreprotect.CoreProtect;
 import net.coreprotect.config.Config;
 import net.coreprotect.config.ConfigHandler;
-import net.coreprotect.database.Database;
 import net.coreprotect.language.Phrase;
 import net.coreprotect.language.Selector;
 import net.coreprotect.patch.Patch;
@@ -151,7 +151,7 @@ public class __2_19_0 {
             String preparedQueryUpdate = "UPDATE " + ConfigHandler.prefix + "sign SET action = 1 WHERE rowid = ?";
             PreparedStatement preparedSignStatement = statement.getConnection().prepareStatement(preparedSignQuery);
             PreparedStatement preparedStatementUpdate = statement.getConnection().prepareStatement(preparedQueryUpdate);
-            Database.beginTransaction(statement);
+            CoreProtect.getInstance().getDatabase().beginTransaction(statement);
 
             ResultSet resultSet = statement.executeQuery(blockQuery);
             while (resultSet.next()) {
@@ -174,7 +174,7 @@ public class __2_19_0 {
             preparedSignStatement.close();
             preparedStatementUpdate.close();
 
-            Database.commitTransaction(statement);
+            CoreProtect.getInstance().getDatabase().commitTransaction(statement);
         } catch (Exception e) {
             e.printStackTrace();
         }

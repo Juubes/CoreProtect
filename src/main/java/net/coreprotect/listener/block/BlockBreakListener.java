@@ -32,10 +32,10 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.inventory.ItemStack;
 
+import net.coreprotect.CoreProtect;
 import net.coreprotect.bukkit.BukkitAdapter;
 import net.coreprotect.config.Config;
 import net.coreprotect.consumer.Queue;
-import net.coreprotect.database.Database;
 import net.coreprotect.model.BlockGroup;
 import net.coreprotect.utility.Util;
 
@@ -289,7 +289,8 @@ public final class BlockBreakListener extends Queue implements Listener {
                 }
             }
             if (log) {
-                Database.containerBreakCheck(user, blockType, blockLog, null, blockLog.getLocation());
+                CoreProtect.getInstance().getDatabase().containerBreakCheck(user, blockType, blockLog, null,
+                        blockLog.getLocation());
                 Queue.queueBlockBreak(user, blockState, blockType, blockState.getBlockData().getAsString(), type,
                         physics, blockNumber);
 

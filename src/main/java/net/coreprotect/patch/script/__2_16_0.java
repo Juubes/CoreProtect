@@ -4,9 +4,9 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.Statement;
 
+import net.coreprotect.CoreProtect;
 import net.coreprotect.config.Config;
 import net.coreprotect.config.ConfigHandler;
-import net.coreprotect.database.Database;
 import net.coreprotect.patch.Patch;
 
 public class __2_16_0 {
@@ -57,7 +57,7 @@ public class __2_16_0 {
                     String preparedQueryDelete = "DELETE FROM " + ConfigHandler.prefix + "block WHERE rowid = ?";
                     PreparedStatement preparedStatementDelete = statement.getConnection()
                             .prepareStatement(preparedQueryDelete);
-                    Database.beginTransaction(statement);
+                    CoreProtect.getInstance().getDatabase().beginTransaction(statement);
                     resultSet = statement.executeQuery(query);
                     while (resultSet.next()) {
                         int rowid = resultSet.getInt("id");
@@ -65,7 +65,7 @@ public class __2_16_0 {
                         preparedStatementDelete.executeUpdate();
                     }
                     resultSet.close();
-                    Database.commitTransaction(statement);
+                    CoreProtect.getInstance().getDatabase().commitTransaction(statement);
                 }
             } catch (Exception e) {
                 e.printStackTrace();
@@ -86,13 +86,13 @@ public class __2_16_0 {
             PreparedStatement preparedStatementSelect = statement.getConnection().prepareStatement(preparedQuerySelect);
             PreparedStatement preparedStatementDelete = statement.getConnection().prepareStatement(preparedQueryDelete);
 
-            Database.beginTransaction(statement);
+            CoreProtect.getInstance().getDatabase().beginTransaction(statement);
             ResultSet resultSet = statement.executeQuery(query);
             while (resultSet.next()) {
                 int rowid = resultSet.getInt("id");
                 String user = resultSet.getString("user");
                 if (!user.startsWith("#")) {
-                    Database.setMultiInt(preparedStatementSelect, rowid, 5);
+                    CoreProtect.getInstance().getDatabase().setMultiInt(preparedStatementSelect, rowid, 5);
                     ResultSet resultSetUser = preparedStatementSelect.executeQuery();
                     resultSetUser.next();
                     boolean userExists = resultSetUser.getBoolean("userExists");
@@ -104,7 +104,7 @@ public class __2_16_0 {
                 }
             }
             resultSet.close();
-            Database.commitTransaction(statement);
+            CoreProtect.getInstance().getDatabase().commitTransaction(statement);
         } catch (Exception e) {
             e.printStackTrace();
         }

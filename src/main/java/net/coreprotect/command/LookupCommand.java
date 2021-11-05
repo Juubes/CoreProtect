@@ -19,9 +19,9 @@ import org.bukkit.command.ConsoleCommandSender;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Player;
 
+import net.coreprotect.CoreProtect;
 import net.coreprotect.config.Config;
 import net.coreprotect.config.ConfigHandler;
-import net.coreprotect.database.Database;
 import net.coreprotect.database.Lookup;
 import net.coreprotect.database.lookup.BlockLookup;
 import net.coreprotect.database.lookup.ChestTransactionLookup;
@@ -350,7 +350,7 @@ public class LookupCommand {
                     try {
                         ConfigHandler.lookupThrottle.put(player2.getName(),
                                 new Object[] { true, System.currentTimeMillis() });
-                        Connection connection = Database.getConnection(true);
+                        Connection connection = CoreProtect.getInstance().getDatabase().getConnection(true);
                         if (connection != null) {
                             Statement statement = connection.createStatement();
                             String blockdata = ChestTransactionLookup.performLookup(command.getName(), statement,
@@ -448,7 +448,7 @@ public class LookupCommand {
                     try {
                         ConfigHandler.lookupThrottle.put(player2.getName(),
                                 new Object[] { true, System.currentTimeMillis() });
-                        Connection connection = Database.getConnection(true);
+                        Connection connection = CoreProtect.getInstance().getDatabase().getConnection(true);
                         if (connection != null) {
                             Statement statement = connection.createStatement();
                             if (t == 8) {
@@ -730,7 +730,7 @@ public class LookupCommand {
                                 ConfigHandler.lookupAlist.put(player2.getName(), finalArgAction);
                                 ConfigHandler.lookupRadius.put(player2.getName(), radius);
 
-                                Connection connection = Database.getConnection(true);
+                                Connection connection = CoreProtect.getInstance().getDatabase().getConnection(true);
                                 if (connection != null) {
                                     Statement statement = connection.createStatement();
                                     String baduser = "";

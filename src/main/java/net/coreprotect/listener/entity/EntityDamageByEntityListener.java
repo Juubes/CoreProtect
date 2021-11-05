@@ -33,7 +33,6 @@ import net.coreprotect.bukkit.BukkitAdapter;
 import net.coreprotect.config.Config;
 import net.coreprotect.config.ConfigHandler;
 import net.coreprotect.consumer.Queue;
-import net.coreprotect.database.Database;
 import net.coreprotect.utility.Util;
 
 public final class EntityDamageByEntityListener extends Queue implements Listener {
@@ -124,8 +123,8 @@ public final class EntityDamageByEntityListener extends Queue implements Listene
                             Bukkit.getScheduler().runTask(CoreProtect.getInstance(), () -> {
                                 if (entity != null && entity.isDead()) {
                                     entityLocation.setY(entityLocation.getY() + 0.99);
-                                    Database.containerBreakCheck(killer, Material.ARMOR_STAND, entity, contents,
-                                            block.getLocation());
+                                    CoreProtect.getInstance().getDatabase().containerBreakCheck(killer,
+                                            Material.ARMOR_STAND, entity, contents, block.getLocation());
                                     Queue.queueBlockBreak(killer, block.getState(), Material.ARMOR_STAND, null,
                                             (int) entityLocation.getYaw());
                                 }

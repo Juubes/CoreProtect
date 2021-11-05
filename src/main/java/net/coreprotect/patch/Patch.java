@@ -16,7 +16,6 @@ import java.util.jar.JarInputStream;
 import net.coreprotect.CoreProtect;
 import net.coreprotect.config.ConfigHandler;
 import net.coreprotect.consumer.Consumer;
-import net.coreprotect.database.Database;
 import net.coreprotect.language.Phrase;
 import net.coreprotect.utility.Chat;
 import net.coreprotect.utility.Color;
@@ -150,7 +149,7 @@ public class Patch {
         try {
             boolean patched = false;
             boolean allPatches = true;
-            Connection connection = Database.getConnection(true, 0);
+            Connection connection = CoreProtect.getInstance().getDatabase().getConnection(true, 0);
             Statement statement = connection.createStatement();
             Integer[] newVersion = lastVersion;
 

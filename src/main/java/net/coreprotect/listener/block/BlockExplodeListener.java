@@ -21,10 +21,10 @@ import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.BlockExplodeEvent;
 
+import net.coreprotect.CoreProtect;
 import net.coreprotect.bukkit.BukkitAdapter;
 import net.coreprotect.config.Config;
 import net.coreprotect.consumer.Queue;
-import net.coreprotect.database.Database;
 import net.coreprotect.model.BlockGroup;
 
 public class BlockExplodeListener extends Queue implements Listener {
@@ -136,7 +136,8 @@ public class BlockExplodeListener extends Queue implements Listener {
                 }
             }
 
-            Database.containerBreakCheck(user, blockType, block, null, block.getLocation());
+            CoreProtect.getInstance().getDatabase().containerBreakCheck(user, blockType, block, null,
+                    block.getLocation());
             Queue.queueBlockBreak(user, blockState, blockType, blockState.getBlockData().getAsString(), 0);
         }
     }

@@ -2,7 +2,6 @@ package net.coreprotect.config;
 
 import java.io.File;
 import java.io.RandomAccessFile;
-import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.Statement;
 import java.util.ArrayList;
@@ -16,16 +15,14 @@ import java.util.concurrent.ConcurrentHashMap;
 
 import org.bukkit.Bukkit;
 import org.bukkit.World;
-import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.PluginManager;
 
 import net.coreprotect.CoreProtect;
 import net.coreprotect.bukkit.BukkitAdapter;
-import net.coreprotect.consumer.Consumer;
 import net.coreprotect.consumer.Queue;
-import net.coreprotect.database.statement.UserStatement;
+import net.coreprotect.database.Database;
 import net.coreprotect.language.Phrase;
 import net.coreprotect.model.BlockGroup;
 import net.coreprotect.paper.PaperAdapter;
@@ -43,7 +40,7 @@ public class ConfigHandler extends Queue {
     public static final String JAVA_VERSION = "1.8";
     public static final String SPIGOT_VERSION = "1.14";
     public static String path = "plugins/CoreProtect/";
-    public static String sqlite = "database.db";
+    public static String sqliteDatabase = "database.db";
     public static String host = "127.0.0.1";
     public static int port = 3306;
     public static String database = "database";
@@ -111,16 +108,6 @@ public class ConfigHandler extends Queue {
     public static ConcurrentHashMap<String, String> language = new ConcurrentHashMap<>();
     public static List<String> databaseTables = new ArrayList<>();
 
-    private static void checkPlayers(Connection connection) {
-        ConfigHandler.playerIdCache.clear();
-        ConfigHandler.playerIdCacheReversed.clear();
-        for (Player player : Bukkit.getServer().getOnlinePlayers()) {
-            if (ConfigHandler.playerIdCache.get(player.getName().toLowerCase(Locale.ROOT)) == null) {
-                UserStatement.loadId(connection, player.getName(), player.getUniqueId().toString());
-            }
-        }
-    }
-
     private static void loadBlacklist() {
         try {
             ConfigHandler.blacklist.clear();
@@ -169,36 +156,7 @@ public class ConfigHandler extends Queue {
     }
 
     public static void loadDatabase() {
-        if (!Config.getGlobal().MYSQL) {
-            try {
-                File tempFile = File.createTempFile("CoreProtect_" + System.currentTimeMillis(), ".tmp");
-                tempFile.setExecutable(true);
-
-                boolean canExecute = false;
-                try {
-                    canExecute = tempFile.canExecute();
-                } catch (Exception exception) {
-                    // execute access denied by security manager
-                }
-
-                if (!canExecute) {
-                    File tempFolder = new File("cache");
-                    boolean exists = tempFolder.exists();
-                    if (!exists) {
-                        tempFolder.mkdir();
-                    }
-                    System.setProperty("java.io.tmpdir", "cache");
-                }
-
-                tempFile.delete();
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-        }
-
-        if (ConfigHandler.serverRunning) {
-            Consumer.resetConnection = true;
-        }
+        CoreProtect.getInstance().getDatabase().loadDatabase();
         CoreProtect.getInstance().getDatabase().createDatabaseTables(ConfigHandler.prefix, false);
     }
 
@@ -362,14 +320,11 @@ public class ConfigHandler extends Queue {
             BlockGroup.initialize();
 
             ConfigHandler.loadConfig(); // Load (or create) the configuration file.
-            ConfigHandler.loadDatabase(); // Initialize MySQL and create tables if necessary.
 
-            Connection connection = CoreProtect.getInstance().getDatabase().getConnection(true, 0);
-            Statement statement = connection.createStatement();
-
-            ConfigHandler.checkPlayers(connection);
-            ConfigHandler.loadWorlds(statement); // Load world ID's into memory.
-            ConfigHandler.loadTypes(statement); // Load material ID's into memory.
+            Database db = CoreProtect.getInstance().getDatabase();
+            db.loadOnlinePlayers();
+            db.loadWorlds(); // Load world ID's into memory.
+            db.loadTypes(); // Load material ID's into memory.
 
             // Initialize WorldEdit logging
             if (Util.checkWorldEdit()) {
@@ -390,8 +345,6 @@ public class ConfigHandler extends Queue {
                 databaseLock = ConfigHandler.checkDatabaseLock(statement);
             }
 
-            statement.close();
-            connection.close();
 
             return validVersion && databaseLock;
         } catch (Exception e) {

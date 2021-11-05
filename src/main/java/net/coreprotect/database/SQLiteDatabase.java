@@ -1,5 +1,6 @@
 package net.coreprotect.database;
 
+import java.io.File;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
@@ -10,8 +11,10 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Locale;
 
+import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
+import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 
 import net.coreprotect.config.Config;
@@ -19,27 +22,13 @@ import net.coreprotect.config.ConfigHandler;
 import net.coreprotect.consumer.Consumer;
 import net.coreprotect.consumer.Queue;
 import net.coreprotect.consumer.process.Process;
+import net.coreprotect.database.statement.UserStatement;
 import net.coreprotect.language.Phrase;
 import net.coreprotect.model.BlockGroup;
 import net.coreprotect.utility.Chat;
 import net.coreprotect.utility.Util;
 
 public class SQLiteDatabase extends Database {
-
-    public static final int SIGN = 0;
-    public static final int BLOCK = 1;
-    public static final int SKULL = 2;
-    public static final int CONTAINER = 3;
-    public static final int WORLD = 4;
-    public static final int CHAT = 5;
-    public static final int COMMAND = 6;
-    public static final int SESSION = 7;
-    public static final int ENTITY = 8;
-    public static final int MATERIAL = 9;
-    public static final int ART = 10;
-    public static final int ENTITY_MAP = 11;
-    public static final int BLOCKDATA = 12;
-    public static final int ITEM = 13;
 
     public void beginTransaction(Statement statement) {
         Consumer.transacting = true;
@@ -137,7 +126,7 @@ public class SQLiteDatabase extends Database {
                 }
             }
 
-            String database = "jdbc:sqlite:" + ConfigHandler.path + ConfigHandler.sqlite + "";
+            String database = "jdbc:sqlite:" + ConfigHandler.path + ConfigHandler.sqliteDatabase + "";
             connection = DriverManager.getConnection(database);
 
             ConfigHandler.databaseReachable = true;
@@ -293,7 +282,7 @@ public class SQLiteDatabase extends Database {
             String attachDatabase = "";
 
             if (purge) {
-                String query = "ATTACH DATABASE '" + ConfigHandler.path + ConfigHandler.sqlite + ".tmp' AS tmp_db";
+                String query = "ATTACH DATABASE '" + ConfigHandler.path + ConfigHandler.sqliteDatabase + ".tmp' AS tmp_db";
                 PreparedStatement preparedStmt = connection.prepareStatement(query);
                 preparedStmt.execute();
                 preparedStmt.close();
@@ -518,5 +507,62 @@ public class SQLiteDatabase extends Database {
         } catch (Exception e) {
             e.printStackTrace();
         }
+    }
+
+    @Override
+    public void loadDatabase() {
+        try {
+            File tempFile = File.createTempFile("CoreProtect_" + System.currentTimeMillis(), ".tmp");
+            tempFile.setExecutable(true);
+
+            boolean canExecute = false;
+            try {
+                canExecute = tempFile.canExecute();
+            } catch (Exception exception) {
+                // execute access denied by security manager
+            }
+
+            if (!canExecute) {
+                File tempFolder = new File("cache");
+                boolean exists = tempFolder.exists();
+                if (!exists) {
+                    tempFolder.mkdir();
+                }
+                System.setProperty("java.io.tmpdir", "cache");
+            }
+
+            tempFile.delete();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        if (ConfigHandler.serverRunning) {
+            Consumer.resetConnection = true;
+        }
+    }
+
+    @Override
+    public void loadOnlinePlayers() {
+        try (Connection connection = this.getConnection(true, 0); Statement statement = connection.createStatement()) {
+            ConfigHandler.playerIdCache.clear();
+            ConfigHandler.playerIdCacheReversed.clear();
+            for (Player player : Bukkit.getServer().getOnlinePlayers()) {
+                if (ConfigHandler.playerIdCache.get(player.getName().toLowerCase(Locale.ROOT)) == null) {
+                    UserStatement.loadId(connection, player.getName(), player.getUniqueId().toString());
+                }
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    @Override
+    protected void loadTypes() {
+        
+    }
+
+    @Override
+    protected void loadWorlds() {
+        
     }
 }

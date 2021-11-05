@@ -11,7 +11,6 @@ import org.bukkit.inventory.ItemStack;
 import net.coreprotect.consumer.Queue;
 
 public abstract class Database extends Queue {
-
     public static final int SIGN = 0;
     public static final int BLOCK = 1;
     public static final int SKULL = 2;
@@ -52,4 +51,12 @@ public abstract class Database extends Queue {
     protected abstract void initializeTables(String prefix, Statement statement);
 
     public abstract void createDatabaseTables(String prefix, boolean purge);
+
+    public abstract void loadDatabase();
+
+    public abstract void loadOnlinePlayers();
+
+    public abstract void loadTypes();
+
+    public abstract void loadWorlds();
 }

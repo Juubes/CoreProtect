@@ -10,15 +10,19 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Locale;
 
+import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
+import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 
+import net.coreprotect.CoreProtect;
 import net.coreprotect.config.Config;
 import net.coreprotect.config.ConfigHandler;
 import net.coreprotect.consumer.Consumer;
 import net.coreprotect.consumer.Queue;
 import net.coreprotect.consumer.process.Process;
+import net.coreprotect.database.statement.UserStatement;
 import net.coreprotect.language.Phrase;
 import net.coreprotect.model.BlockGroup;
 import net.coreprotect.utility.Chat;
@@ -26,22 +30,6 @@ import net.coreprotect.utility.Color;
 import net.coreprotect.utility.Util;
 
 public class MySQLDatabase extends Database {
-
-    public static final int SIGN = 0;
-    public static final int BLOCK = 1;
-    public static final int SKULL = 2;
-    public static final int CONTAINER = 3;
-    public static final int WORLD = 4;
-    public static final int CHAT = 5;
-    public static final int COMMAND = 6;
-    public static final int SESSION = 7;
-    public static final int ENTITY = 8;
-    public static final int MATERIAL = 9;
-    public static final int ART = 10;
-    public static final int ENTITY_MAP = 11;
-    public static final int BLOCKDATA = 12;
-    public static final int ITEM = 13;
-
     public void beginTransaction(Statement statement) {
         Consumer.transacting = true;
 
@@ -368,6 +356,26 @@ public class MySQLDatabase extends Database {
             if (!success) {
                 Config.getGlobal().MYSQL = false;
             }
+        }
+    }
+
+    @Override
+    public void loadDatabase() {
+        // Nothing needed
+    }
+
+    @Override
+    public void loadOnlinePlayers() {
+        try (Connection connection = this.getConnection(true, 0); Statement statement = connection.createStatement()) {
+            ConfigHandler.playerIdCache.clear();
+            ConfigHandler.playerIdCacheReversed.clear();
+            for (Player player : Bukkit.getServer().getOnlinePlayers()) {
+                if (ConfigHandler.playerIdCache.get(player.getName().toLowerCase(Locale.ROOT)) == null) {
+                    UserStatement.loadId(connection, player.getName(), player.getUniqueId().toString());
+                }
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
         }
     }
 

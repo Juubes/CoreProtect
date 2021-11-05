@@ -142,7 +142,7 @@ public class PurgeCommand extends Consumer {
                     String purgePrefix = "tmp_" + ConfigHandler.prefix;
 
                     if (!Config.getGlobal().MYSQL) {
-                        query = "ATTACH DATABASE '" + ConfigHandler.path + ConfigHandler.sqlite + ".tmp' AS tmp_db";
+                        query = "ATTACH DATABASE '" + ConfigHandler.path + ConfigHandler.sqliteDatabase + ".tmp' AS tmp_db";
                         preparedStmt = connection.prepareStatement(query);
                         preparedStmt.execute();
                         preparedStmt.close();
@@ -351,7 +351,7 @@ public class PurgeCommand extends Consumer {
 
                     if (abort) {
                         if (!Config.getGlobal().MYSQL) {
-                            (new File(ConfigHandler.path + ConfigHandler.sqlite + ".tmp")).delete();
+                            (new File(ConfigHandler.path + ConfigHandler.sqliteDatabase + ".tmp")).delete();
                         }
                         ConfigHandler.loadDatabase();
                         Chat.sendGlobalMessage(player, Color.RED + Phrase.build(Phrase.PURGE_ABORTED));
@@ -361,9 +361,9 @@ public class PurgeCommand extends Consumer {
                     }
 
                     if (!Config.getGlobal().MYSQL) {
-                        (new File(ConfigHandler.path + ConfigHandler.sqlite)).delete();
-                        (new File(ConfigHandler.path + ConfigHandler.sqlite + ".tmp"))
-                                .renameTo(new File(ConfigHandler.path + ConfigHandler.sqlite));
+                        (new File(ConfigHandler.path + ConfigHandler.sqliteDatabase)).delete();
+                        (new File(ConfigHandler.path + ConfigHandler.sqliteDatabase + ".tmp"))
+                                .renameTo(new File(ConfigHandler.path + ConfigHandler.sqliteDatabase));
                     }
 
                     ConfigHandler.loadDatabase();

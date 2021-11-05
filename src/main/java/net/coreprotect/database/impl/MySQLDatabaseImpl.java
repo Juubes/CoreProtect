@@ -380,7 +380,7 @@ public abstract class MySQLDatabaseImpl extends Queue {
                 String attachDatabase = "";
 
                 if (purge) {
-                    String query = "ATTACH DATABASE '" + ConfigHandler.path + ConfigHandler.sqlite + ".tmp' AS tmp_db";
+                    String query = "ATTACH DATABASE '" + ConfigHandler.path + ConfigHandler.sqliteDatabase + ".tmp' AS tmp_db";
                     PreparedStatement preparedStmt = connection.prepareStatement(query);
                     preparedStmt.execute();
                     preparedStmt.close();

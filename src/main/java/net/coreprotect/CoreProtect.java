@@ -91,6 +91,7 @@ public final class CoreProtect extends JavaPlugin {
             PluginDescriptionFile pluginDescription = this.getDescription();
             Util.sendConsoleComponentStartup(Bukkit.getServer().getConsoleSender(),
                     Phrase.build(Phrase.ENABLE_SUCCESS, ConfigHandler.EDITION_NAME));
+
             if (Config.getGlobal().MYSQL) {
                 this.database = new MySQLDatabase();
                 Chat.console(Phrase.build(Phrase.USING_MYSQL));
@@ -98,6 +99,7 @@ public final class CoreProtect extends JavaPlugin {
                 this.database = new SQLiteDatabase();
                 Chat.console(Phrase.build(Phrase.USING_SQLITE));
             }
+            ConfigHandler.loadDatabase(); // Initialize MySQL and create tables if necessary.
 
             Chat.console("--------------------");
             Chat.console(Phrase.build(Phrase.ENJOY_COREPROTECT, pluginDescription.getName()));

@@ -66,8 +66,17 @@ ext {
 
     resourceTokens = [
             'project.version': projectVersion,
-            'project.branch': projectBranch,
+            'project.branch': gitBranch()
     ]
+}
+
+def gitBranch() {
+    def branch = ""
+    def proc = "git rev-parse --abbrev-ref HEAD".execute()
+    proc.in.eachLine { line -> branch = line }
+    proc.err.eachLine { line -> println line }
+    proc.waitFor()
+    branch
 }
 
 processResources {

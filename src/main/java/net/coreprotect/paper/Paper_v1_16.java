@@ -7,7 +7,9 @@ public class Paper_v1_16 extends PaperHandler implements PaperInterface {
 
     @Override
     public InventoryHolder getHolder(Inventory holder, boolean useSnapshot) {
-        return holder.getHolder(useSnapshot);
+        return holder.getHolder();
+//        return holder.getHolder(useSnapshot);
+
     }
 
 }

@@ -15,6 +15,8 @@ import net.coreprotect.config.ConfigHandler;
 import net.coreprotect.consumer.Consumer;
 import net.coreprotect.consumer.process.Process;
 import net.coreprotect.database.Database;
+import net.coreprotect.database.MySQLDatabase;
+import net.coreprotect.database.SQLiteDatabase;
 import net.coreprotect.language.Language;
 import net.coreprotect.language.Phrase;
 import net.coreprotect.thread.CacheHandler;
@@ -61,6 +63,7 @@ public final class CoreProtect extends JavaPlugin {
         if (start) {
             try {
                 Consumer.initialize(); // Prepare consumer (keep this here)
+
                 ListenerUtil.registerEventListeners(this);
                 TabHandler tabHandler = new TabHandler();
                 getCommand("coreprotect").setExecutor(CommandHandler.getInstance());
@@ -77,6 +80,7 @@ public final class CoreProtect extends JavaPlugin {
                     new File(ConfigHandler.path).mkdir();
                 }
                 start = ConfigHandler.performInitialization(true); // Perform any necessary initialization
+
             } catch (Exception e) {
                 e.printStackTrace();
                 start = false;
@@ -88,8 +92,10 @@ public final class CoreProtect extends JavaPlugin {
             Util.sendConsoleComponentStartup(Bukkit.getServer().getConsoleSender(),
                     Phrase.build(Phrase.ENABLE_SUCCESS, ConfigHandler.EDITION_NAME));
             if (Config.getGlobal().MYSQL) {
+                this.database = new MySQLDatabase();
                 Chat.console(Phrase.build(Phrase.USING_MYSQL));
             } else {
+                this.database = new SQLiteDatabase();
                 Chat.console(Phrase.build(Phrase.USING_SQLITE));
             }
 
